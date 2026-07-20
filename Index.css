@@ -1,1 +1,979 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: radial-gradient(circle at 50% 0%, #0e3a52 0%, #0a2a45 45%, #051a30 100%);
+    color: #fff8ee;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ==================== SUMMER AMBIENCE (sun + floating bits) ==================== */
+body::before {
+    content: '';
+    position: fixed;
+    top: -140px;
+    right: -100px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 196, 77, 0.55) 0%, rgba(255, 140, 66, 0.25) 45%, transparent 70%);
+    filter: blur(10px);
+    z-index: 0;
+    pointer-events: none;
+    animation: sunPulse 6s ease-in-out infinite;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(3px 3px at 10% 20%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.35), transparent),
+        radial-gradient(2.5px 2.5px at 60% 70%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 30% 85%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(3px 3px at 90% 80%, rgba(255,255,255,0.35), transparent);
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+    animation: driftParticles 14s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.12); opacity: 1; }
+}
+
+@keyframes driftParticles {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-14px) translateX(8px); }
+}
+
+/* ==================== MAIN SCREEN CONTROLS ==================== */
+.screen {
+    display: none !important;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.screen.active {
+    display: block !important;
+    animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Help Bot Screen Special Fix */
+#screen-help-bot {
+    height: auto !important;
+    max-height: 85vh;
+    display: none !important;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#screen-help-bot.active {
+    display: flex !important;
+}
+
+#bot-chat-viewport {
+    overflow-y: auto !important;
+    max-height: calc(85vh - 190px);
+    scrollbar-width: thin;
+}
+
+/* ==================== GLASS & CARDS ==================== */
+.glass-panel {
+    background: rgba(10, 42, 69, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(45, 212, 191, 0.25);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.45),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+    border-color: rgba(45, 212, 191, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 30px 60px -15px rgb(0 0 0 / 0.55),
+                0 0 30px -8px rgba(255, 140, 66, 0.25),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 176, 59, 0.25);
+    border-radius: 20px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 176, 59, 0.45);
+    transform: translateY(-2px);
+}
+
+/* ==================== INPUTS & BUTTONS ==================== */
+.premium-input {
+    background: rgba(5, 26, 48, 0.7) !important;
+    border: 1px solid rgba(45, 212, 191, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #fff8ee;
+    font-weight: 500;
+}
+
+.premium-input:focus {
+    border-color: #ff8c42 !important;
+    box-shadow: 0 0 0 3.5px rgba(255, 140, 66, 0.2);
+    outline: none;
+    background: rgba(5, 26, 48, 0.9) !important;
+}
+
+.flupy-btn {
+    border-radius: 18px !important;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3),
+               0 4px 6px -4px rgb(0 0 0 / 0.25);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.flupy-btn::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 40%;
+    height: 300%;
+    background: linear-gradient(
+        130deg,
+        transparent 20%,
+        rgba(255,255,255,0.4) 50%,
+        transparent 80%
+    );
+    transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+}
+
+.flupy-btn:hover::after {
+    left: 200%;
+}
+
+.flupy-btn:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 20px 30px -8px rgb(0 0 0 / 0.4),
+               0 10px 15px -5px rgba(255, 140, 66, 0.35);
+    border-color: rgba(255,255,255,0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff8c42, #ff5e62, #ffb03b);
+    background-size: 200% 200%;
+    color: white;
+    font-weight: 800;
+    border: 1px solid rgba(255, 140, 66, 0.5);
+    animation: gradientShift 5s ease infinite;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ff5e62, #ff8c42, #ffb03b);
+    background-size: 200% 200%;
+    box-shadow: 0 15px 25px -5px rgba(255, 94, 98, 0.45);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 12px rgba(255, 176, 59, 0.3); border-color: rgba(255, 176, 59, 0.4); }
+    50% { box-shadow: 0 0 26px rgba(255, 140, 66, 0.55); border-color: rgba(255, 140, 66, 0.6); }
+}
+.verified-glow { animation: pulse-glow 3.5s infinite ease-in-out; }
+
+@keyframes feedSlideUp {
+    0% { opacity: 0; transform: translateY(12px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-12px); }
+}
+.feed-animate { animation: feedSlideUp 4s ease-in-out infinite; }
+
+@keyframes reward-bounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(-3deg); }
+}
+.daily-reward-btn { animation: reward-bounce 2.5s infinite ease-in-out; }
+
+/* Floating / bobbing element for icons, badges, avatars */
+@keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.float-el { animation: floatY 3.2s ease-in-out infinite; }
+
+/* Shimmering text for highlighted numbers/prices */
+@keyframes shimmerText {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+.shimmer-text {
+    background: linear-gradient(90deg, #ffd27a 0%, #fff5da 25%, #ffd27a 50%, #fff5da 75%, #ffd27a 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmerText 3s linear infinite;
+}
+
+/* Sparkle burst, e.g. for reward/success moments */
+@keyframes sparklePop {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(90deg); opacity: 1; }
+    100% { transform: scale(0.9) rotate(180deg); opacity: 0.85; }
+}
+.sparkle-pop { animation: sparklePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ==================== SCROLLBAR & MISC ==================== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: rgba(5,26,48,0.5); }
+::-webkit-scrollbar-thumb { background: rgba(255, 140, 66, 0.4); border-radius: 12px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 140, 66, 0.65); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.neon-text-emerald { text-shadow: 0 0 10px rgba(45, 212, 191, 0.45); color: #5eead4; }
+.neon-text-gold { text-shadow: 0 0 10px rgba(255, 176, 59, 0.45); color: #ffcf7a; }
+
+/* Header & Footer z-index safety */
+header, footer {
+    z-index: 40;
+    position: relative;
+}
+
+/* Safety for Login Screen */
+#screen-auth {
+    overflow: hidden;
+}
+
+/* ==================== HISTORY TIMELINE ==================== */
+.history-timeline {
+    position: relative;
+    padding-left: 1.25rem;
+}
+.history-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 0.5rem;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, rgba(255,176,59,0.4), rgba(45,212,191,0.25));
+    border-radius: 4px;
+}
+
+/* ==================== DROPDOWN ==================== */
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.dropdown-active { display: flex; animation: dropdownFade 0.2s ease forwards; }
+
+/* ==================== IMAGE CONTAINERS — SUMMER BACKDROP ==================== */
+/* Any image dropped into the app sits on a warm sunset gradient frame */
+img {
+    background: linear-gradient(135deg, #ff8c42 0%, #ffb03b 45%, #2dd4bf 100%);
+    border-radius: 18px;
+    padding: 4px;
+    box-sizing: border-box;
+    object-fit: cover;
+    animation: imageReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Wrapper class to use around <img> when you want a bigger framed summer card */
+.summer-image-frame {
+    position: relative;
+    padding: 10px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ff5e62 0%, #ff8c42 35%, #ffb03b 65%, #2dd4bf 100%);
+    background-size: 250% 250%;
+    animation: gradientShift 6s ease infinite;
+    box-shadow: 0 20px 40px -12px rgba(255, 94, 98, 0.35);
+}
+
+.summer-image-frame img {
+    display: block;
+    width: 100%;
+    border-radius: 16px;
+    background: none;
+    padding: 0;
+}
+
+.summer-image-frame::before {
+    content: '☀';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffd27a;
+    border-radius: 50%;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    animation: sunPulse 4s ease-in-out infinite;
+}
+
+@keyframes imageReveal {
+    from { opacity: 0; transform: scale(0.94) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ==================== EXTRA MOTION ==================== */
+
+/* Palm-leaf style sway, for decorative icons */
+@keyframes leafSway {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(4deg); }
+}
+.sway-el { animation: leafSway 3.6s ease-in-out infinite; transform-origin: bottom center; }
+
+/* Wave motion strip, e.g. footer/divider */
+@keyframes waveMove {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 200px; }
+}
+.wave-divider {
+    height: 22px;
+    background-image: radial-gradient(circle at 10px -6px, transparent 12px, rgba(45, 212, 191, 0.35) 13px, transparent 14px);
+    background-size: 40px 22px;
+    animation: waveMove 3s linear infinite;
+}
+
+/* Ripple pulse on tap, add class briefly via JS or use for CTA badges */
+@keyframes ripplePulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 140, 66, 0.55); }
+    100% { box-shadow: 0 0 0 22px rgba(255, 140, 66, 0); }
+}
+.ripple-el { animation: ripplePulse 1.8s ease-out infinite; }
+
+/* Staggered card entrance */
+@keyframes cardEnter {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.stagger-item {
+    animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stagger-item:nth-child(1) { animation-delay: 0.05s; }
+.stagger-item:nth-child(2) { animation-delay: 0.12s; }
+.stagger-item:nth-child(3) { animation-delay: 0.19s; }
+.stagger-item:nth-child(4) { animation-delay: 0.26s; }
+.stagger-item:nth-child(5) { animation-delay: 0.33s; }
+.stagger-item:nth-child(6) { animation-delay: 0.40s; }
+
+/* Notification / badge bounce-in */
+@keyframes badgePop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+}
+.badge-pop { animation: badgePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+/* ==================== WEATHER LAYER — RAIN, CLOUDS, SUN RAYS ==================== */
+/* Add class="weather-scene weather-rainy" (or -cloudy / -sunny) to any container,
+   e.g. the body, a hero div, or #screen-auth, to switch the mood. */
+
+.weather-scene {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ---- Rain ---- */
+.weather-rainy::before {
+    content: '';
+    position: absolute;
+    inset: -20% -10%;
+    background-image: repeating-linear-gradient(
+        100deg,
+        transparent 0,
+        transparent 18px,
+        rgba(186, 230, 253, 0.35) 19px,
+        rgba(186, 230, 253, 0.5) 20px,
+        transparent 21px,
+        transparent 60px
+    );
+    background-size: 100% 140px;
+    animation: rainFall 0.55s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Soft grey overcast wash + occasional lightning flicker */
+.weather-rainy::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(71, 85, 105, 0.35), rgba(15, 23, 42, 0.15));
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 1;
+    animation: lightningFlicker 7s ease-in-out infinite;
+}
+
+@keyframes rainFall {
+    0% { background-position: 0 -140px; }
+    100% { background-position: -40px 0; }
+}
+
+@keyframes lightningFlicker {
+    0%, 92%, 96%, 100% { opacity: 1; }
+    93% { opacity: 0.55; }
+    94% { opacity: 1; }
+    95% { opacity: 0.7; }
+}
+
+/* Puddle ripple, drop this div where rain "lands" e.g. bottom of a card */
+.rain-puddle {
+    position: relative;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(186, 230, 253, 0.25), transparent 70%);
+    animation: puddleRipple 1.8s ease-out infinite;
+}
+@keyframes puddleRipple {
+    0% { transform: scale(0.4); opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ---- Clouds (overcast / partly cloudy) ---- */
+/* Add individual <div class="cloud"></div> elements inside a .weather-scene;
+   size and position with inline style or utility classes, drift handles the rest. */
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: 50%;
+    filter: blur(1px);
+    opacity: 0.8;
+    z-index: 2;
+    animation: cloudDrift 22s linear infinite;
+}
+.cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+}
+.cloud::before { width: 60%; height: 60%; top: -35%; left: 10%; }
+.cloud::after  { width: 45%; height: 45%; top: -20%; right: 8%; }
+
+.weather-cloudy .cloud { animation-duration: 30s; }
+.weather-rainy .cloud  { background: rgba(148, 163, 184, 0.85); }
+
+@keyframes cloudDrift {
+    from { transform: translateX(-15%); }
+    to   { transform: translateX(115%); }
+}
+
+/* ---- Sun & rays ---- */
+.weather-sunny .sun-orb,
+.sun-orb {
+    position: absolute;
+    top: 8%;
+    right: 10%;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff3c4 0%, #ffb03b 55%, #ff8c42 100%);
+    box-shadow: 0 0 40px 10px rgba(255, 176, 59, 0.5);
+    z-index: 2;
+    animation: sunPulse 4s ease-in-out infinite;
+}
+
+.sun-orb::before {
+    content: '';
+    position: absolute;
+    inset: -60px;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(255, 214, 122, 0.35) 8deg, transparent 16deg,
+        transparent 40deg, rgba(255, 214, 122, 0.35) 48deg, transparent 56deg,
+        transparent 80deg, rgba(255, 214, 122, 0.35) 88deg, transparent 96deg,
+        transparent 120deg, rgba(255, 214, 122, 0.35) 128deg, transparent 136deg,
+        transparent 160deg, rgba(255, 214, 122, 0.35) 168deg, transparent 176deg,
+        transparent 200deg, rgba(255, 214, 122, 0.35) 208deg, transparent 216deg,
+        transparent 240deg, rgba(255, 214, 122, 0.35) 248deg, transparent 256deg,
+        transparent 280deg, rgba(255, 214, 122, 0.35) 288deg, transparent 296deg,
+        transparent 320deg, rgba(255, 214, 122, 0.35) 328deg, transparent 336deg
+    );
+    border-radius: 50%;
+    animation: sunRaysSpin 18s linear infinite;
+    z-index: -1;
+}
+
+@keyframes sunRaysSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* Warm tint wash for a fully sunny scene */
+.weather-sunny::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 10%, rgba(255, 176, 59, 0.18), transparent 55%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ==================== BUTTERFLIES ==================== */
+/* Add <div class="butterfly butterfly-1"></div> (through butterfly-4) anywhere
+   inside a position:relative/fixed container — they fly on their own path and
+   flap their wings continuously. Mix colors/paths by using different numbers. */
+
+.butterfly {
+    position: absolute;
+    width: 20px;
+    height: 16px;
+    z-index: 3;
+    pointer-events: none;
+    animation: flapWings 0.35s ease-in-out infinite alternate;
+}
+
+.butterfly::before,
+.butterfly::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 16px;
+    background: linear-gradient(135deg, #ff8c42, #ffb03b 60%, #fff3c4);
+    border-radius: 60% 40% 60% 40%;
+    box-shadow: 0 0 6px rgba(255, 176, 59, 0.5);
+    transform-origin: right center;
+}
+
+.butterfly::before {
+    left: 0;
+    border-radius: 40% 60% 40% 60%;
+    transform-origin: right center;
+}
+
+.butterfly::after {
+    right: 0;
+    transform-origin: left center;
+}
+
+@keyframes flapWings {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0.55); }
+}
+
+/* Distinct color + flight-path per instance */
+.butterfly-1 {
+    top: 65%;
+    left: -5%;
+    animation: flapWings 0.32s ease-in-out infinite alternate, flyPath1 16s ease-in-out infinite;
+}
+.butterfly-1::before, .butterfly-1::after {
+    background: linear-gradient(135deg, #ff8c42, #ffb03b 60%, #fff3c4);
+}
+
+.butterfly-2 {
+    top: 30%;
+    left: -5%;
+    animation: flapWings 0.28s ease-in-out infinite alternate, flyPath2 20s ease-in-out infinite;
+}
+.butterfly-2::before, .butterfly-2::after {
+    background: linear-gradient(135deg, #2dd4bf, #5eead4 60%, #ecfeff);
+}
+
+.butterfly-3 {
+    top: 80%;
+    left: -5%;
+    animation: flapWings 0.34s ease-in-out infinite alternate, flyPath3 24s ease-in-out infinite;
+}
+.butterfly-3::before, .butterfly-3::after {
+    background: linear-gradient(135deg, #ff5e62, #ff8c42 60%, #ffd27a);
+}
+
+.butterfly-4 {
+    top: 15%;
+    left: -5%;
+    animation: flapWings 0.3s ease-in-out infinite alternate, flyPath4 18s ease-in-out infinite;
+}
+.butterfly-4::before, .butterfly-4::after {
+    background: linear-gradient(135deg, #fbbf24, #ffd27a 60%, #fff8e1);
+}
+
+@keyframes flyPath1 {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    25%  { transform: translate(30vw, -8vh) rotate(8deg); }
+    50%  { transform: translate(55vw, 6vh) rotate(-6deg); }
+    75%  { transform: translate(80vw, -10vh) rotate(10deg); }
+    92%  { opacity: 1; }
+    100% { transform: translate(115vw, 2vh) rotate(0deg); opacity: 0; }
+}
+
+@keyframes flyPath2 {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    30%  { transform: translate(25vw, 10vh) rotate(-8deg); }
+    55%  { transform: translate(50vw, -12vh) rotate(6deg); }
+    78%  { transform: translate(78vw, 8vh) rotate(-10deg); }
+    92%  { opacity: 1; }
+    100% { transform: translate(115vw, -4vh) rotate(0deg); opacity: 0; }
+}
+
+@keyframes flyPath3 {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    22%  { transform: translate(20vw, -14vh) rotate(10deg); }
+    48%  { transform: translate(45vw, -2vh) rotate(-8deg); }
+    70%  { transform: translate(70vw, -16vh) rotate(8deg); }
+    92%  { opacity: 1; }
+    100% { transform: translate(115vw, -6vh) rotate(0deg); opacity: 0; }
+}
+
+@keyframes flyPath4 {
+    0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    8%   { opacity: 1; }
+    28%  { transform: translate(28vw, 12vh) rotate(-10deg); }
+    52%  { transform: translate(52vw, -6vh) rotate(8deg); }
+    76%  { transform: translate(76vw, 10vh) rotate(-6deg); }
+    92%  { opacity: 1; }
+    100% { transform: translate(115vw, 0) rotate(0deg); opacity: 0; }
+}
+
+/* ==================== BEACH CAMP (bottom scene) ==================== */
+/* Add <div class="beach-camp"> ... </div> near the bottom of a .weather-scene
+   container (background-fx.js does this automatically). Contains sand,
+   a striped tent, a beach umbrella and a flickering campfire. */
+
+.beach-camp {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 16%;
+    min-height: 90px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Sand strip with a soft scalloped top edge */
+.sand-strip {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #f4d19b 0%, #e0b268 100%);
+    border-radius: 50% 50% 0 0 / 18px 18px 0 0;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
+}
+
+/* Beach tent — striped triangle with a shaded entrance flap */
+.beach-tent {
+    position: absolute;
+    bottom: 40%;
+    left: 12%;
+    width: 90px;
+    height: 66px;
+    background: repeating-linear-gradient(90deg, #ff8c42 0 10px, #fff3c4 10px 20px);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,0.25));
+    animation: tentSway 5s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.beach-tent::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 33%;
+    width: 34%;
+    height: 78%;
+    background: rgba(120, 53, 15, 0.5);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+@keyframes tentSway {
+    0%, 100% { transform: rotate(-0.6deg); }
+    50% { transform: rotate(0.6deg); }
+}
+
+/* Beach umbrella + pole, planted in the sand */
+.beach-umbrella {
+    position: absolute;
+    bottom: 42%;
+    right: 16%;
+    width: 96px;
+    height: 48px;
+    border-radius: 100px 100px 0 0;
+    background: repeating-linear-gradient(90deg, #2dd4bf 0 12px, #fff3c4 12px 24px);
+    filter: drop-shadow(0 6px 6px rgba(0,0,0,0.22));
+    animation: umbrellaSway 4.2s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+.beach-umbrella::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 4px;
+    height: 46px;
+    background: #92400e;
+    transform: translateX(-50%);
+}
+
+@keyframes umbrellaSway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+/* Campfire — logs + flickering flame */
+.campfire {
+    position: absolute;
+    bottom: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 34px;
+}
+
+.campfire::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 30px;
+    height: 6px;
+    background: #7c3f1d;
+    border-radius: 3px;
+    transform: translateX(-50%) rotate(8deg);
+    box-shadow: 0 6px 0 -2px #5c2e14;
+}
+
+.campfire .flame {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    width: 14px;
+    height: 22px;
+    background: radial-gradient(circle at 50% 80%, #fff3c4 0%, #ffb03b 45%, #ff5e62 85%);
+    border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+    transform: translateX(-50%);
+    animation: flameFlicker 0.9s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px rgba(255, 140, 66, 0.6));
+}
+
+@keyframes flameFlicker {
+    0%   { transform: translateX(-50%) scale(1, 1) skewX(0deg); }
+    40%  { transform: translateX(-50%) scale(0.92, 1.08) skewX(2deg); }
+    70%  { transform: translateX(-50%) scale(1.05, 0.95) skewX(-2deg); }
+    100% { transform: translateX(-50%) scale(0.96, 1.05) skewX(1deg); }
+}
+
+/* Small palm silhouette accent, optional extra flavor */
+.palm-accent {
+    position: absolute;
+    bottom: 40%;
+    left: 4%;
+    width: 6px;
+    height: 40px;
+    background: #7c3f1d;
+    border-radius: 3px;
+    transform-origin: bottom center;
+    animation: leafSway 3.6s ease-in-out infinite;
+}
+.palm-accent::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -14px;
+    width: 34px;
+    height: 16px;
+    background: #16a34a;
+    border-radius: 0 100% 0 100%;
+}
+.palm-accent::after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    width: 34px;
+    height: 16px;
+    background: #22c55e;
+    border-radius: 100% 0 100% 0;
+}
+
+/* ==================== NEW: LUCKY DRAW (SPINNER & CARDS) ==================== */
+
+.lucky-draw-banner {
+    background: linear-gradient(90deg, #ff5e62, #ff8c42, #ffb03b);
+    background-size: 200% auto;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(255, 94, 98, 0.4);
+    animation: gradientShift 3s ease infinite;
+    z-index: 45;
+}
+
+.lucky-draw-slim-card {
+    background: linear-gradient(135deg, rgba(255, 140, 66, 0.15) 0%, rgba(255, 94, 98, 0.15) 100%);
+    border: 1px solid rgba(255, 140, 66, 0.4);
+    border-radius: 20px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: pulse-glow 3s infinite ease-in-out;
+}
+
+.lucky-draw-slim-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    animation: shimmerText 3s infinite;
+}
+
+.spinner-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+.spinner-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #ff5e62;
+    z-index: 10;
+    filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));
+}
+
+.spinner-pointer::after {
+    content: '';
+    position: absolute;
+    top: -30px; left: -10px;
+    width: 20px; height: 20px;
+    background: #ff5e62;
+    border-radius: 50%;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3);
+}
+
+.spinner-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid #ffb03b;
+    background: conic-gradient(
+        #ff8c42 0deg 72deg,
+        #2dd4bf 72deg 144deg,
+        #ffb03b 144deg 216deg,
+        #ff5e62 216deg 288deg,
+        #8b5cf6 288deg 360deg
+    );
+    position: relative;
+    transition: transform 5s cubic-bezier(0.17, 0.67, 0.1, 1);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.4), 0 0 25px rgba(255, 176, 59, 0.4);
+}
+
+.spinner-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 20px;
+    transform-origin: 0% 50%;
+    font-size: 11px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    padding-left: 35px;
+    box-sizing: border-box;
+}
+
+.sl-1 { transform: translateY(-50%) rotate(36deg); }
+.sl-2 { transform: translateY(-50%) rotate(108deg); }
+.sl-3 { transform: translateY(-50%) rotate(180deg); }
+.sl-4 { transform: translateY(-50%) rotate(252deg); }
+.sl-5 { transform: translateY(-50%) rotate(324deg); }
+
+.spinner-center-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px; height: 30px;
+    background: #fff;
+    border-radius: 50%;
+    border: 4px solid #ffb03b;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+.participant-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #2dd4bf;
+    background: #0a2a45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(45, 212, 191, 0.3);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    body::before, body::after,
+    .verified-glow, .feed-animate, .daily-reward-btn,
+    .float-el, .shimmer-text, .btn-primary,
+    img, .summer-image-frame, .summer-image-frame::before,
+    .sway-el, .wave-divider, .ripple-el, .stagger-item, .badge-pop,
+    .weather-rainy::before, .weather-rainy::after, .rain-puddle,
+    .cloud, .sun-orb, .sun-orb::before,
+    .butterfly, .butterfly-1, .butterfly-2, .butterfly-3, .butterfly-4,
+    .beach-tent, .beach-umbrella, .campfire .flame, .palm-accent,
+    .lucky-draw-slim-card, .spinner-wheel {
+        animation: none !important;
+        transition: none !important;
+    }
+}
