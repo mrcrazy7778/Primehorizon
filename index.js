@@ -1856,20 +1856,7 @@ function handleDepositSubmission(e) {
 
 function calculateEffectiveWithdrawalLimit() {
     if (!sessionUser) return 1000;
-    const baseLimit = parseFloat(sessionUser.withdrawalLimit || 1000);
-    let successfulReferralCount = 0;
-
-    if (sessionUser.referrals) {
-        Object.values(sessionUser.referrals).forEach(ref => {
-            if (ref.isDeposited === true || ref.depositCommissionPaid === true) {
-                successfulReferralCount++;
-            }
-        });
-    }
-
-    const bonusPerReferral = 300;
-    const totalLimit = Math.floor(baseLimit + (successfulReferralCount * bonusPerReferral));
-    return totalLimit;
+    return parseFloat(sessionUser.withdrawalLimit || 1000);
 }
 
 function buildWithdrawalAccountConfigPanel() {
@@ -1884,16 +1871,33 @@ function buildWithdrawalAccountConfigPanel() {
         });
     }
 
-    let freeW = parseInt(sessionUser.freeWithdraws || 0);
-    let isWithdrawLocked = !hasDepositedRef && freeW <= 0;
+    let freeW = parseInt(sessionUser.freeWithdraws ?? globalDefaultFreeWithdraws);
+    let currentLimit = calculateEffectiveWithdrawalLimit();
+    let initialLimit = sessionUser.initialWithdrawalLimit || 1000;
 
     const limitEl = document.getElementById('current-withdraw-limit');
+    const totalLimitEl = document.getElementById('total-withdraw-limit');
+    const freeCountEl = document.getElementById('free-withdraw-count');
+    const progressBar = document.getElementById('limit-progress-bar');
     const lastTimeEl = document.getElementById('last-withdraw-time');
     const nextTimeEl = document.getElementById('next-withdraw-time');
 
-    if (limitEl) {
-        const effLimit = calculateEffectiveWithdrawalLimit();
-        limitEl.innerText = `Rs. ${effLimit.toLocaleString()}`;
+    if (limitEl) limitEl.innerText = `Rs. ${currentLimit.toLocaleString()}`;
+    if (totalLimitEl) totalLimitEl.innerText = initialLimit.toLocaleString();
+    if (freeCountEl) freeCountEl.innerText = freeW;
+
+    if (progressBar) {
+        let percent = initialLimit > 0 ? (currentLimit / initialLimit) * 100 : 0;
+        if(percent < 0) percent = 0;
+        if(percent > 100) percent = 100;
+        progressBar.style.width = `${percent}%`;
+        
+        progressBar.className = 'limit-progress-fill';
+        if (percent <= 25) {
+            progressBar.classList.add('critical');
+        } else if (percent <= 50) {
+            progressBar.classList.add('low');
+        }
     }
 
     if (lastTimeEl) {
@@ -1917,8 +1921,9 @@ function buildWithdrawalAccountConfigPanel() {
         }
     }
 
+    let isWithdrawLocked = !hasDepositedRef && (freeW <= 0 || currentLimit <= 0);
+
     if(isWithdrawLocked) {
-        alertBox.innerHTML = `<div class="flex flex-col gap-2 justify-center items-center"><div class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-rose-400 text-lg"></i><span class="font-bold text-sm uppercase">Withdraw Locked!</span></div><p class="text-[11px] leading-relaxed">Your free withdrawals are exhausted. You must invite at least 1 friend and they must deposit/activate a plan to unlock your withdrawals again.</p></div>`;
         alertBox.classList.remove('hidden');
         document.getElementById('withdraw-submit-btn').disabled = true;
         document.getElementById('withdraw-submit-btn').className = "w-full py-4 bg-slate-800 text-gray-500 rounded-2xl font-bold text-xs uppercase tracking-wider cursor-not-allowed shadow-md flupy-btn";
@@ -2030,7 +2035,7 @@ function handleWithdrawalExecution(event) {
     
     const effLimit = calculateEffectiveWithdrawalLimit();
     if (volume > effLimit) {
-        triggerSystemToast(`Maximum limit is Rs. ${effLimit.toLocaleString()}`, "error");
+        triggerSystemToast(`Maximum available limit is Rs. ${effLimit.toLocaleString()}`, "error");
         return;
     }
     
@@ -2066,14 +2071,23 @@ function handleWithdrawalExecution(event) {
             current.totalWithdraw = Number(current.totalWithdraw || 0) + volume;
             current.lastWithdrawalTimestamp = Date.now();
             
-            let hasDepRef = false;
-            if (current.referrals) {
-                Object.values(current.referrals).forEach(ref => {
-                    if (ref.isDeposited || ref.depositCommissionPaid) hasDepRef = true;
-                });
+            // Reduce amount limit by withdrawn volume
+            let currentLimit = parseFloat(current.withdrawalLimit || 1000);
+            let newLimit = currentLimit - volume;
+            if (newLimit < 0) newLimit = 0;
+            current.withdrawalLimit = newLimit;
+
+            // Save initial limit for progress bar tracking if not set
+            if (!current.initialWithdrawalLimit) {
+                current.initialWithdrawalLimit = currentLimit;
             }
-            if (!hasDepRef && parseInt(current.freeWithdraws || 0) > 0) {
-                current.freeWithdraws = parseInt(current.freeWithdraws) - 1;
+
+            // Reduce 1 free withdrawal count
+            let freeW = parseInt(current.freeWithdraws ?? globalDefaultFreeWithdraws);
+            if (freeW > 0) {
+                current.freeWithdraws = freeW - 1;
+            } else {
+                current.freeWithdraws = 0;
             }
             
             if (!current.logs) current.logs = {};
@@ -2088,7 +2102,7 @@ function handleWithdrawalExecution(event) {
                 ...withdrawPayload
             });
             
-            triggerSystemToast(`Withdrawal request of Rs. ${volume} submitted successfully! (Fee: Rs. ${tax})`, "success");
+            triggerSystemToast(`Withdrawal request of Rs. ${volume} submitted successfully! (Limit reduced by Rs. ${volume})`, "success");
             
             document.getElementById('withdraw-processing-form').reset();
             calculateBinanceWithdraw();
@@ -2501,7 +2515,7 @@ const botData = {
         greeting: "Hello! I am your Smart Assistant. How can I help you today?",
         topics: [
             { id: 'dep', label: 'Deposit Issue', reply: "For deposit issues, please ensure you have attached the correct screenshot and entered the correct TRX ID. If it's been more than 24 hours, kindly open a Ticket from Complaint section." },
-            { id: 'with', label: 'Withdrawal Limit', reply: "Your withdrawal limit depends on your active referrals. Each successful referral increases your daily limit. Withdrawals process within 24-48 hours. G.S tax applies." },
+            { id: 'with', label: 'Withdrawal Limit', reply: "Your withdrawal limit decreases with each withdrawal and resets or increases with referrals. Withdrawals process within 24-48 hours. G.S tax applies." },
             { id: 'inv', label: 'Invite Friends', reply: "Go to 'More Features' > 'Affiliate Program' to copy your link. You earn coins when your invited friend activates a plan. Coins can be converted into main balance." },
             { id: 'plan', label: 'Investment Plans', reply: "To invest, go to 'Invest Plans'. Ensure your account has sufficient balance. You can collect your daily profit every 24 hours." }
         ]
@@ -2510,7 +2524,7 @@ const botData = {
         greeting: "خوش آمدید! میں آپ کا اسمارٹ اسسٹنٹ ہوں۔ آج میں آپ کی کیا مدد کر سکتا ہوں؟",
         topics: [
             { id: 'dep', label: 'ڈپازٹ کا مسئلہ', reply: "ڈپازٹ کے مسائل کے لیے، براہ کرم یقینی بنائیں کہ آپ نے درست اسکرین شاٹ منسلک کیا ہے اور درست TRX ID درج کی ہے۔ اگر 24 گھنٹے سے زیادہ وقت ہو گیا ہے تو شکایت سیکشن سے ٹکٹ کھولیں۔" },
-            { id: 'with', label: 'نکالنے کی حد (Withdraw)', reply: "آپ کی رقم نکالنے کی حد آپ کے ریفرلز پر منحصر ہے۔ ہر کامیاب ریفرل حد بڑھاتا ہے۔ رقم 24-48 گھنٹوں میں موصول ہوتی ہے۔ فیس لاگو ہوگی۔" },
+            { id: 'with', label: 'نکالنے کی حد (Withdraw)', reply: "آپ کی رقم نکالنے کی حد ہر نکالنے پر کم ہوتی جاتی ہے۔ مفت محدود اور ریفرلز سے بڑھتی ہے۔ فیس لاگو ہوگی۔" },
             { id: 'inv', label: 'دوستوں کو مدعو کریں', reply: "'Affiliate Program' میں جا کر اپنا لنک کاپی کریں۔ جب آپ کا دوست پلان ایکٹو کرے گا تو آپ کو کوائنز ملیں گے، جنہیں آپ بیلنس میں بدل سکتے ہیں۔" },
             { id: 'plan', label: 'انویسٹمنٹ پلانز', reply: "انویسٹ کرنے کے لیے 'Invest Plans' پر جائیں۔ آپ کے اکاؤنٹ میں مطلوبہ بیلنس ہونا ضروری ہے۔ روزانہ کا منافع ہر 24 گھنٹے بعد حاصل کریں۔" }
         ]
@@ -2824,7 +2838,7 @@ function initUserEcosystemStream() {
     streamLiveSupportMessageLogs();
     streamFiledTicketsLog();
     listenForAdminForcedFeedback();
-    initLuckyDrawStream(); // Initialize Lucky Draw
+    initLuckyDrawStream(); 
     
     if(sessionUser && sessionUser.verificationStatus !== 'verifying' && sessionUser.verificationStatus !== 'suspended') {
         switchScreen('screen-dashboard');
@@ -2933,20 +2947,19 @@ function getLuckyDrawDates() {
     let month = now.getMonth();
 
     let firstThu = new Date(year, month, 1);
-    while (firstThu.getDay() !== 4) { // 4 is Thursday
+    while (firstThu.getDay() !== 4) { 
         firstThu.setDate(firstThu.getDate() + 1);
     }
     firstThu.setHours(0, 0, 0, 0);
 
     let endSat = new Date(firstThu);
     endSat.setDate(firstThu.getDate() + 2);
-    endSat.setHours(12, 0, 0, 0); // Saturday 12 PM
+    endSat.setHours(12, 0, 0, 0); 
 
     let bannerStart = new Date(firstThu);
     bannerStart.setDate(firstThu.getDate() - 7);
     bannerStart.setHours(0,0,0,0);
 
-    // If we passed this month's window, look to next month
     if (now > endSat) {
         month += 1;
         if (month > 11) { month = 0; year += 1; }
@@ -3043,7 +3056,6 @@ function updateLuckyDrawUI() {
         }
     }
 
-    // Trigger Spin Animation
     const cachedPhone = localStorage.getItem('ph_session_phone');
     if (luckyDrawData.status === 'completed' && !window.luckyDrawSpinShown) {
         window.luckyDrawSpinShown = true;
@@ -3051,11 +3063,10 @@ function updateLuckyDrawUI() {
         if(myPrize) {
             animateSpinner(myPrize);
         } else {
-            // Spin for observers
-            animateSpinner({rank: 1}); // default visual spin
+            animateSpinner({rank: 1}); 
         }
     } else if (luckyDrawData.status === 'waiting') {
-        window.luckyDrawSpinShown = false; // Reset if new draw
+        window.luckyDrawSpinShown = false; 
         document.getElementById('lucky-draw-wheel').style.transform = `rotate(0deg)`;
     }
 }
@@ -3081,25 +3092,22 @@ function joinLuckyDraw() {
 
     db.ref().transaction(root => {
         if(root && root.users && root.users[cachedPhone]) {
-            if(Number(root.users[cachedPhone].balance) < 150) return root; // Double check
+            if(Number(root.users[cachedPhone].balance) < 150) return root; 
 
-            // Deduct balance
             root.users[cachedPhone].balance = Number(root.users[cachedPhone].balance) - 150;
 
             if(!root.lucky_draw) root.lucky_draw = {};
             if(!root.lucky_draw[currentDrawId]) root.lucky_draw[currentDrawId] = { participants: {}, status: 'waiting' };
             if(!root.lucky_draw[currentDrawId].participants) root.lucky_draw[currentDrawId].participants = {};
 
-            // Add participant
             root.lucky_draw[currentDrawId].participants[cachedPhone] = {
                 username: root.users[cachedPhone].username,
                 joinTime: Date.now()
             };
 
-            // If 5 reached, assign prizes
             if(Object.keys(root.lucky_draw[currentDrawId].participants).length === 5) {
                 let keys = Object.keys(root.lucky_draw[currentDrawId].participants);
-                keys.sort(() => Math.random() - 0.5); // Shuffle array
+                keys.sort(() => Math.random() - 0.5); 
                 
                 let prizes = [
                     { rank: 1, type: 'balance', amount: 500, label: 'Rs. 500' },
@@ -3155,7 +3163,7 @@ function animateSpinner(myPrize) {
     if(myPrize.rank === 4) stopAngle = 108;
     if(myPrize.rank === 5) stopAngle = 36;
 
-    const totalRotation = 1080 + stopAngle; // 3 full spins + angle
+    const totalRotation = 1080 + stopAngle; 
     wheel.style.transform = `rotate(${totalRotation}deg)`;
 
     const cachedPhone = localStorage.getItem('ph_session_phone');
