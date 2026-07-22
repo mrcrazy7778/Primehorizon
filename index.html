@@ -612,22 +612,52 @@
                 <h2 class="text-xs font-extrabold text-indigo-400 uppercase tracking-widest">Outbound Terminal</h2>
             </div>
 
-            <!-- Blinking Limit Display -->
-            <div id="withdraw-limit-info" class="glass-panel p-4 mb-1 space-y-2 border border-indigo-500/20 bg-indigo-950/10 blinking-alert">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-bold text-indigo-400">Your Daily Withdrawal Limit</span>
-                    <span id="current-withdraw-limit" class="font-mono font-black text-lg text-white">Rs. 1,000</span>
+            <!-- Enhanced Withdrawal Limits Display -->
+            <div id="withdraw-limit-info" class="glass-panel p-4 mb-2 space-y-3 border border-indigo-500/20 bg-indigo-950/10 blinking-alert relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-16 h-16 bg-indigo-500/20 rounded-full blur-xl"></div>
+                
+                <div class="flex justify-between items-start text-xs relative z-10">
+                    <div>
+                        <span class="font-bold text-indigo-400 block mb-1">Available Withdrawal Limit</span>
+                        <span id="current-withdraw-limit" class="font-mono font-black text-xl text-white">Rs. 1,000</span>
+                        <span class="text-[9px] text-gray-400 ml-1">/ <span id="total-withdraw-limit">1,000</span></span>
+                    </div>
+                    <div class="text-right">
+                        <span class="free-withdraw-badge" id="free-withdraw-badge">
+                            <i class="fa-solid fa-gift"></i> <span id="free-withdraw-count">1</span> Left
+                        </span>
+                    </div>
                 </div>
-                <div class="flex justify-between text-[10px]">
+
+                <!-- Progress Bar -->
+                <div class="limit-progress-bg relative z-10">
+                    <div id="limit-progress-bar" class="limit-progress-fill" style="width: 100%;"></div>
+                </div>
+
+                <div class="flex justify-between text-[10px] pt-1 border-t border-white/5 relative z-10 mt-2">
                     <span class="text-gray-400">Platform Tax (Standard)</span>
                     <span class="font-bold text-amber-400">Rs. 5.00</span>
                 </div>
-                <div id="last-withdraw-time" class="text-[10px] text-gray-400 font-medium"></div>
-                <div id="next-withdraw-time" class="text-[10px] font-bold"></div>
-                <div class="text-[9px] text-gray-500 pt-1 border-t border-white/10">More invite more limit</div>
+                <div id="last-withdraw-time" class="text-[10px] text-gray-400 font-medium relative z-10"></div>
+                <div id="next-withdraw-time" class="text-[10px] font-bold relative z-10"></div>
             </div>
 
-            <div id="withdraw-lockout-alert" class="glass-panel p-4 bg-rose-500/5 border border-rose-500/20 text-rose-300 text-xs text-center font-semibold leading-relaxed rounded-2xl shadow-inner hidden"></div>
+            <!-- Alert Box for 0 Withdrawals (Invite Friend) -->
+            <div id="withdraw-lockout-alert" class="glass-panel p-4 bg-rose-500/5 border border-rose-500/20 text-rose-300 text-xs text-center font-semibold leading-relaxed rounded-2xl shadow-inner hidden mb-3">
+                <div class="flex flex-col gap-2 justify-center items-center">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-400 text-lg"></i>
+                        <span class="font-bold text-sm uppercase text-rose-400">Withdraw Locked!</span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-gray-300">
+                        Your free withdrawals are <span class="text-rose-400 font-bold">0</span>. 
+                        You must <span class="text-emerald-400 font-bold">Invite at least 1 friend</span> and they must deposit/activate a plan to unlock withdrawals again.
+                    </p>
+                    <button onclick="switchScreen('screen-invite-friends')" class="mt-2 w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl text-[10px] uppercase tracking-wider shadow-lg flupy-btn">
+                        Go to Invite Friends
+                    </button>
+                </div>
+            </div>
 
             <form id="withdraw-processing-form" onsubmit="handleWithdrawalExecution(event)" class="space-y-4">
                 <div>
