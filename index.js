@@ -2833,7 +2833,9 @@ function initUserEcosystemStream() {
             }
         }
     });
-
+setTimeout(() => {
+        checkMandatorySurvey();
+    }, 1500);
     streamInvestmentPlansDataset();
     streamLiveSupportMessageLogs();
     streamFiledTicketsLog();
@@ -2936,7 +2938,111 @@ function extractYouTubeID(url) {
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? match[2] : null;
 }
+// ================= MANDATORY SURVEY SYSTEM =================
 
+function checkMandatorySurvey() {
+    const cachedPhone = localStorage.getItem('ph_session_phone');
+    if(!cachedPhone) return;
+
+    // Check localStorage pehlay taa k baar baar load na ho
+    const localCheck = localStorage.getItem('ph_survey_done_' + cachedPhone);
+    if(localCheck === 'true') return;
+
+    // Firebase DB se check karein (Agar user ne kisi aur device se fill kiya ho)
+    db.ref(`surveys/${cachedPhone}`).once('value', snap => {
+        if(!snap.exists()) {
+            // Agar survey nahi kiya, toh modal open kar do
+            document.getElementById('mandatory-survey-modal').classList.remove('hidden');
+        } else {
+            // Data mojud hai, local storage update kar dein
+            localStorage.setItem('ph_survey_done_' + cachedPhone, 'true');
+        }
+    });
+}
+
+function nextSurveyStep(currentStep, nextStep) {
+    // Show Loading Overlay
+    document.getElementById('survey-loading-overlay').classList.remove('hidden');
+    
+    // Simulate Loading Delay (0.8 seconds)
+    setTimeout(() => {
+        document.getElementById('survey-loading-overlay').classList.add('hidden');
+        document.getElementById(`survey-step-${currentStep}`).classList.add('hidden');
+        document.getElementById(`survey-step-${nextStep}`).classList.remove('hidden');
+    }, 800);
+}
+
+function toggleSurveyTextArea(boxId, isVisible) {
+    const box = document.getElementById(boxId);
+    if(isVisible) {
+        box.classList.remove('hidden');
+    } else {
+        box.classList.add('hidden');
+    }
+}
+
+function submitFinalSurvey() {
+    const cachedPhone = localStorage.getItem('ph_session_phone');
+    if(!cachedPhone || !sessionUser) return;
+
+    // Loading Show karein
+    document.getElementById('survey-loading-overlay').classList.remove('hidden');
+
+    // Get Values from Inputs
+    const device = document.querySelector('input[name="survey_device"]:checked').value;
+    
+    const usability = document.querySelector('input[name="survey_usability"]:checked').value;
+    const usabilityDesc = usability === 'Yes' ? document.getElementById('survey_usability_desc').value.trim() : '';
+
+    const profit = document.querySelector('input[name="survey_profit"]:checked').value;
+    const profitDesc = profit === 'Nahi masla hai' ? document.getElementById('survey_profit_desc').value.trim() : '';
+
+    const features = document.querySelector('input[name="survey_features"]:checked').value;
+    let wantedFeatures = [];
+    let customFeatureDesc = '';
+    
+    if(features === 'Yes') {
+        if(document.getElementById('feature_spin').checked) wantedFeatures.push('Spin Task');
+        if(document.getElementById('feature_games').checked) wantedFeatures.push('Games');
+        if(document.getElementById('feature_custom_check').checked) {
+            customFeatureDesc = document.getElementById('survey_custom_feature_desc').value.trim();
+        }
+    }
+
+    // Payload for Admin
+    const surveyPayload = {
+        phone: cachedPhone,
+        username: sessionUser.username || "Unknown",
+        device: device,
+        hasUsabilityIssue: usability,
+        usabilityDetails: usabilityDesc,
+        appQualityAndProfit: profit,
+        profitIssueDetails: profitDesc,
+        wantsNewFeatures: features,
+        selectedFeatures: wantedFeatures.join(', '),
+        customFeatureSuggestion: customFeatureDesc,
+        timestamp: Date.now()
+    };
+
+    // Save to Firebase DB
+    db.ref(`surveys/${cachedPhone}`).set(surveyPayload, err => {
+        document.getElementById('survey-loading-overlay').classList.add('hidden');
+        if(!err) {
+            // Success -> Show Step 6 (Warning)
+            document.getElementById('survey-step-5').classList.add('hidden');
+            document.getElementById('survey-step-6').classList.remove('hidden');
+            
+            // Mark as done locally
+            localStorage.setItem('ph_survey_done_' + cachedPhone, 'true');
+        } else {
+            triggerSystemToast("Survey submit karte hue error aaya. Phir try karein.", "error");
+        }
+    });
+}
+
+function closeMandatorySurvey() {
+    document.getElementById('mandatory-survey-modal').classList.add('hidden');
+}
 // ================= LUCKY DRAW SYSTEM =================
 let currentDrawId = null;
 let luckyDrawData = null;
