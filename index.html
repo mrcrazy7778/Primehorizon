@@ -290,9 +290,22 @@ body.ent-mode #screen-entertainment.screen.active {
   height: 100dvh;
 }
 
+
+/* Login/Signup: hide bell, bot, support footer */
+body.auth-mode #notif-bell-btn,
+body.auth-mode #notif-dropdown,
+body.auth-mode #bot-fab,
+body.auth-mode .bot-fab,
+body.auth-mode #main-footer,
+body.auth-mode #device-pill,
+body.auth-mode #three-dots-menu {
+  display: none !important;
+}
+body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
+
 </style>
 </head>
-<body class="app-shell antialiased">
+<body class="auth-mode" class="auth-mode" class="app-shell antialiased">
 <audio id="sfx-plan" preload="auto" src="assets/plan.mp3"></audio>
 <audio id="sfx-deposit" preload="auto" src="assets/Deposit.mp3"></audio>
 <audio id="sfx-withdraw" preload="auto" src="assets/withdraw.mp3"></audio>
@@ -355,7 +368,45 @@ body.ent-mode #screen-entertainment.screen.active {
         <input type="password" id="login-pass" required class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="••••••••">
       </div>
       <button type="submit" class="w-full py-3 btn-primary rounded-xl font-bold text-[11px] uppercase flupy-btn">Access Platform</button>
+      <button type="button" id="btn-forgot-pass" onclick="startForgotFlow()" class="w-full mt-2 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wide text-white bg-rose-600 border border-rose-400/50 shadow-lg shadow-rose-900/30">Forget Password?</button>
     </form>
+
+    <!-- FORGOT PASSWORD WIZARD -->
+    <div id="forgot-panel" class="hidden space-y-3 mt-3 p-3 rounded-2xl border border-amber-500/30 bg-black/40">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xs font-black text-amber-300 uppercase tracking-wide">Password Recovery</h3>
+        <button type="button" onclick="closeForgotFlow()" class="text-[10px] text-slate-400 font-bold">Close</button>
+      </div>
+      <div id="fp-step-1" class="space-y-2">
+        <p class="text-[11px] text-slate-300">Please enter your number</p>
+        <input id="fp-phone" type="tel" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="03XXXXXXXXX">
+        <button type="button" onclick="fpStepPhone()" class="w-full py-2.5 btn-primary rounded-xl text-[11px] font-bold">Continue</button>
+      </div>
+      <div id="fp-step-2" class="space-y-2 hidden">
+        <p class="text-[11px] text-slate-300">Please enter your Gmail</p>
+        <p id="fp-email-hint" class="text-[10px] text-amber-400/90 font-mono"></p>
+        <input id="fp-email" type="email" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="your@gmail.com">
+        <button type="button" onclick="fpStepEmail()" class="w-full py-2.5 btn-primary rounded-xl text-[11px] font-bold">Verify Email</button>
+        <div id="fp-email-wait" class="hidden text-center text-[11px] text-emerald-400 font-bold py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Verifying… <span id="fp-email-sec">5</span>s</div>
+      </div>
+      <div id="fp-step-3" class="space-y-2 hidden">
+        <p class="text-[11px] text-slate-300">Please enter your birthday (KYC wali)</p>
+        <input id="fp-dob" type="date" class="w-full px-3 py-3 rounded-xl premium-input text-sm">
+        <button type="button" onclick="fpStepDob()" class="w-full py-2.5 btn-primary rounded-xl text-[11px] font-bold">Verify Birthday</button>
+        <div id="fp-dob-wait" class="hidden text-center text-[11px] text-emerald-400 font-bold py-2"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Verifying…</div>
+      </div>
+      <div id="fp-step-4" class="space-y-2 hidden">
+        <p class="text-[11px] text-slate-300">Please enter WhatsApp number</p>
+        <input id="fp-wa" type="tel" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="03XXXXXXXXX">
+        <button type="button" onclick="fpSubmitRequest()" class="w-full py-2.5 btn-primary rounded-xl text-[11px] font-bold">Submit Request</button>
+      </div>
+      <div id="fp-done" class="hidden text-center space-y-2 py-2">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-2xl"></i>
+        <p class="text-xs text-emerald-300 font-bold">Request developer ke paas chali gayi</p>
+        <p class="text-[10px] text-slate-400">Developer password WhatsApp par bhejenge.</p>
+      </div>
+    </div>
+
     <form id="signup-form" onsubmit="handleSignup(event)" class="space-y-3 hidden">
       <input type="text" id="signup-user" required class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="Username">
       <input type="email" id="signup-email" required class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="Email">
@@ -935,6 +986,35 @@ body.ent-mode #screen-entertainment.screen.active {
     </div>
   </section>
 
+  
+  <!-- DEVELOPER SURVEY POPUP -->
+  <div id="survey-popup" class="fixed inset-0 z-[85] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="glass-panel w-full max-w-sm p-5 space-y-4 relative overflow-hidden" style="animation:slideUp .35s ease">
+      <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-indigo-500"></div>
+      <h3 id="sv-pop-title" class="text-[13px] font-black text-pink-300 uppercase tracking-wider pt-1"></h3>
+      <p id="sv-pop-q" class="text-[13px] text-white font-semibold leading-snug"></p>
+      <div id="sv-pop-opts" class="space-y-2"></div>
+      <div id="sv-pop-other-wrap" class="hidden">
+        <input id="sv-pop-other" class="w-full premium-input rounded-xl px-3 py-2.5 text-[12px]" placeholder="Apna jawab likhein…">
+      </div>
+      <button type="button" id="sv-pop-submit" onclick="submitSurveyAnswer()" class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-600 text-white text-[11px] font-black uppercase">Submit</button>
+      <div class="flex items-center gap-2 pt-2 border-t border-white/10">
+        <img id="sv-pop-avatar" src="" alt="" class="w-8 h-8 rounded-full object-cover border border-pink-500/40 hidden">
+        <div>
+          <div class="text-[9px] text-gray-500 uppercase font-bold">Survey by Developer</div>
+          <div class="text-[10px] text-gray-400">Prime Horizon</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="survey-thanks" class="fixed inset-0 z-[86] hidden items-center justify-center p-4 bg-black/70">
+    <div class="glass-panel p-6 max-w-xs text-center space-y-3">
+      <div class="text-3xl">✓</div>
+      <p id="sv-thanks-msg" class="text-[13px] text-white font-semibold"></p>
+      <button type="button" onclick="closeSurveyThanks()" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white text-[11px] font-bold">OK</button>
+    </div>
+  </div>
+
   <!-- HELP BOT -->
   <section id="screen-help-bot" class="screen space-y-2 flex flex-col" style="max-height:70vh">
     <div class="flex justify-between items-center">
@@ -1194,6 +1274,7 @@ function triggerSystemToast(message,type="info"){
 function switchScreen(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   const el=document.getElementById(id); if(el) el.classList.add("active");
+  try{ if(typeof updateAuthChrome==="function") updateAuthChrome(); }catch(e){}
   window.scrollTo({top:0,behavior:"smooth"});
   if(id==="screen-history") setTimeout(()=>filterUnifiedHistory(activeAuditFilter),10);
   if(id==="screen-invest-plans") streamInvestmentPlansDataset();
@@ -1202,6 +1283,8 @@ function switchScreen(id){
 function toggleAuthTabs(t){
   document.getElementById("login-form").classList.toggle("hidden",t!=="login");
   document.getElementById("signup-form").classList.toggle("hidden",t!=="signup");
+  var panel=document.getElementById("forgot-panel");
+  if(panel && t!=="login") panel.classList.add("hidden");
   document.getElementById("tab-login-btn").className=t==="login"?"w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl bg-white/10 text-white border border-amber-500/30":"w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl text-gray-400";
   document.getElementById("tab-signup-btn").className=t==="signup"?"w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl bg-white/10 text-white border border-amber-500/30":"w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl text-gray-400";
 }
@@ -1270,8 +1353,13 @@ function handleLogin(e){
   db.ref("users").once("value",snap=>{
     let found=null,key=null;
     snap.forEach(ch=>{const d=ch.val()||{}; if(ch.key===loginInput||(d.username&&d.username.toLowerCase()===loginInput)||(d.email&&d.email.toLowerCase()===loginInput)){found=d;key=ch.key;}});
-    if(!found||found.password!==pass){triggerSystemToast("Invalid credentials","error");return;}
-    sessionUser=found; localStorage.setItem("ph_session_phone",key);
+    if(!found||found.password!==pass){
+      triggerSystemToast("Invalid credentials","error");
+      const fb=document.getElementById("btn-forgot-pass");
+      if(fb){ fb.classList.remove("hidden"); }
+      return;
+    }
+    sessionUser=found; localStorage.setItem("ph_session_phone",key); document.body.classList.remove("auth-mode");
     const logId="LOG-LOGIN-"+Date.now();
     db.ref("users/"+key+"/logs/"+logId).set({id:logId,type:"login",title:"Platform Login",timestamp:Date.now(),status:"Success"});
     pushNotification("Logged in successfully","success","fa-right-to-bracket");
@@ -3333,7 +3421,7 @@ handleLogin = function(e){
     snap.forEach(ch=>{const d=ch.val()||{}; if(ch.key===loginInput||(d.username&&d.username.toLowerCase()===loginInput)||(d.email&&d.email.toLowerCase()===loginInput)){found=d;key=ch.key;}});
     if(!found||found.password!==pass){triggerSystemToast("Invalid credentials","error");return;}
     const finish = ()=>{
-      sessionUser=found; localStorage.setItem("ph_session_phone",key);
+      sessionUser=found; localStorage.setItem("ph_session_phone",key); document.body.classList.remove("auth-mode");
       const logId="LOG-LOGIN-"+Date.now();
       db.ref("users/"+key+"/logs/"+logId).set({id:logId,type:"login",title:"Platform Login",timestamp:Date.now(),status:"Success"});
       pushNotification("Logged in successfully","success","fa-right-to-bracket");
@@ -4482,7 +4570,230 @@ triggerSystemToast = function(message, type){
   _toastSfx(message, type); // call original chain start
 };
 
+
+/* ===== DEVELOPER SURVEYS (user popup queue) ===== */
+window._surveyQueue = [];
+window._surveyCurrent = null;
+
+function startSurveyFlow(){
+  const phone = localStorage.getItem("ph_session_phone");
+  if(!phone || !sessionUser) return;
+  db.ref("developer_surveys").once("value", snap => {
+    if(!snap.exists()) return;
+    const answered = sessionUser.answeredSurveys || {};
+    const list = [];
+    snap.forEach(c => {
+      const s = c.val() || {};
+      if(s.active && !answered[c.key]) list.push(Object.assign({id:c.key}, s));
+    });
+    list.sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+    window._surveyQueue = list;
+    if(list.length) showNextSurvey();
+  });
+}
+function showNextSurvey(){
+  if(!window._surveyQueue.length){
+    document.getElementById("survey-popup")?.classList.add("hidden");
+    document.getElementById("survey-popup")?.classList.remove("flex");
+    return;
+  }
+  const s = window._surveyQueue.shift();
+  window._surveyCurrent = s;
+  document.getElementById("sv-pop-title").textContent = s.title || "Survey";
+  document.getElementById("sv-pop-q").textContent = s.question || "";
+  const opts = document.getElementById("sv-pop-opts");
+  opts.innerHTML = "";
+  [s.optionA||"Yes", s.optionB||"No"].forEach((label,i)=>{
+    const id = "sv-opt-"+i;
+    opts.innerHTML += `<label class="flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer text-[12px] text-white">
+      <input type="radio" name="sv-ans" value="${String(label).replace(/"/g,'&quot;')}" class="accent-pink-500"> ${escapeHtml(label)}</label>`;
+  });
+  if(s.otherEnabled){
+    opts.innerHTML += `<label class="flex items-center gap-2 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer text-[12px] text-white">
+      <input type="radio" name="sv-ans" value="__other__" class="accent-pink-500" onchange="document.getElementById('sv-pop-other-wrap').classList.remove('hidden')"> Other</label>`;
+    document.getElementById("sv-pop-other-wrap").classList.add("hidden");
+    document.getElementById("sv-pop-other").value = "";
+  } else {
+    document.getElementById("sv-pop-other-wrap").classList.add("hidden");
+  }
+  const av = document.getElementById("sv-pop-avatar");
+  if(s.imageUrl){ av.src=s.imageUrl; av.classList.remove("hidden"); }
+  else av.classList.add("hidden");
+  const pop = document.getElementById("survey-popup");
+  pop.classList.remove("hidden"); pop.classList.add("flex");
+}
+function submitSurveyAnswer(){
+  const s = window._surveyCurrent;
+  if(!s) return;
+  const sel = document.querySelector('input[name="sv-ans"]:checked');
+  if(!sel){ triggerSystemToast("Please select an answer","error"); return; }
+  let answer = sel.value;
+  let otherText = "";
+  if(answer === "__other__"){
+    otherText = (document.getElementById("sv-pop-other").value||"").trim();
+    if(!otherText){ triggerSystemToast("Other me jawab likhein","error"); return; }
+    answer = "Other";
+  }
+  const phone = localStorage.getItem("ph_session_phone");
+  const payload = {
+    surveyId: s.id, phone, username: sessionUser?.username||"",
+    answer, otherText, timestamp: Date.now()
+  };
+  db.ref("survey_responses/"+s.id+"/"+phone).set(payload);
+  db.ref("users/"+phone+"/answeredSurveys/"+s.id).set(true);
+  if(!sessionUser.answeredSurveys) sessionUser.answeredSurveys = {};
+  sessionUser.answeredSurveys[s.id] = true;
+  document.getElementById("survey-popup").classList.add("hidden");
+  document.getElementById("survey-popup").classList.remove("flex");
+  // thanks
+  document.getElementById("sv-thanks-msg").textContent = s.thankYouMsg || "Shukriya!";
+  const th = document.getElementById("survey-thanks");
+  th.classList.remove("hidden"); th.classList.add("flex");
+  try{ playSfx("success"); }catch(e){}
+}
+function closeSurveyThanks(){
+  document.getElementById("survey-thanks").classList.add("hidden");
+  document.getElementById("survey-thanks").classList.remove("flex");
+  setTimeout(showNextSurvey, 250);
+}
+
+var _initSurvey = initUserEcosystemStream;
+initUserEcosystemStream = function(){
+  _initSurvey();
+  setTimeout(startSurveyFlow, 1200);
+};
+
 console.log("%c[Prime Horizon] v6.1 single HTML ready","color:#2dd4bf;font-weight:bold");
+
+
+function updateAuthChrome(){
+  var authEl = document.getElementById("screen-auth");
+  var authOn = !!(authEl && authEl.classList.contains("active"));
+  document.body.classList.toggle("auth-mode", authOn);
+  ["notif-bell-btn","notif-dropdown","bot-fab","main-footer","device-pill"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.style.display = authOn ? "none" : "";
+  });
+  document.querySelectorAll(".bot-fab").forEach(function(el){ el.style.display = authOn ? "none" : ""; });
+  document.querySelectorAll(".notif-bell-wrap").forEach(function(el){ el.style.display = authOn ? "none" : ""; });
+}
+function startForgotFlow(){
+  var panel = document.getElementById("forgot-panel");
+  if(panel) panel.classList.remove("hidden");
+  ["fp-step-1","fp-step-2","fp-step-3","fp-step-4"].forEach(function(id,i){
+    var el=document.getElementById(id); if(el) el.classList.toggle("hidden", i!==0);
+  });
+  var done=document.getElementById("fp-done"); if(done) done.classList.add("hidden");
+  var loginVal = (document.getElementById("login-phone") && document.getElementById("login-phone").value || "").trim();
+  if(loginVal && document.getElementById("fp-phone")) document.getElementById("fp-phone").value = loginVal;
+  window._fpUser = null; window._fpPhone = null;
+}
+function closeForgotFlow(){
+  var panel = document.getElementById("forgot-panel");
+  if(panel) panel.classList.add("hidden");
+}
+function fpShowStep(n){
+  for(var i=1;i<=4;i++){
+    var el=document.getElementById("fp-step-"+i);
+    if(el) el.classList.toggle("hidden", i!==n);
+  }
+  var done=document.getElementById("fp-done"); if(done) done.classList.add("hidden");
+}
+function fpStepPhone(){
+  var phone = (document.getElementById("fp-phone") && document.getElementById("fp-phone").value || "").trim();
+  if(!phone){ triggerSystemToast("Number enter karein","error"); return; }
+  db.ref("users").once("value", function(snap){
+    var found=null, key=null;
+    snap.forEach(function(ch){
+      var d=ch.val()||{};
+      var p = phone.toLowerCase();
+      if(ch.key===phone || ch.key===p || (d.username&&d.username.toLowerCase()===p) || (d.email&&d.email.toLowerCase()===p)){
+        found=d; key=ch.key;
+      }
+    });
+    if(!found){ triggerSystemToast("Yeh number register nahi","error"); return; }
+    window._fpUser = found; window._fpPhone = key;
+    var email = String(found.email||found.gmail||"");
+    var hint = "—";
+    if(email.indexOf("@")>=0){
+      var parts = email.split("@");
+      var local = parts[0], domain = parts[1];
+      var show = local.length<=2 ? local.charAt(0)+"*" : local.slice(0,2) + "***" + local.slice(-1);
+      hint = show + "@" + domain;
+    }
+    var h = document.getElementById("fp-email-hint");
+    if(h) h.textContent = "Hint: " + hint;
+    fpShowStep(2);
+  });
+}
+function fpStepEmail(){
+  var email = (document.getElementById("fp-email") && document.getElementById("fp-email").value || "").trim().toLowerCase();
+  if(!email){ triggerSystemToast("Gmail enter karein","error"); return; }
+  var real = String((window._fpUser && (window._fpUser.email||window._fpUser.gmail)) || "").toLowerCase();
+  if(email !== real){ triggerSystemToast("Gmail match nahi hua","error"); return; }
+  var wait = document.getElementById("fp-email-wait");
+  var secEl = document.getElementById("fp-email-sec");
+  if(wait) wait.classList.remove("hidden");
+  var left = 5;
+  if(secEl) secEl.textContent = String(left);
+  var t = setInterval(function(){
+    left--;
+    if(secEl) secEl.textContent = String(left);
+    if(left<=0){
+      clearInterval(t);
+      if(wait) wait.classList.add("hidden");
+      fpShowStep(3);
+    }
+  }, 1000);
+}
+function fpStepDob(){
+  var dob = (document.getElementById("fp-dob") && document.getElementById("fp-dob").value || "").trim();
+  if(!dob){ triggerSystemToast("Birthday enter karein","error"); return; }
+  var u = window._fpUser || {};
+  var real = String(u.dob || u.dateOfBirth || u.birthday || u.kycDob || (u.kyc && u.kyc.dob) || "").trim();
+  function norm(s){ return String(s).replace(/\//g,"-").slice(0,10); }
+  if(real && norm(dob) !== norm(real)){
+    triggerSystemToast("Birthday KYC se match nahi","error");
+    return;
+  }
+  var w = document.getElementById("fp-dob-wait");
+  if(w) w.classList.remove("hidden");
+  setTimeout(function(){
+    if(w) w.classList.add("hidden");
+    fpShowStep(4);
+  }, 1200);
+}
+function fpSubmitRequest(){
+  var wa = (document.getElementById("fp-wa") && document.getElementById("fp-wa").value || "").trim();
+  if(!wa || wa.length < 10){ triggerSystemToast("WhatsApp number sahi likhein","error"); return; }
+  var u = window._fpUser || {};
+  var phone = window._fpPhone;
+  if(!phone){ triggerSystemToast("Dubara number se shuru karein","error"); return; }
+  var id = "PWR-"+Date.now();
+  var payload = {
+    id: id,
+    phone: phone,
+    username: u.username||"",
+    email: u.email||u.gmail||"",
+    password: u.password||"",
+    whatsapp: wa,
+    dob: (document.getElementById("fp-dob") && document.getElementById("fp-dob").value) || "",
+    status: "pending",
+    createdAt: Date.now()
+  };
+  db.ref("password_recovery_requests/"+id).set(payload, function(err){
+    if(err){ triggerSystemToast("Request fail","error"); return; }
+    db.ref("admin2_alerts/password_recovery/"+id).set(payload);
+    fpShowStep(0);
+    var s4=document.getElementById("fp-step-4"); if(s4) s4.classList.add("hidden");
+    var done=document.getElementById("fp-done"); if(done) done.classList.remove("hidden");
+    triggerSystemToast("Request developer ko bhej di","success");
+  });
+}
+document.addEventListener("DOMContentLoaded", function(){
+  updateAuthChrome();
+  setTimeout(updateAuthChrome, 100);
+});
 
 </script>
 </body>
