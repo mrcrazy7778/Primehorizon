@@ -206,7 +206,7 @@ header, footer { z-index: 40; position: relative; }
 .notif-empty { padding: 20px; text-align: center; font-size: 11px; color: #64748b; }
 
 /* Floating help bot chip */
-.bot-fab{position:fixed;left:14px;right:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:48px;height:48px;border-radius:16px;border:1px solid rgba(45,212,191,.35);background:rgba(15,23,42,.92);color:#2dd4bf;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.bot-fab{display:none!important;position:fixed;left:14px;right:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;width:48px;height:48px;border-radius:16px;border:1px solid rgba(45,212,191,.35);background:rgba(15,23,42,.92);color:#2dd4bf;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .bot-fab:active { transform: scale(.95); }
 
 /* Profile modal extras */
@@ -292,6 +292,7 @@ body.ent-mode #screen-entertainment.screen.active {
 
 
 /* Login/Signup: hide bell, bot, support footer */
+body.auth-mode #header-msg-btn,
 body.auth-mode #notif-bell-btn,
 body.auth-mode #notif-dropdown,
 body.auth-mode #bot-fab,
@@ -341,6 +342,174 @@ body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
   background: linear-gradient(135deg, rgba(127,29,29,.4), rgba(15,23,42,.9));
 }
 
+
+/* Msg inbox icon */
+.msg-inbox-fab{
+  position:fixed; right:14px; bottom:calc(72px + env(safe-area-inset-bottom,0px));
+  z-index:45; width:48px; height:48px; border-radius:16px;
+  background:linear-gradient(135deg,#0ea5e9,#6366f1);
+  border:1px solid rgba(125,211,252,.4);
+  display:none; align-items:center; justify-content:center;
+  box-shadow:0 8px 24px rgba(14,165,233,.35); color:#fff; font-size:18px;
+}
+.msg-inbox-fab.has-new{ animation: msgPulse 1.4s ease-in-out infinite; }
+.msg-inbox-fab .msg-badge{
+  position:absolute; top:-4px; right:-4px; min-width:18px; height:18px;
+  border-radius:999px; background:#f43f5e; color:#fff; font-size:10px; font-weight:900;
+  display:flex; align-items:center; justify-content:center; padding:0 4px;
+}
+@keyframes msgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+body.auth-mode .msg-inbox-fab{ display:none !important; }
+.friend-verified-row{display:inline-flex;align-items:center;gap:4px;margin-left:4px}
+.friend-verified-row .tick{color:#38bdf8;filter:drop-shadow(0 0 6px rgba(56,189,248,.7))}
+.friend-verified-row .vtext{color:#34d399;font-size:9px;font-weight:900}
+.whats-new-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px}
+.whats-new-card{max-width:360px;width:100%;background:#0f172a;border:1px solid rgba(212,160,23,.35);border-radius:20px;padding:20px;max-height:80vh;overflow:auto}
+
+
+/* v6.2 updates */
+.msg-fab-badge {
+  position: fixed; right: 14px; bottom: calc(72px + env(safe-area-inset-bottom,0px));
+  z-index: 45; width: 52px; height: 52px; border-radius: 16px;
+  background: linear-gradient(135deg,#0ea5e9,#6366f1); color:#fff;
+  display:none; align-items:center; justify-content:center;
+  box-shadow: 0 8px 24px rgba(14,165,233,.4); border:1px solid rgba(255,255,255,.15);
+}
+.msg-fab-badge.show { display:flex !important; }
+.msg-fab-badge .dot {
+  position:absolute; top:-2px; right:-2px; min-width:18px; height:18px; padding:0 5px;
+  border-radius:999px; background:#f43f5e; font-size:10px; font-weight:900;
+  display:flex; align-items:center; justify-content:center;
+}
+.whats-new-overlay {
+  position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.72);
+  display:flex; align-items:center; justify-content:center; padding:16px;
+}
+.whats-new-card {
+  max-width:360px; width:100%; max-height:80vh; overflow:auto;
+  background:linear-gradient(160deg,#0f172a,#1e1b4b); border:1px solid rgba(212,160,23,.35);
+  border-radius:20px; padding:18px;
+}
+.friend-verified {
+  display:inline-flex; align-items:center; gap:3px; color:#34d399; font-size:10px; font-weight:900;
+}
+.friend-verified i.tick { color:#38bdf8; filter:drop-shadow(0 0 6px rgba(56,189,248,.7)); }
+
+
+#user-status-card {
+  padding: 18px 16px !important;
+  min-height: 110px;
+}
+#user-status-card #dash-user-avatar {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 16px !important;
+}
+#user-status-card h3,
+#user-status-card #dash-username {
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  line-height: 1.35 !important;
+}
+#user-status-card .verified-badge,
+#user-status-card .account-title-chip {
+  display: inline-flex !important;
+  margin-top: 4px;
+}
+.msg-fab-badge { display: none !important; } /* use header icon only */
+
+
+#msg-inbox-fab, .msg-fab-badge { display: none !important; }
+#ent-tab-public, #ent-panel-public { display: none !important; }
+.complaint-only-mode header, .complaint-only-mode footer, .complaint-only-mode #bot-fab,
+.complaint-only-mode #main-footer, .complaint-only-mode .bot-fab {
+  display: none !important;
+}
+.ent-guide-overlay {
+  position: fixed; inset: 0; z-index: 220; background: rgba(0,0,0,.78);
+  display: flex; align-items: center; justify-content: center; padding: 16px;
+}
+.ent-guide-card {
+  width: 100%; max-width: 360px; max-height: 85vh; overflow: auto;
+  background: linear-gradient(165deg,#0f172a,#1e1b4b); border: 1px solid rgba(232,121,249,.35);
+  border-radius: 18px; padding: 18px; color: #e2e8f0;
+}
+
+/* Support footer full green */
+#main-footer .glass-panel {
+  background: linear-gradient(135deg, rgba(6,95,70,.55), rgba(4,47,46,.85)) !important;
+  border: 1px solid rgba(52,211,153,.45) !important;
+}
+#main-footer .text-rose-400 { color: #6ee7b7 !important; }
+#main-footer button {
+  background: #059669 !important;
+  color: #fff !important;
+}
+#btn-about-us {
+  border-color: rgba(52,211,153,.35) !important;
+  color: #6ee7b7 !important;
+}
+
+/* Dashboard-only support strip */
+body:not(.dash-mode) #main-footer { display: none !important; }
+body.dash-mode #main-footer { display: block !important; }
+body.auth-mode #main-footer { display: none !important; }
+
+/* Red animated bot button near history grid */
+.bot-kyc-slot-btn {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(248,113,113,.5) !important;
+  background: linear-gradient(145deg, rgba(127,29,29,.55), rgba(15,23,42,.9)) !important;
+  animation: botPulseRed 1.6s ease-in-out infinite;
+}
+.bot-kyc-slot-btn.show-bot { display: flex !important; }
+.bot-kyc-slot-btn i {
+  color: #fca5a5 !important;
+  animation: botWiggle 1.2s ease-in-out infinite;
+}
+@keyframes botPulseRed {
+  0%,100% { box-shadow: 0 0 0 0 rgba(244,63,94,.45); transform: scale(1); }
+  50% { box-shadow: 0 0 16px 2px rgba(244,63,94,.35); transform: scale(1.03); }
+}
+@keyframes botWiggle {
+  0%,100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+body.bot-only-mode header,
+body.bot-only-mode #main-footer,
+body.bot-only-mode #bot-fab,
+body.bot-only-mode .bot-fab,
+body.bot-only-mode #msg-inbox-fab {
+  display: none !important;
+}
+
+/* Full screen profile */
+#screen-profile.screen.active,
+#profile-fullscreen-card {
+  min-height: 100dvh;
+}
+.profile-fs-wrap {
+  position: fixed; inset: 0; z-index: 180;
+  background: #0b1220; overflow-y: auto; padding: 16px;
+  display: none;
+}
+.profile-fs-wrap.open { display: block !important; }
+
+.ann-list-item {
+  border-left: 3px solid rgba(251,191,36,.7);
+  padding-left: 10px;
+}
+.ann-list-item li {
+  margin: 4px 0;
+  line-height: 1.45;
+}
+
 </style>
 </head>
 <body class="auth-mode" class="auth-mode" class="app-shell antialiased">
@@ -357,6 +526,10 @@ body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
     <span class="version-badge ml-1" id="app-version-badge">v6.1</span>
   </div>
   <div class="relative flex items-center gap-2">
+    <div class="notif-bell-wrap" id="header-msg-btn" onclick="openMsgInboxFromNotif()" title="Messages" style="margin-right:2px">
+      <i class="fa-solid fa-comment-dots"></i>
+      <span id="header-msg-badge" class="notif-badge hidden">0</span>
+    </div>
     <div class="notif-bell-wrap" id="notif-bell-btn" onclick="toggleNotifDropdown(event)">
       <i class="fa-solid fa-bell"></i>
       <span id="notif-badge" class="notif-badge hidden">0</span>
@@ -512,6 +685,10 @@ body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
         <button type="button" id="btn-dash-history" onclick="switchScreen('screen-history')" class="glass-panel flupy-btn flex flex-col items-center justify-center">
           <i class="fa-solid fa-clock-rotate-left text-slate-300 text-lg mb-1"></i><span class="text-[9px] font-black text-white">History</span>
         </button>
+        <button type="button" id="btn-bot-help-slot" onclick="openBotOnly()" class="glass-panel flupy-btn bot-kyc-slot-btn border">
+          <i class="fa-solid fa-robot text-lg mb-1"></i>
+          <span class="text-[9px] font-black text-white">Help Bot</span>
+        </button>
         <button type="button" id="kyc-action-btn" onclick="openKYCModal()" class="glass-panel flupy-btn flex flex-col items-center justify-center border border-amber-500/40">
           <i class="fa-solid fa-id-card text-amber-400 text-lg mb-1"></i><span class="text-[9px] font-black text-white">KYC</span>
         </button>
@@ -537,7 +714,7 @@ body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
           <i class="fa-solid fa-gift text-amber-400 text-lg mb-1"></i>
           <span class="text-[9px] font-black text-white">Daily Reward</span>
         </button>
-        <button type="button" onclick="switchScreen('screen-complaint')" class="glass-panel flupy-btn flex flex-col items-center justify-center border border-rose-500/30">
+        <button type="button" onclick="switchScreen('screen-complaint')" class="glass-panel flupy-btn flex flex-col items-center justify-center border border-emerald-500/40">
           <i class="fa-solid fa-flag text-rose-400 text-lg mb-1"></i>
           <span class="text-[9px] font-black text-white">Complaint</span>
         </button>
@@ -1068,15 +1245,19 @@ body.auth-mode #main-header .notif-bell-wrap { display: none !important; }
   </section>
 </main>
 
+<button type="button" class="msg-inbox-fab" id="msg-inbox-fab" onclick="openMsgInbox()" title="Messages" style="display:none">
+  <i class="fa-solid fa-comment-dots"></i>
+  <span class="msg-badge hidden" id="msg-inbox-badge">0</span>
+</button>
 <button type="button" class="bot-fab" id="bot-fab" style="left:14px;right:auto" onclick="switchScreen('screen-help-bot')" title="Help Bot"><i class="fa-solid fa-robot"></i></button>
 
 <footer id="main-footer" class="z-40 space-y-2">
   <div class="glass-panel p-3 flex justify-between items-center gap-2">
     <div>
-      <span class="block text-[8px] uppercase font-black text-rose-400">Support</span>
-      <span class="text-[11px] font-bold text-white">Submit Complaint</span>
+      <span class="block text-[8px] uppercase font-black text-emerald-300">Support</span>
+      <span class="text-[11px] font-bold text-emerald-50">Submit Complaint</span>
     </div>
-    <button type="button" onclick="switchScreen('screen-complaint')" class="px-3 py-2 bg-rose-600 rounded-xl text-[10px] font-bold text-white flupy-btn">Complaint</button>
+    <button type="button" onclick="switchScreen('screen-complaint')" class="px-3 py-2 bg-emerald-600 rounded-xl text-[10px] font-bold text-white flupy-btn">Complaint</button>
   </div>
   <button type="button" id="btn-about-us" class="w-full py-2.5 glass-panel text-[11px] font-bold text-emerald-400 uppercase tracking-wider flupy-btn" onclick="switchScreen('screen-about-us')">About Us · Corporate Manifesto</button>
 </footer>
@@ -5012,6 +5193,1540 @@ function specialWarnUserPrompt(){
     };
   }
 })();
+
+
+/* ===== USER FINAL UPDATES v6.1b ===== */
+window._MSG_SEEN_KEY = "ph_msg_seen_ts";
+
+/* What's New once per version */
+function maybeShowWhatsNew(){
+  if(document.body.classList.contains("auth-mode")) return;
+  const ver = "6.1b";
+  if(localStorage.getItem("ph_whats_new_"+ver)==="1") return;
+  if(document.getElementById("whats-new-overlay")) return;
+  const ov = document.createElement("div");
+  ov.id = "whats-new-overlay";
+  ov.className = "whats-new-overlay";
+  ov.innerHTML = `<div class="whats-new-card">
+    <h3 style="font-weight:900;color:#fbbf24;margin-bottom:8px">What's New · v6.1</h3>
+    <ul style="font-size:12px;line-height:1.6;color:#e2e8f0;padding-left:16px">
+      <li><b>Clean UI</b> & faster history</li>
+      <li><b>KYC</b> · Daily reward · Lucky Draw</li>
+      <li><b>Entertainment</b> chat & request money</li>
+      <li><b>Forget password</b> recovery</li>
+      <li><b>Verified</b> special accounts</li>
+      <li><b>Withdraw</b> once / 24h · off on Sunday</li>
+      <li><b>Message inbox</b> icon for new chats</li>
+    </ul>
+    <button type="button" id="wn-ack" style="margin-top:14px;width:100%;padding:10px;border-radius:12px;background:linear-gradient(135deg,#d4a017,#b45309);font-weight:900;color:#fff;border:none">Got it</button>
+  </div>`;
+  document.body.appendChild(ov);
+  document.getElementById("wn-ack").onclick = function(){
+    localStorage.setItem("ph_whats_new_"+ver,"1");
+    ov.remove();
+  };
+}
+
+/* Warning acknowledge */
+function ensureWarningAck(){
+  const box = document.getElementById("dev-warning-under-balance");
+  if(!box || box.querySelector("#warn-ack-btn")) return;
+  if(!box.innerHTML.trim()) return;
+  const btn = document.createElement("button");
+  btn.id = "warn-ack-btn";
+  btn.type = "button";
+  btn.textContent = "I understand";
+  btn.style.cssText = "margin-top:8px;width:100%;padding:8px;border-radius:10px;background:#334155;color:#fff;font-size:11px;font-weight:800;border:none";
+  btn.onclick = function(){
+    const phone = localStorage.getItem("ph_session_phone");
+    if(!phone) return;
+    db.ref("users/"+phone+"/activeWarning/acknowledged").set(true);
+    db.ref("users/"+phone+"/activeWarning/acknowledgedAt").set(Date.now());
+    triggerSystemToast("Acknowledged","success");
+  };
+  box.appendChild(btn);
+}
+setInterval(ensureWarningAck, 2000);
+
+/* Withdraw: 1 per 24h + Sunday disabled */
+function isSundayLocal(){
+  return new Date().getDay() === 0;
+}
+function canWithdrawNow(cb){
+  if(isSundayLocal()){
+    cb(false, "Sunday ko withdraw band hai");
+    return;
+  }
+  const phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ cb(false, "Login required"); return; }
+  db.ref("users/"+phone+"/lastWithdrawAt").once("value", function(snap){
+    const last = Number(snap.val()||0);
+    const gap = 24*60*60*1000;
+    if(last && (Date.now()-last) < gap){
+      const left = gap - (Date.now()-last);
+      const hrs = Math.ceil(left/3600000);
+      cb(false, "24h me 1 withdraw — ~"+hrs+"h baad try karein");
+    } else cb(true, "");
+  });
+}
+function applyWithdrawButtonState(){
+  const btns = document.querySelectorAll('[onclick*="withdraw"], [onclick*="Withdraw"], #btn-withdraw, .btn-withdraw');
+  const sunday = isSundayLocal();
+  btns.forEach(function(b){
+    if(sunday){
+      b.style.opacity = "0.45";
+      b.style.pointerEvents = "none";
+      b.setAttribute("title", "Sunday — withdraw disabled");
+      if(!b.dataset.sunLabel){
+        b.dataset.sunLabel = "1";
+        const t = document.createElement("div");
+        t.className = "wd-sunday-note";
+        t.style.cssText = "font-size:9px;color:#f43f5e;font-weight:800;margin-top:4px";
+        t.textContent = "Withdraw closed on Sunday";
+        b.parentElement && b.parentElement.appendChild(t);
+      }
+    }
+  });
+}
+// wrap common submit if exists
+(function(){
+  const names = ["submitWithdraw","handleWithdraw","confirmWithdraw","processWithdraw"];
+  names.forEach(function(n){
+    if(typeof window[n] === "function"){
+      const orig = window[n];
+      window[n] = function(){
+        const args = arguments;
+        canWithdrawNow(function(ok, msg){
+          if(!ok){ triggerSystemToast(msg||"Withdraw blocked","error"); return; }
+          const r = orig.apply(this, args);
+          // stamp last withdraw optimistically
+          const phone = localStorage.getItem("ph_session_phone");
+          if(phone) db.ref("users/"+phone+"/lastWithdrawAt").set(Date.now());
+          return r;
+        });
+      };
+    }
+  });
+})();
+document.addEventListener("DOMContentLoaded", function(){ setTimeout(applyWithdrawButtonState, 500); });
+setInterval(applyWithdrawButtonState, 15000);
+
+/* Patch switchScreen to withdraw screen */
+(function(){
+  const _sw = window.switchScreen;
+  if(typeof _sw !== "function") return;
+  window.switchScreen = function(id){
+    _sw(id);
+    if(String(id).indexOf("withdraw")>=0){
+      setTimeout(function(){
+        applyWithdrawButtonState();
+        canWithdrawNow(function(ok,msg){
+          if(!ok){
+            let n = document.getElementById("wd-limit-note");
+            if(!n){
+              n = document.createElement("div");
+              n.id = "wd-limit-note";
+              n.style.cssText = "padding:10px;margin:8px 0;border-radius:12px;background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.4);color:#fda4af;font-size:11px;font-weight:800";
+              const sc = document.getElementById(id) || document.querySelector("[id*='withdraw']");
+              if(sc) sc.insertBefore(n, sc.firstChild);
+            }
+            n.textContent = msg;
+          }
+        });
+      }, 100);
+    }
+  };
+})();
+
+/* Friends list verified badge — patch text nodes when friends render */
+function decorateVerifiedFriends(){
+  db.ref("special_accounts").once("value", function(snap){
+    const map = {};
+    if(snap.exists()) snap.forEach(function(c){ map[c.key]=c.val()||{}; });
+    document.querySelectorAll("[data-friend-phone], .friend-item, .friend-row").forEach(function(el){
+      const ph = el.getAttribute("data-friend-phone") || el.dataset.phone || "";
+      if(!ph || !map[ph]) return;
+      if(el.querySelector(".friend-verified-row")) return;
+      const span = document.createElement("span");
+      span.className = "friend-verified-row";
+      span.innerHTML = '<i class="fa-solid fa-certificate tick"></i><span class="vtext">Verified account</span>';
+      el.querySelector(".friend-name, .name, b, strong")?.appendChild(span) || el.appendChild(span);
+    });
+    // also scan entertainment user labels
+    Object.keys(map).forEach(function(ph){
+      document.querySelectorAll("*").forEach(function(node){
+        if(node.childNodes && node.childNodes.length===1 && node.textContent && node.textContent.indexOf(ph)>=0){
+          // skip
+        }
+      });
+    });
+  });
+}
+setInterval(decorateVerifiedFriends, 4000);
+
+/* Special account: stronger ban warning */
+window.specialBanWarnUser = function(){
+  if(!window._isSpecialAccount){ triggerSystemToast("Only special accounts","error"); return; }
+  const to = prompt("Phone to BAN-WARNING:");
+  if(!to) return;
+  const note = prompt("Ban warning note:") || "Account under review";
+  const from = localStorage.getItem("ph_session_phone");
+  const me = window.sessionUser || {};
+  const id = "WRN-"+Date.now();
+  const payload = {
+    id, type: "Alert", note: "BAN WARNING: "+note, phone: to.trim(),
+    byName: me.username || "Developer Admin", byDp: me.photoURL||me.dp||"",
+    byRole: "Special", createdAt: Date.now(), active: true, banWarning: true, fromPhone: from
+  };
+  db.ref("user_warnings/"+to.trim()+"/"+id).set(payload);
+  db.ref("users/"+to.trim()+"/activeWarning").set(payload);
+  triggerSystemToast("Ban warning sent","success");
+};
+
+/* Direct delete message improved */
+window.specialDeleteEntPrompt = function(){
+  if(!window._isSpecialAccount){ triggerSystemToast("Only special accounts","error"); return; }
+  const path = prompt("Message Firebase path or ID (public chat id):");
+  if(path===null || !path.trim()) return;
+  const id = path.trim();
+  Promise.all([
+    db.ref("entertainment/public/"+id).remove(),
+    db.ref("entertainment/messages/"+id).remove(),
+    db.ref("entertainment/public_chat/"+id).remove()
+  ]).then(function(){ triggerSystemToast("Message deleted","success"); })
+    .catch(function(){ triggerSystemToast("Delete attempted","success"); });
+};
+
+/* Message inbox icon + notifications */
+window._unreadMsgs = 0;
+function updateMsgFab(count){
+  const fab = document.getElementById("msg-inbox-fab");
+  const badge = document.getElementById("msg-inbox-badge");
+  if(!fab) return;
+  if(document.body.classList.contains("auth-mode")){ fab.style.display="none"; return; }
+  fab.style.display = "flex";
+  if(count>0){
+    fab.classList.add("has-new");
+    if(badge){ badge.textContent = String(count>99?99:count); badge.classList.remove("hidden"); }
+  } else {
+    fab.classList.remove("has-new");
+    if(badge) badge.classList.add("hidden");
+  }
+}
+function listenDirectMessages(){
+  const phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  const seen = Number(localStorage.getItem(window._MSG_SEEN_KEY)||0);
+  // listen all direct threads containing this phone
+  db.ref("entertainment/direct").on("value", function(snap){
+    let unread = 0;
+    let latest = null;
+    if(snap.exists()){
+      snap.forEach(function(thread){
+        const key = thread.key || "";
+        if(key.indexOf(phone)<0) return;
+        thread.forEach(function(msg){
+          const m = msg.val()||{};
+          if(m.from && m.from !== phone && (m.ts||0) > seen){
+            unread++;
+            if(!latest || (m.ts||0)>(latest.ts||0)) latest = Object.assign({id:msg.key, thread:key}, m);
+          }
+        });
+      });
+    }
+    window._unreadMsgs = unread;
+    window._latestMsg = latest;
+    updateMsgFab(unread);
+    if(latest && (latest.ts||0) > seen){
+      try{
+        if(typeof playNewNotifSound === "function") playNewNotifSound();
+        else if(typeof window.playSound === "function") window.playSound("notification");
+      }catch(e){}
+      try{ pushNotification && pushNotification("New message", "info", "fa-comment"); }catch(e){}
+    }
+  });
+}
+window.openMsgInbox = function(){
+  localStorage.setItem(window._MSG_SEEN_KEY, String(Date.now()));
+  updateMsgFab(0);
+  // open entertainment / friends
+  if(typeof openEntertainment === "function") openEntertainment();
+  else if(typeof switchScreen === "function") switchScreen("screen-entertainment");
+  setTimeout(function(){
+    // try open friends/chat tab
+    const tab = document.querySelector('[data-ent-tab="friends"], [onclick*="friends"], #ent-tab-friends');
+    if(tab) tab.click();
+    if(window._latestMsg && window._latestMsg.from){
+      try{
+        if(typeof openPrivateChat === "function") openPrivateChat(window._latestMsg.from);
+        else if(typeof openThread === "function") openThread(window._latestMsg.from);
+      }catch(e){}
+    }
+  }, 400);
+};
+
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){
+    if(localStorage.getItem("ph_session_phone")){
+      maybeShowWhatsNew();
+      listenDirectMessages();
+      loadSpecialPowers && loadSpecialPowers();
+      renderDevWarningUnderBalance && renderDevWarningUnderBalance();
+      updateMsgFab(0);
+      const fab=document.getElementById("msg-inbox-fab");
+      if(fab && !document.body.classList.contains("auth-mode")) fab.style.display="flex";
+    }
+  }, 1000);
+});
+// after login remove auth and show fab
+(function(){
+  const obs = new MutationObserver(function(){
+    if(!document.body.classList.contains("auth-mode") && localStorage.getItem("ph_session_phone")){
+      const fab=document.getElementById("msg-inbox-fab");
+      if(fab) fab.style.display="flex";
+      listenDirectMessages();
+      maybeShowWhatsNew();
+    }
+  });
+  obs.observe(document.body, {attributes:true, attributeFilter:["class"]});
+})();
+
+
+/* ===== USER v6.2 FINAL BATCH ===== */
+window.WHATS_NEW_VERSION = "6.2";
+
+function showWhatsNewIfNeeded(){
+  try{
+    if(localStorage.getItem("ph_whats_new_seen") === window.WHATS_NEW_VERSION) return;
+    if(document.getElementById("whats-new-overlay")) return;
+    var ov = document.createElement("div");
+    ov.id = "whats-new-overlay";
+    ov.className = "whats-new-overlay";
+    ov.innerHTML = '<div class="whats-new-card">'+
+      '<div style="font-size:11px;font-weight:900;color:#fbbf24;letter-spacing:.08em;text-transform:uppercase">What\'s New</div>'+
+      '<div style="font-size:18px;font-weight:900;color:#fff;margin:4px 0 12px">Prime Horizon v6.2</div>'+
+      '<ul style="font-size:12px;color:#cbd5e1;line-height:1.55;padding-left:16px;margin:0 0 14px">'+
+      '<li><b>Forget password</b> recovery flow</li>'+
+      '<li><b>24h withdraw</b> limit · Sunday closed</li>'+
+      '<li><b>Verified</b> special accounts (blue tick)</li>'+
+      '<li><b>Message inbox</b> icon for new chats</li>'+
+      '<li><b>Developer warnings</b> under balance</li>'+
+      '<li>Cleaner login · sounds · Entertainment</li>'+
+      '</ul>'+
+      '<button type="button" id="whats-new-ok" style="width:100%;padding:12px;border-radius:12px;font-weight:900;background:linear-gradient(135deg,#d4a017,#b45309);color:#0f172a;border:none">Got it</button>'+
+      '</div>';
+    document.body.appendChild(ov);
+    document.getElementById("whats-new-ok").onclick = function(){
+      localStorage.setItem("ph_whats_new_seen", window.WHATS_NEW_VERSION);
+      ov.remove();
+    };
+  }catch(e){}
+}
+
+function acknowledgeDevWarning(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  db.ref("users/"+phone+"/activeWarning").once("value", function(snap){
+    if(!snap.exists()) return;
+    var w = snap.val()||{};
+    db.ref("users/"+phone+"/activeWarning").update({ acknowledged: true, acknowledgedAt: Date.now() });
+    try{ triggerSystemToast("Warning acknowledged","success"); }catch(e){}
+  });
+}
+
+// enhance warning card with acknowledge
+(function(){
+  var _rw = window.renderDevWarningUnderBalance;
+  // patch via observer on box content
+  setInterval(function(){
+    var box = document.getElementById("dev-warning-under-balance");
+    if(!box || !box.innerHTML) return;
+    if(box.querySelector("#ack-warn-btn")) return;
+    if(!box.querySelector(".dev-warning-card")) return;
+    var btn = document.createElement("button");
+    btn.id = "ack-warn-btn";
+    btn.type = "button";
+    btn.textContent = "Acknowledge";
+    btn.style.cssText = "margin-top:8px;width:100%;padding:8px;border-radius:10px;font-size:11px;font-weight:900;background:#334155;color:#fff;border:none";
+    btn.onclick = acknowledgeDevWarning;
+    box.querySelector(".dev-warning-card").appendChild(btn);
+  }, 1500);
+})();
+
+/* Withdraw: 1 per 24h + Sunday disable */
+function isSundayLocal(){
+  return new Date().getDay() === 0;
+}
+function canWithdrawNow(cb){
+  if(isSundayLocal()){
+    cb(false, "Sunday ko withdraw band hai");
+    return;
+  }
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ cb(false, "Login required"); return; }
+  db.ref("users/"+phone+"/lastWithdrawAt").once("value", function(snap){
+    var last = Number(snap.val()||0);
+    if(last && (Date.now() - last) < 24*60*60*1000){
+      var left = 24*60*60*1000 - (Date.now() - last);
+      var hrs = Math.ceil(left / 3600000);
+      cb(false, "24h me 1 withdraw — ~"+hrs+"h baad try karein");
+      return;
+    }
+    cb(true, "");
+  });
+}
+function applyWithdrawButtonState(){
+  var btns = document.querySelectorAll('[onclick*="withdraw"], [onclick*="Withdraw"], #btn-withdraw, .btn-withdraw');
+  var disable = isSundayLocal();
+  // also check last withdraw async
+  var phone = localStorage.getItem("ph_session_phone");
+  function setDisabled(on, reason){
+    btns.forEach(function(b){
+      if(on){
+        b.setAttribute("data-wd-disabled","1");
+        b.style.opacity = "0.45";
+        b.style.pointerEvents = "none";
+        if(reason) b.title = reason;
+      } else {
+        b.removeAttribute("data-wd-disabled");
+        b.style.opacity = "";
+        b.style.pointerEvents = "";
+      }
+    });
+    // screen withdraw submit
+    var sub = document.querySelector('#screen-withdraw button[type="submit"], #withdraw-form button[type="submit"]');
+    if(sub){
+      sub.disabled = !!on;
+      if(on) sub.style.opacity = "0.45"; else sub.style.opacity = "";
+    }
+    var note = document.getElementById("wd-limit-note");
+    if(!note){
+      var host = document.getElementById("screen-withdraw") || document.getElementById("withdraw-form");
+      if(host){
+        note = document.createElement("p");
+        note.id = "wd-limit-note";
+        note.style.cssText = "font-size:11px;color:#fbbf24;font-weight:700;margin:8px 0";
+        host.insertBefore(note, host.firstChild);
+      }
+    }
+    if(note) note.textContent = on ? (reason || "Withdraw unavailable") : "Limit: 1 withdraw / 24 hours · Sunday closed";
+  }
+  if(disable){ setDisabled(true, "Sunday — withdraw closed"); return; }
+  if(!phone){ setDisabled(false, ""); return; }
+  db.ref("users/"+phone+"/lastWithdrawAt").once("value", function(snap){
+    var last = Number(snap.val()||0);
+    if(last && (Date.now()-last) < 24*60*60*1000){
+      setDisabled(true, "24h limit active");
+    } else setDisabled(false, "");
+  });
+}
+
+// wrap withdraw submit if handleWithdraw exists
+(function(){
+  var names = ["handleWithdrawSubmit","submitWithdraw","handleWithdraw"];
+  names.forEach(function(n){
+    if(typeof window[n] === "function"){
+      var orig = window[n];
+      window[n] = function(e){
+        if(e && e.preventDefault) e.preventDefault();
+        canWithdrawNow(function(ok, msg){
+          if(!ok){ try{ triggerSystemToast(msg, "error"); }catch(err){} return; }
+          var phone = localStorage.getItem("ph_session_phone");
+          var ret = orig.apply(this, arguments);
+          if(phone) db.ref("users/"+phone+"/lastWithdrawAt").set(Date.now());
+          setTimeout(applyWithdrawButtonState, 500);
+          return ret;
+        });
+      };
+    }
+  });
+})();
+
+/* Message inbox icon + open chat */
+window._unreadDmCount = 0;
+function updateMsgInboxBadge(n){
+  window._unreadDmCount = n||0;
+  var fab = document.getElementById("msg-inbox-fab");
+  var dot = document.getElementById("msg-inbox-dot");
+  if(!fab) return;
+  var auth = document.getElementById("screen-auth");
+  var onAuth = auth && auth.classList.contains("active");
+  if(onAuth){ fab.classList.remove("show"); return; }
+  if(n > 0){
+    fab.classList.add("show");
+    if(dot){ dot.style.display = "flex"; dot.textContent = n > 9 ? "9+" : String(n); }
+  } else {
+    fab.classList.remove("show");
+    if(dot) dot.style.display = "none";
+  }
+}
+function openMsgInboxFromNotif(){
+  try{
+    if(typeof openEntertainment === "function") openEntertainment();
+    else if(typeof switchScreen === "function") switchScreen("screen-entertainment");
+    setTimeout(function(){
+      // try friends / private tab
+      var tab = document.querySelector('[onclick*="friend"], [data-tab="friends"], #ent-tab-friends');
+      if(tab) tab.click();
+    }, 300);
+  }catch(e){}
+  var phone = localStorage.getItem("ph_session_phone");
+  if(phone) localStorage.setItem("ph_dm_seen_"+phone, String(Date.now()));
+  updateMsgInboxBadge(0);
+}
+function listenDirectMessages(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone || !window.db) return;
+  // listen entertainment direct threads containing phone
+  db.ref("entertainment/direct").on("value", function(snap){
+    if(!snap.exists()){ updateMsgInboxBadge(0); return; }
+    var lastSeen = Number(localStorage.getItem("ph_dm_seen_"+phone)||0);
+    var unread = 0;
+    snap.forEach(function(thread){
+      var key = thread.key || "";
+      if(key.indexOf(phone) === -1) return;
+      thread.forEach(function(m){
+        var v = m.val()||{};
+        if(v.from && v.from !== phone && (v.ts||0) > lastSeen) unread++;
+      });
+    });
+    updateMsgInboxBadge(unread);
+    if(unread > 0){
+      try{
+        if(typeof playNewNotifSound === "function") playNewNotifSound();
+        else if(typeof window.playSound === "function") window.playSound("notification");
+      }catch(e){}
+    }
+  });
+}
+
+/* Friends list verified badge helper for special accounts */
+window.formatFriendLabel = function(u, phone){
+  u = u || {};
+  var name = u.username || phone || "User";
+  var verified = u.isVerifiedAccount || (u.specialTitle && u.specialTitle.verified);
+  var title = u.accountTitle || (u.specialTitle && u.specialTitle.title) || "";
+  if(!verified) return name;
+  return name + ' <span class="friend-verified"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate tick"></i></span>' +
+    (title ? ' <span class="account-title-chip">'+String(title).replace(/</g,"")+'</span>' : "");
+};
+
+/* Special account: direct delete msg + ban warning */
+function specialBanWarnUser(){
+  if(!window._isSpecialAccount){ try{triggerSystemToast("No permission","error");}catch(e){} return; }
+  var to = prompt("Phone to ban-warn:");
+  if(!to) return;
+  var note = prompt("Ban warning note:") || "Account under review";
+  var me = window.sessionUser || {};
+  var id = "BWRN-"+Date.now();
+  var payload = {
+    id: id, type: "Alert", note: note, phone: to.trim(),
+    byName: me.username || "Developer Admin",
+    byDp: me.photoURL || me.dp || "",
+    byRole: "Developer Admin",
+    createdAt: Date.now(), active: true, banWarning: true
+  };
+  db.ref("user_warnings/"+to.trim()+"/"+id).set(payload);
+  db.ref("users/"+to.trim()+"/activeWarning").set(payload);
+  try{ triggerSystemToast("Ban warning sent","success"); }catch(e){}
+}
+
+// enhance special tools bar
+(function(){
+  var t = setInterval(function(){
+    var bar = document.getElementById("special-ent-tools");
+    if(!bar || bar.getAttribute("data-enhanced")) return;
+    bar.setAttribute("data-enhanced","1");
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "px-2 py-1 rounded-lg text-[10px] font-bold bg-rose-700 text-white";
+    b.textContent = "Ban warning";
+    b.onclick = specialBanWarnUser;
+    bar.appendChild(b);
+  }, 1000);
+})();
+
+// boot hooks
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){
+    if(localStorage.getItem("ph_session_phone")){
+      showWhatsNewIfNeeded();
+      applyWithdrawButtonState();
+      listenDirectMessages();
+      try{ loadSpecialPowers(); }catch(e){}
+      try{ renderDevWarningUnderBalance(); }catch(e){}
+    }
+  }, 900);
+});
+// after login success path already sets session - poll once
+setInterval(function(){
+  if(localStorage.getItem("ph_session_phone") && !window._v62booted){
+    window._v62booted = true;
+    showWhatsNewIfNeeded();
+    applyWithdrawButtonState();
+    listenDirectMessages();
+  }
+  applyWithdrawButtonState();
+}, 4000);
+
+
+/* ===== USER FIX: MSG ICON + CHAT + WARNING 24H + NAME CARD ===== */
+
+window.updateMsgInboxBadge = function(n){
+  n = Number(n)||0;
+  window._unreadDmCount = n;
+  var badge = document.getElementById("header-msg-badge");
+  var btn = document.getElementById("header-msg-btn");
+  var fab = document.getElementById("msg-inbox-fab");
+  if(fab) fab.classList.remove("show"); // header only
+  var auth = document.getElementById("screen-auth");
+  var onAuth = auth && auth.classList.contains("active");
+  if(btn){
+    if(onAuth) btn.style.display = "none";
+    else btn.style.display = "";
+  }
+  if(badge){
+    if(n > 0 && !onAuth){
+      badge.classList.remove("hidden");
+      badge.textContent = n > 9 ? "9+" : String(n);
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+};
+
+window.openMsgInboxFromNotif = function(){
+  try{
+    if(typeof openEntertainment === "function") openEntertainment("friends");
+    else {
+      document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+      var el = document.getElementById("screen-entertainment");
+      if(el){ el.classList.add("active"); el.style.display = "flex"; }
+    }
+    setTimeout(function(){
+      if(typeof entTab === "function") entTab("friends");
+      var t = document.getElementById("ent-tab-friends");
+      if(t) t.click();
+    }, 250);
+  }catch(e){ console.error(e); }
+  var phone = localStorage.getItem("ph_session_phone");
+  if(phone) localStorage.setItem("ph_dm_seen_"+phone, String(Date.now()));
+  updateMsgInboxBadge(0);
+};
+
+window.listenDirectMessages = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone || !window.db) return;
+  if(window._dmListenerOn) return;
+  window._dmListenerOn = true;
+  db.ref("entertainment/direct").on("value", function(snap){
+    var lastSeen = Number(localStorage.getItem("ph_dm_seen_"+phone)||0);
+    var unread = 0;
+    var newest = 0;
+    if(snap.exists()){
+      snap.forEach(function(thread){
+        var key = thread.key || "";
+        if(key.indexOf(phone) === -1) return;
+        thread.forEach(function(m){
+          var v = m.val()||{};
+          var ts = Number(v.ts||0);
+          if(v.from && v.from !== phone && ts > lastSeen){
+            unread++;
+            if(ts > newest) newest = ts;
+          }
+        });
+      });
+    }
+    var prev = window._unreadDmCount || 0;
+    updateMsgInboxBadge(unread);
+    if(unread > prev && unread > 0){
+      try{
+        if(typeof playSound === "function") playSound("notification");
+        else if(typeof playNewNotifSound === "function") playNewNotifSound();
+        else {
+          var a = new Audio("notification.mp3");
+          a.volume = 0.7; a.play().catch(function(){});
+        }
+      }catch(e){}
+      try{ if(typeof pushNotification === "function") pushNotification("New message","info","fa-comment"); }catch(e){}
+    }
+  });
+};
+
+/* PUBLIC CHAT — force working */
+window.loadPublicChat = function(){
+  var box = document.getElementById("ent-public-chat");
+  if(!box) return;
+  try{
+    if(window._entPublicRef){ window._entPublicRef.off(); }
+  }catch(e){}
+  window._entPublicRef = db.ref("entertainment/public").limitToLast(150);
+  window._entPublicRef.on("value", function(snap){
+    if(!snap.exists()){
+      box.innerHTML = '<div style="color:#64748b;font-size:12px;text-align:center;padding:20px">No messages yet — say hello</div>';
+      return;
+    }
+    var rows = [];
+    snap.forEach(function(c){
+      var v = c.val()||{};
+      v._id = c.key;
+      rows.push(v);
+    });
+    rows.sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
+    var me = localStorage.getItem("ph_session_phone");
+    box.innerHTML = rows.map(function(m){
+      var mine = (m.phone === me) || (m.from === me);
+      var name = m.username || m.phone || "User";
+      var verified = "";
+      // optional inline — keep simple
+      var delBtn = (window._isSpecialAccount && m._id) ? ('<button type="button" onclick="event.stopPropagation();db.ref(\'entertainment/public/'+m._id+'\').remove()" style="font-size:9px;color:#f87171;margin-left:6px;background:none;border:none">Delete</button>') : "";
+      return '<div style="display:flex;justify-content:'+(mine?"flex-end":"flex-start")+'">'+
+        '<div style="max-width:82%;border-radius:14px;padding:8px 12px;background:'+(mine?"rgba(192,132,252,.25)":"rgba(30,41,59,.95)")+';border:1px solid rgba(255,255,255,.08)">'+
+        '<div style="font-size:10px;font-weight:800;color:'+(mine?"#e9d5ff":"#7dd3fc")+'">'+String(name).replace(/</g,"&lt;")+delBtn+'</div>'+
+        '<div style="font-size:13px;color:#f1f5f9;margin-top:2px;word-break:break-word">'+String(m.text||m.message||"").replace(/</g,"&lt;")+'</div>'+
+        '<div style="font-size:9px;color:#64748b;margin-top:4px">'+(m.ts?new Date(m.ts).toLocaleTimeString():"")+'</div>'+
+        '</div></div>';
+    }).join("");
+    try{ box.scrollTop = box.scrollHeight; }catch(e){}
+  });
+};
+
+window.sendPublicChat = function(){
+  if(!window.sessionUser){ try{triggerSystemToast("Login first","error");}catch(e){} return; }
+  var input = document.getElementById("ent-public-input");
+  var text = (input && input.value || "").trim();
+  if(!text) return;
+  if(typeof containsBannedContent === "function"){
+    var bad = containsBannedContent(text);
+    if(bad){ if(typeof chatWarnOrBan==="function") chatWarnOrBan(bad); if(input) input.value=""; return; }
+  }
+  var phone = localStorage.getItem("ph_session_phone");
+  var payload = {
+    phone: phone,
+    username: (sessionUser && sessionUser.username) || phone,
+    text: text,
+    ts: Date.now()
+  };
+  db.ref("entertainment/public").push(payload, function(err){
+    if(err){ try{triggerSystemToast("Send failed","error");}catch(e){} return; }
+    if(input) input.value = "";
+    // ensure list refreshes
+    setTimeout(function(){ try{ loadPublicChat(); }catch(e){} }, 100);
+  });
+};
+
+/* PRIVATE chat load */
+window.openPrivateChat = function(friendPhone, friendName){
+  window._privateChatWith = friendPhone;
+  var wrap = document.getElementById("ent-private-wrap");
+  var main = document.getElementById("ent-friends-main");
+  if(main) main.style.display = "none";
+  if(wrap){ wrap.style.display = "flex"; }
+  var nm = document.getElementById("ent-private-name");
+  if(nm) nm.textContent = friendName || friendPhone;
+  loadPrivateChat(friendPhone);
+};
+
+window.loadPrivateChat = function(friendPhone){
+  friendPhone = friendPhone || window._privateChatWith;
+  if(!friendPhone) return;
+  var box = document.getElementById("ent-private-chat");
+  if(!box){
+    // create if missing inside wrap
+    var wrap = document.getElementById("ent-private-wrap");
+    if(wrap && !document.getElementById("ent-private-chat")){
+      var d = document.createElement("div");
+      d.id = "ent-private-chat";
+      d.style.cssText = "flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:6px 0";
+      var inputRow = wrap.querySelector("#ent-private-input") || wrap.querySelector("input");
+      if(inputRow && inputRow.parentElement) wrap.insertBefore(d, inputRow.parentElement);
+      else wrap.appendChild(d);
+      box = d;
+    }
+  }
+  if(!box) return;
+  var me = localStorage.getItem("ph_session_phone");
+  var k1 = me + "_" + friendPhone;
+  var k2 = friendPhone + "_" + me;
+  try{ if(window._entPrivateRef) window._entPrivateRef.off(); }catch(e){}
+  // listen both keys via parent
+  window._entPrivateRef = db.ref("entertainment/direct");
+  window._entPrivateRef.on("value", function(snap){
+    var rows = [];
+    if(snap.exists()){
+      [k1,k2].forEach(function(k){
+        var th = snap.child(k);
+        if(th.exists()) th.forEach(function(c){
+          var v = c.val()||{}; v._id = c.key; rows.push(v);
+        });
+      });
+    }
+    rows.sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
+    if(!rows.length){
+      box.innerHTML = '<div style="color:#64748b;font-size:12px;text-align:center;padding:16px">No private messages</div>';
+      return;
+    }
+    box.innerHTML = rows.map(function(m){
+      var mine = m.from === me;
+      return '<div style="display:flex;justify-content:'+(mine?"flex-end":"flex-start")+'">'+
+        '<div style="max-width:80%;border-radius:14px;padding:8px 12px;background:'+(mine?"rgba(14,165,233,.25)":"rgba(30,41,59,.95)")+'">'+
+        '<div style="font-size:13px;color:#f1f5f9;word-break:break-word">'+String(m.text||"").replace(/</g,"&lt;")+'</div>'+
+        '<div style="font-size:9px;color:#64748b;margin-top:3px">'+(m.ts?new Date(m.ts).toLocaleTimeString():"")+'</div></div></div>';
+    }).join("");
+    try{ box.scrollTop = box.scrollHeight; }catch(e){}
+  });
+};
+
+window.sendPrivateChat = function(){
+  var to = window._privateChatWith;
+  var me = localStorage.getItem("ph_session_phone");
+  if(!to || !me) return;
+  var input = document.getElementById("ent-private-input");
+  var text = (input && input.value || "").trim();
+  if(!text) return;
+  var id = "DM-"+Date.now();
+  var payload = { id:id, from:me, to:to, text:text, ts:Date.now() };
+  var k1 = me+"_"+to;
+  db.ref("entertainment/direct/"+k1+"/"+id).set(payload);
+  db.ref("entertainment/direct/"+to+"_"+me+"/"+id).set(payload);
+  if(input) input.value = "";
+};
+
+/* Friends list with verified */
+window.renderMyFriendsVerified = function(){
+  var box = document.getElementById("ent-my-friends");
+  if(!box || !window.sessionUser) return;
+  var me = localStorage.getItem("ph_session_phone");
+  db.ref("users/"+me+"/friends").once("value", function(snap){
+    if(!snap.exists()){
+      // also try friends list under entertainment
+      return;
+    }
+    var html = "";
+    var phones = [];
+    snap.forEach(function(c){ phones.push(c.key); });
+    if(!phones.length){ box.innerHTML = '<div style="color:#64748b;font-size:11px">No friends yet</div>'; return; }
+    var left = phones.length;
+    phones.forEach(function(ph){
+      db.ref("users/"+ph).once("value", function(us){
+        var u = us.val()||{};
+        var verified = u.isVerifiedAccount || (u.specialTitle && u.specialTitle.verified);
+        var title = u.accountTitle || (u.specialTitle && u.specialTitle.title) || "";
+        var label = (u.username||ph);
+        if(verified) label += ' <span class="friend-verified"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate tick"></i></span>';
+        if(title) label += ' <span class="account-title-chip">'+String(title).replace(/</g,"")+'</span>';
+        html += '<button type="button" onclick="openPrivateChat(\''+ph+'\',\''+String(u.username||ph).replace(/'/g,"")+'\')" style="text-align:left;padding:10px;border-radius:12px;background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:12px;font-weight:700">'+label+'</button>';
+        left--;
+        if(left<=0) box.innerHTML = html || '<div style="color:#64748b;font-size:11px">No friends</div>';
+      });
+    });
+  });
+};
+
+/* WARNING: Understand dismiss, return after 24h until developer disables */
+window.dismissDevWarningUnderstand = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  db.ref("users/"+phone+"/activeWarning").once("value", function(snap){
+    if(!snap.exists()) return;
+    var w = snap.val()||{};
+    // if developer set active:false permanently, stay gone
+    if(w.active === false || w.disabled === true){
+      var box = document.getElementById("dev-warning-under-balance");
+      if(box) box.innerHTML = "";
+      return;
+    }
+    db.ref("users/"+phone+"/activeWarning").update({
+      dismissedUntil: Date.now() + 24*60*60*1000,
+      lastDismissedAt: Date.now()
+    });
+    var box = document.getElementById("dev-warning-under-balance");
+    if(box) box.innerHTML = "";
+    try{ triggerSystemToast("Understood","success"); }catch(e){}
+  });
+};
+
+window.renderDevWarningUnderBalance = function(){
+  var host = document.getElementById("user-status-card");
+  if(!host) return;
+  var box = document.getElementById("dev-warning-under-balance");
+  if(!box){
+    box = document.createElement("div");
+    box.id = "dev-warning-under-balance";
+    host.appendChild(box);
+  }
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ box.innerHTML=""; return; }
+  if(window._warnListen) return;
+  window._warnListen = true;
+  db.ref("users/"+phone+"/activeWarning").on("value", function(snap){
+    if(!snap.exists()){ box.innerHTML=""; return; }
+    var w = snap.val()||{};
+    if(w.active === false || w.disabled === true){ box.innerHTML=""; return; }
+    var until = Number(w.dismissedUntil||0);
+    if(until && Date.now() < until){ box.innerHTML=""; return; }
+    var isAlert = String(w.type||"").toLowerCase()==="alert";
+    var dp = w.byDp ? ('<img src="'+String(w.byDp).replace(/"/g,"")+'" style="width:28px;height:28px;border-radius:50%;object-fit:cover">') : '<div style="width:28px;height:28px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center">🛡</div>';
+    box.innerHTML = '<div class="dev-warning-card '+(isAlert?"alert-type":"")+'">'+
+      '<div style="font-size:13px;font-weight:900;color:'+(isAlert?"#fb7185":"#fbbf24")+'">'+String(w.type||"Warning")+'</div>'+
+      '<div style="font-size:12px;color:#e2e8f0;margin-top:6px;white-space:pre-wrap">'+String(w.note||"").replace(/</g,"&lt;")+'</div>'+
+      '<div style="display:flex;align-items:center;gap:8px;margin-top:10px">'+dp+
+      '<div><div style="font-size:9px;font-weight:800;color:#94a3b8;text-transform:uppercase">Warning By Developer</div>'+
+      '<div style="font-size:13px;font-weight:800;color:#fff">'+String(w.byName||"Developer").replace(/</g,"&lt;")+'</div></div></div>'+
+      '<button type="button" onclick="dismissDevWarningUnderstand()" style="margin-top:10px;width:100%;padding:10px;border-radius:10px;font-size:12px;font-weight:900;background:#334155;color:#fff;border:1px solid rgba(255,255,255,.1)">Understand</button></div>';
+  });
+};
+
+/* Patch openEntertainment to load chats */
+(function(){
+  var _oe = window.openEntertainment;
+  window.openEntertainment = function(tab){
+    if(typeof _oe === "function") _oe(tab);
+    else {
+      document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+      var el = document.getElementById("screen-entertainment");
+      if(el){ el.classList.add("active"); el.style.display="flex"; }
+    }
+    setTimeout(function(){
+      try{ loadPublicChat(); }catch(e){ console.error(e); }
+      try{ if(typeof loadEntFriends==="function") loadEntFriends(); }catch(e){}
+      try{ renderMyFriendsVerified(); }catch(e){}
+      if(tab === "friends" && typeof entTab === "function") entTab("friends");
+      else if(typeof entTab === "function") entTab("public");
+    }, 200);
+  };
+})();
+
+(function(){
+  var _et = window.entTab;
+  window.entTab = function(name){
+    if(typeof _et === "function") _et(name);
+    if(name === "public") setTimeout(function(){ loadPublicChat(); }, 50);
+    if(name === "friends") setTimeout(function(){ renderMyFriendsVerified(); }, 50);
+  };
+})();
+
+// enlarge name on dashboard when session loads
+function polishNameCard(){
+  var el = document.getElementById("dash-username");
+  var card = document.getElementById("user-status-card");
+  if(card){
+    card.style.padding = "18px 16px";
+  }
+  if(el && window.sessionUser){
+    el.textContent = sessionUser.username || "User";
+    el.style.fontSize = "16px";
+    el.style.fontWeight = "900";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){
+    if(localStorage.getItem("ph_session_phone")){
+      listenDirectMessages();
+      renderDevWarningUnderBalance();
+      polishNameCard();
+      try{ loadSpecialPowers(); }catch(e){}
+    }
+  }, 600);
+});
+setInterval(function(){
+  if(localStorage.getItem("ph_session_phone")){
+    if(!window._dmListenerOn) listenDirectMessages();
+    polishNameCard();
+  }
+}, 5000);
+
+
+/* ===== USER UX BATCH: no public, guide, complaint-only, sessions, single verified ===== */
+
+/* 1) Kill bottom msg fab always */
+(function(){
+  var killFab = function(){
+    var fab = document.getElementById("msg-inbox-fab");
+    if(fab){ fab.style.display="none"; fab.classList.remove("show"); }
+  };
+  setInterval(killFab, 1000);
+  document.addEventListener("DOMContentLoaded", killFab);
+})();
+
+/* Single verified on name card — remove duplicates */
+window.renderVerifiedBadgeHTML = function(u){
+  u = u || {};
+  var title = u.accountTitle || (u.specialTitle && u.specialTitle.title) || "";
+  var verified = u.isVerifiedAccount || (u.specialTitle && u.specialTitle.verified);
+  if(!verified && !title) return "";
+  return '<span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate blue-tick"></i></span>' +
+    (title ? '<span class="account-title-chip">'+String(title).replace(/</g,"")+'</span>' : "");
+};
+
+function dedupeVerifiedOnCard(){
+  var card = document.getElementById("user-status-card");
+  if(!card) return;
+  var wraps = card.querySelectorAll(".verified-badge-wrap, .verified-row-inject");
+  if(wraps.length > 1){
+    for(var i=1;i<wraps.length;i++) wraps[i].innerHTML = "";
+  }
+  // if both have content, keep first only
+  var badges = card.querySelectorAll(".verified-badge");
+  if(badges.length > 1){
+    for(var j=1;j<badges.length;j++) badges[j].style.display = "none";
+  }
+  var chips = card.querySelectorAll(".account-title-chip");
+  if(chips.length > 1){
+    for(var k=1;k<chips.length;k++) chips[k].style.display = "none";
+  }
+}
+setInterval(dedupeVerifiedOnCard, 1200);
+
+/* 2) Entertainment: default friends tab, hide public */
+(function(){
+  var _oe = window.openEntertainment;
+  window.openEntertainment = function(tab){
+    if(typeof _oe === "function") _oe("friends");
+    else {
+      document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+      var el = document.getElementById("screen-entertainment");
+      if(el){ el.classList.add("active"); el.style.display="flex"; }
+    }
+    // force hide public UI
+    var tp = document.getElementById("ent-tab-public");
+    var pp = document.getElementById("ent-panel-public");
+    if(tp) tp.style.display = "none";
+    if(pp) pp.style.display = "none";
+    setTimeout(function(){
+      if(typeof entTab === "function") entTab("friends");
+      var tf = document.getElementById("ent-tab-friends");
+      if(tf){ tf.click(); }
+      showEntertainmentGuideOnce();
+      try{ if(typeof loadEntFriends==="function") loadEntFriends(); }catch(e){}
+      try{ renderMyFriendsVerified(); }catch(e){}
+      try{ enhanceTitleAccountsInFriendLists(); }catch(e){}
+    }, 220);
+  };
+})();
+
+(function(){
+  var _et = window.entTab;
+  window.entTab = function(name){
+    if(name === "public") name = "friends";
+    if(typeof _et === "function") _et(name);
+    var tp = document.getElementById("ent-tab-public");
+    var pp = document.getElementById("ent-panel-public");
+    if(tp) tp.style.display = "none";
+    if(pp) pp.style.display = "none";
+    if(name === "friends") setTimeout(function(){ enhanceTitleAccountsInFriendLists(); renderMyFriendsVerified(); }, 80);
+    if(name === "money") setTimeout(showMoneyRequestGuide, 100);
+  };
+})();
+
+/* 4) Entertainment step-by-step guide */
+function showEntertainmentGuideOnce(){
+  if(sessionStorage.getItem("ph_ent_guide_ok") === "1") return;
+  if(document.getElementById("ent-guide-overlay")) return;
+  var ov = document.createElement("div");
+  ov.id = "ent-guide-overlay";
+  ov.className = "ent-guide-overlay";
+  ov.innerHTML = '<div class="ent-guide-card">'+
+    '<div style="font-size:11px;font-weight:900;color:#e879f9;letter-spacing:.06em;text-transform:uppercase">Entertainment Guide</div>'+
+    '<div style="font-size:18px;font-weight:900;color:#fff;margin:6px 0 12px">Kaise use karein</div>'+
+    '<ol style="margin:0 0 14px 18px;padding:0;font-size:13px;line-height:1.55;color:#cbd5e1">'+
+    '<li style="margin-bottom:8px"><b style="color:#fff">Friends</b> — pehle user dhoondo, <b>Request</b> bhejo. Jab accept ho, tab aap friends ban jate ho.</li>'+
+    '<li style="margin-bottom:8px"><b style="color:#fff">Private chat</b> — sirf friends ke sath baat. Public chat band hai.</li>'+
+    '<li style="margin-bottom:8px"><b style="color:#fff">Money request</b> — friend ko amount bhejo; uske paas utna balance ho to accept karega.</li>'+
+    '<li style="margin-bottom:8px"><b style="color:#fff">Rules</b> — number / links share mat karo warna warning / ban ho sakta hai.</li>'+
+    '<li style="margin-bottom:8px"><b style="color:#fff">Verified accounts</b> — blue tick + title wale official / special accounts hain.</li>'+
+    '</ol>'+
+    '<button type="button" id="ent-guide-go" style="width:100%;padding:12px;border-radius:12px;font-weight:900;border:none;background:linear-gradient(135deg,#e879f9,#7c3aed);color:#fff">Let\'s go</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+  document.getElementById("ent-guide-go").onclick = function(){
+    sessionStorage.setItem("ph_ent_guide_ok","1");
+    ov.remove();
+  };
+}
+
+/* 9) Money request guide */
+function showMoneyRequestGuide(){
+  if(document.getElementById("money-guide-overlay")) return;
+  var ov = document.createElement("div");
+  ov.id = "money-guide-overlay";
+  ov.className = "ent-guide-overlay";
+  ov.innerHTML = '<div class="ent-guide-card">'+
+    '<div style="font-size:11px;font-weight:900;color:#fbbf24;text-transform:uppercase">Request Money</div>'+
+    '<div style="font-size:17px;font-weight:900;color:#fff;margin:6px 0 12px">Step by step</div>'+
+    '<ol style="margin:0 0 14px 18px;font-size:13px;line-height:1.55;color:#cbd5e1">'+
+    '<li style="margin-bottom:8px">Sirf <b style="color:#fff">friends</b> ke beech money request hoti hai.</li>'+
+    '<li style="margin-bottom:8px">Amount likho aur request bhejo.</li>'+
+    '<li style="margin-bottom:8px">Agar dusre user ke paas balance kaafi ho to wo <b style="color:#fff">Accept</b> karega.</li>'+
+    '<li style="margin-bottom:8px">Accept par amount uske account se kat kar aapke balance me aa jata hai.</li>'+
+    '<li style="margin-bottom:8px">Reject / ignore par kuch transfer nahi hota.</li>'+
+    '<li style="margin-bottom:8px">Developer required invites set kar sakta hai — kam invites hon to option lock ho sakta hai.</li>'+
+    '</ol>'+
+    '<button type="button" id="money-guide-go" style="width:100%;padding:12px;border-radius:12px;font-weight:900;border:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a">Samajh gaya</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+  document.getElementById("money-guide-go").onclick = function(){ ov.remove(); };
+}
+
+/* 5) Title accounts professional in friend lists */
+function enhanceTitleAccountsInFriendLists(){
+  ["ent-friends-list","ent-friend-requests","ent-my-friends","ent-add-friends"].forEach(function(id){
+    var box = document.getElementById(id);
+    if(!box) return;
+    // try mark phones if data attributes exist later
+  });
+  // Live enhance by scanning users with titles when rendering friends
+  var box = document.getElementById("ent-friends-list");
+  if(!box) return;
+  db.ref("special_accounts").once("value", function(snap){
+    if(!snap.exists()) return;
+    var special = {};
+    snap.forEach(function(c){ special[c.key] = c.val()||{}; });
+    // decorate any buttons containing phone text
+    box.querySelectorAll("button, div").forEach(function(el){
+      var t = el.textContent || "";
+      Object.keys(special).forEach(function(ph){
+        if(t.indexOf(ph) !== -1 || (el.getAttribute("data-phone")===ph)){
+          if(el.querySelector(".friend-verified")) return;
+          var title = special[ph].title || "Official";
+          var span = document.createElement("div");
+          span.innerHTML = '<span class="friend-verified" style="animation:verifiedPulse 2s infinite"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate tick"></i></span> <span class="account-title-chip">'+String(title).replace(/</g,"")+'</span>';
+          el.appendChild(span);
+        }
+      });
+    });
+  });
+}
+
+/* 6) Complaint only section */
+window.openComplaintOnly = function(){
+  document.body.classList.add("complaint-only-mode");
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var el = document.getElementById("screen-complaint");
+  if(el){
+    el.classList.add("active");
+    el.style.display = "block";
+  }
+  // hide header/footer already via CSS class
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+// when leaving complaint
+(function(){
+  var _sw = window.switchScreen;
+  if(typeof _sw === "function"){
+    window.switchScreen = function(id){
+      if(id !== "screen-complaint") document.body.classList.remove("complaint-only-mode");
+      _sw(id);
+      if(id === "screen-complaint") document.body.classList.add("complaint-only-mode");
+    };
+  }
+})();
+
+/* 3) Announcements list clearer */
+window.renderAnnouncementsListClear = function(){
+  var box = document.getElementById("announcements-list") || document.getElementById("dash-announcements") || document.getElementById("news-list");
+  if(!box) return;
+  db.ref("announcements").limitToLast(30).once("value", function(snap){
+    if(!snap.exists()){
+      // try alternate path
+      db.ref("admin_announcements").limitToLast(30).once("value", function(s2){
+        fillAnn(box, s2);
+      });
+      return;
+    }
+    fillAnn(box, snap);
+  });
+  function fillAnn(box, snap){
+    if(!snap.exists()){
+      box.innerHTML = '<div class="text-slate-500 text-sm py-6 text-center">No announcements yet</div>';
+      return;
+    }
+    var rows = [];
+    snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+    rows.sort(function(a,b){ return (b.ts||b.timestamp||b.createdAt||0)-(a.ts||a.timestamp||a.createdAt||0); });
+    box.innerHTML = rows.map(function(a){
+      return '<div class="glass-panel p-3 mb-2 rounded-xl border border-white/10">'+
+        '<div class="text-[10px] font-black uppercase text-amber-400">'+(a.ts||a.timestamp||a.createdAt?new Date(a.ts||a.timestamp||a.createdAt).toLocaleString():"")+'</div>'+
+        '<div class="text-sm font-extrabold text-white mt-1">'+String(a.title||a.subject||"Announcement").replace(/</g,"&lt;")+'</div>'+
+        '<div class="text-xs text-slate-300 mt-1 whitespace-pre-wrap">'+String(a.body||a.message||a.text||"").replace(/</g,"&lt;")+'</div>'+
+        (a.imageUrl?'<img src="'+String(a.imageUrl).replace(/"/g,"")+'" style="max-width:100%;border-radius:10px;margin-top:8px">':"")+
+        '</div>';
+    }).join("");
+  }
+};
+
+/* 7) Sessions professional cards in profile */
+window.renderSessionsProfessional = function(){
+  var host = document.getElementById("profile-sessions") || document.getElementById("sessions-list") || document.getElementById("my-sessions");
+  // create under profile if needed
+  var profile = document.getElementById("screen-profile") || document.getElementById("enhanced-profile") || document.getElementById("profile-modal");
+  if(!host && profile){
+    host = document.getElementById("ph-sessions-cards");
+    if(!host){
+      host = document.createElement("div");
+      host.id = "ph-sessions-cards";
+      host.style.cssText = "margin-top:12px";
+      profile.appendChild(host);
+    }
+  }
+  if(!host) return;
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  db.ref("users/"+phone+"/sessions").once("value", function(snap){
+    if(!snap.exists()){
+      // fallback devices node
+      db.ref("users/"+phone+"/devices").once("value", function(s2){
+        paintSessions(host, s2);
+      });
+      return;
+    }
+    paintSessions(host, snap);
+  });
+  function paintSessions(host, snap){
+    if(!snap.exists()){
+      host.innerHTML = '<div class="glass-panel p-3 rounded-xl text-xs text-slate-400">No active sessions found</div>';
+      return;
+    }
+    var rows = [];
+    snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+    rows.sort(function(a,b){ return (b.lastActive||b.ts||0)-(a.lastActive||a.ts||0); });
+    host.innerHTML = '<div style="font-size:11px;font-weight:900;color:#94a3b8;margin-bottom:8px;text-transform:uppercase">Sessions · devices</div>' +
+      rows.map(function(s){
+        var title = s.deviceName || s.userAgent || s.platform || s.id || "Device";
+        title = String(title).slice(0,64);
+        var where = s.location || s.city || s.ip || "—";
+        var when = s.lastActive || s.ts || s.loginAt || 0;
+        return '<div class="glass-panel p-3 rounded-xl mb-2 border border-white/10">'+
+          '<div class="text-sm font-extrabold text-white">'+title.replace(/</g,"&lt;")+'</div>'+
+          '<div class="text-[11px] text-cyan-400 mt-1">'+String(where).replace(/</g,"&lt;")+'</div>'+
+          '<div class="text-[10px] text-slate-500 mt-1">'+(when?new Date(when).toLocaleString():"")+'</div>'+
+          '<button type="button" onclick="db.ref(\'users/'+phone+'/sessions/'+s.id+'\').remove();setTimeout(renderSessionsProfessional,300)" class="mt-2 px-2 py-1 rounded-lg text-[10px] font-bold bg-rose-700 text-white">Logout device</button>'+
+          '</div>';
+      }).join("");
+  }
+};
+
+// Hook profile open
+(function(){
+  var _o = window.openEnhancedProfile;
+  if(typeof _o === "function"){
+    window.openEnhancedProfile = function(){
+      _o();
+      setTimeout(renderSessionsProfessional, 400);
+    };
+  }
+})();
+
+// announcements when dashboard
+(function(){
+  var _sw = window.switchScreen;
+  if(typeof _sw === "function"){
+    var prev = window.switchScreen;
+    window.switchScreen = function(id){
+      prev(id);
+      if(id === "screen-dashboard" || id === "screen-announcements" || id === "screen-news"){
+        setTimeout(renderAnnouncementsListClear, 200);
+      }
+      if(id === "screen-profile") setTimeout(renderSessionsProfessional, 300);
+      if(id !== "screen-complaint") document.body.classList.remove("complaint-only-mode");
+    };
+  }
+})();
+
+// money tab click buttons
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if(!t) return;
+  var label = (t.textContent||"").toLowerCase();
+  if(label.indexOf("request money") !== -1 || label.indexOf("share balance") !== -1){
+    setTimeout(showMoneyRequestGuide, 50);
+  }
+});
+
+
+/* ===== UX BATCH 2: support green, bot slot, profile FS, ann list, history CSV ===== */
+
+function updateDashMode(){
+  var dash = document.getElementById("screen-dashboard");
+  var on = dash && dash.classList.contains("active");
+  document.body.classList.toggle("dash-mode", !!on);
+  // about/complaint only on dashboard via footer visibility
+}
+
+(function(){
+  var _sw = window.switchScreen;
+  if(typeof _sw === "function"){
+    window.switchScreen = function(id){
+      document.body.classList.remove("bot-only-mode");
+      if(id !== "screen-complaint") document.body.classList.remove("complaint-only-mode");
+      _sw(id);
+      setTimeout(updateDashMode, 30);
+      if(id === "screen-dashboard"){
+        setTimeout(function(){ updateBotSlotVisibility(); renderAnnouncementsListClear(); }, 100);
+      }
+      if(id === "screen-history") setTimeout(wireHistoryCsvInsteadOfPdf, 200);
+    };
+  }
+})();
+
+/* Bot button only when KYC not showing (verified / no pending KYC UI) */
+function updateBotSlotVisibility(){
+  var btn = document.getElementById("btn-bot-help-slot");
+  if(!btn) return;
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ btn.classList.remove("show-bot"); return; }
+  // Hide if KYC card/section visible for pending
+  var kycCard = document.getElementById("kyc-card") || document.getElementById("dash-kyc-box") || document.querySelector("[id*='kyc']");
+  var kycVisible = false;
+  if(kycCard && kycCard.offsetParent !== null && !kycCard.classList.contains("hidden")){
+    var t = (kycCard.textContent||"").toLowerCase();
+    if(t.indexOf("pending") !== -1 || t.indexOf("submit kyc") !== -1 || t.indexOf("verify") !== -1){
+      // still might be verified message
+    }
+  }
+  db.ref("users/"+phone).once("value", function(snap){
+    var u = snap.val()||{};
+    var st = String(u.kycStatus||u.verificationStatus||"").toLowerCase();
+    var needKyc = !(st === "verified" || st === "approved");
+    // also check if kyc form screen element forced on dashboard
+    var form = document.getElementById("kyc-form") || document.getElementById("screen-kyc");
+    if(form && form.offsetParent !== null && !form.classList.contains("hidden") && needKyc){
+      btn.classList.remove("show-bot");
+      return;
+    }
+    if(needKyc && st === "pending"){
+      btn.classList.remove("show-bot");
+      return;
+    }
+    // show bot when KYC done or rejected/none requiring form
+    if(st === "verified" || st === "approved" || st === "rejected" || !needKyc){
+      btn.classList.add("show-bot");
+    } else {
+      // if no kyc started, still show bot so user has help; user asked: when KYC show, hide bot; when KYC gone, show bot
+      var kycUi = document.getElementById("kyc-pending-banner") || document.getElementById("btn-submit-kyc");
+      if(kycUi && kycUi.offsetParent !== null){
+        btn.classList.remove("show-bot");
+      } else {
+        btn.classList.add("show-bot");
+      }
+    }
+  });
+}
+
+window.openBotOnly = function(){
+  document.body.classList.add("bot-only-mode");
+  document.body.classList.remove("complaint-only-mode");
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  var el = document.getElementById("screen-help-bot");
+  if(el){
+    el.classList.add("active");
+    el.style.display = "flex";
+  } else if(typeof switchScreen === "function"){
+    // temporary
+    document.body.classList.remove("bot-only-mode");
+    switchScreen("screen-help-bot");
+    document.body.classList.add("bot-only-mode");
+  }
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+/* Full screen profile card */
+window.openEnhancedProfile = function(){
+  var wrap = document.getElementById("profile-fs-wrap");
+  if(!wrap){
+    wrap = document.createElement("div");
+    wrap.id = "profile-fs-wrap";
+    wrap.className = "profile-fs-wrap";
+    document.body.appendChild(wrap);
+  }
+  var u = window.sessionUser || {};
+  var phone = localStorage.getItem("ph_session_phone") || "";
+  var title = u.accountTitle || (u.specialTitle && u.specialTitle.title) || "";
+  var verified = u.isVerifiedAccount || (u.specialTitle && u.specialTitle.verified);
+  var badge = verified ? ('<div class="verified-badge" style="margin-top:8px"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate blue-tick"></i></div>' + (title?'<span class="account-title-chip">'+String(title).replace(/</g,"")+'</span>':'')) : '';
+  wrap.innerHTML = '<div style="max-width:28rem;margin:0 auto">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'+
+    '<h2 style="margin:0;font-size:18px;font-weight:900;color:#fff">My Profile</h2>'+
+    '<button type="button" onclick="closeProfileFS()" style="background:#334155;border:none;color:#fff;padding:8px 12px;border-radius:10px;font-weight:800;font-size:11px">Close</button></div>'+
+    '<div class="glass-panel p-4 rounded-2xl" id="profile-fullscreen-card">'+
+    '<div style="display:flex;gap:12px;align-items:center">'+
+    '<img src="'+(u.photoURL||u.dp||document.getElementById("dash-user-avatar")&&document.getElementById("dash-user-avatar").src||'')+'" style="width:64px;height:64px;border-radius:16px;object-fit:cover;border:2px solid rgba(251,191,36,.4)">'+
+    '<div><div style="font-size:18px;font-weight:900;color:#fff">'+(u.username||"User")+'</div>'+
+    '<div style="font-size:12px;color:#22d3ee;font-family:monospace">'+phone+'</div>'+badge+'</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">BALANCE</div><div style="font-weight:900;color:#34d399">Rs. '+Number(u.balance||0).toLocaleString()+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">KYC</div><div style="font-weight:800;color:#fff">'+String(u.kycStatus||u.verificationStatus||"—")+'</div></div>'+
+    '</div>'+
+    '<div style="margin-top:16px;font-size:12px;font-weight:900;color:#e2e8f0;text-transform:uppercase;letter-spacing:.04em">Your Login Device</div>'+
+    '<div id="profile-device-list" style="margin-top:8px"></div>'+
+    '</div></div>';
+  wrap.classList.add("open");
+  renderProfileDevices(phone);
+};
+
+window.closeProfileFS = function(){
+  var wrap = document.getElementById("profile-fs-wrap");
+  if(wrap) wrap.classList.remove("open");
+};
+
+function renderProfileDevices(phone){
+  var host = document.getElementById("profile-device-list");
+  if(!host || !phone) return;
+  var currentId = localStorage.getItem("ph_device_id") || sessionStorage.getItem("ph_device_id") || "current";
+  function paint(snap){
+    var rows = [];
+    if(snap && snap.exists()) snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+    // ensure current device row
+    var ua = (navigator.userAgent||"Browser").slice(0,50);
+    var hasCurrent = rows.some(function(r){ return r.id === currentId || r.current; });
+    if(!hasCurrent){
+      rows.unshift({ id: currentId, deviceName: ua, current: true, lastActive: Date.now(), location: "This device" });
+    }
+    rows.sort(function(a,b){ return (b.lastActive||b.ts||0)-(a.lastActive||a.ts||0); });
+    host.innerHTML = rows.map(function(s){
+      var isCur = s.current || s.id === currentId;
+      var title = isCur ? "Your Current Device" : (s.deviceName || s.userAgent || s.platform || "Device");
+      title = String(title).slice(0,72);
+      var when = s.lastActive || s.ts || s.loginAt || Date.now();
+      var where = s.location || s.city || s.ip || (isCur ? "This device" : "—");
+      return '<div class="glass-panel p-3 rounded-xl mb-2" style="border:1px solid '+(isCur?"rgba(52,211,153,.4)":"rgba(255,255,255,.08)")+'">'+
+        '<div style="font-size:13px;font-weight:900;color:#fff">'+title.replace(/</g,"&lt;")+'</div>'+
+        '<div style="font-size:11px;color:#67e8f9;margin-top:4px">'+String(where).replace(/</g,"&lt;")+'</div>'+
+        '<div style="font-size:10px;color:#94a3b8;margin-top:4px">Last active: '+new Date(when).toLocaleString()+'</div>'+
+        (isCur?'':'<button type="button" onclick="db.ref(\'users/'+phone+'/sessions/'+s.id+'\').remove();setTimeout(function(){renderProfileDevices(\''+phone+'\')},300)" style="margin-top:8px;padding:6px 10px;border-radius:8px;border:none;background:#be123c;color:#fff;font-size:10px;font-weight:800">Logout device</button>')+
+        '</div>';
+    }).join("");
+  }
+  db.ref("users/"+phone+"/sessions").once("value", function(snap){
+    if(snap.exists()) paint(snap);
+    else db.ref("users/"+phone+"/devices").once("value", function(s2){ paint(s2); });
+  });
+  // write/update current session
+  try{
+    if(!localStorage.getItem("ph_device_id")) localStorage.setItem("ph_device_id", "DEV-"+Date.now());
+    var did = localStorage.getItem("ph_device_id");
+    db.ref("users/"+phone+"/sessions/"+did).update({
+      deviceName: (navigator.userAgent||"Browser").slice(0,60),
+      lastActive: Date.now(),
+      current: true,
+      location: "This device",
+      platform: navigator.platform||""
+    });
+  }catch(e){}
+}
+
+/* Announcements as professional list wrap */
+window.renderAnnouncementsListClear = function(){
+  var box = document.getElementById("announcements-list") || document.getElementById("dash-announcements") || document.getElementById("news-list") || document.getElementById("announcement-pop-body");
+  // also popup content
+  function toListHtml(text){
+    text = String(text||"").trim();
+    if(!text) return "";
+    var lines = text.split(/\n|•|\u2022/g).map(function(s){ return s.trim(); }).filter(Boolean);
+    if(lines.length <= 1) return '<div style="font-size:13px;color:#e2e8f0;line-height:1.5">'+text.replace(/</g,"&lt;")+'</div>';
+    return '<ul class="ann-list-item" style="margin:8px 0 0;padding-left:16px;color:#e2e8f0;font-size:13px">'+
+      lines.map(function(l){ return '<li>'+l.replace(/</g,"&lt;")+'</li>'; }).join("")+'</ul>';
+  }
+  function fill(box, snap){
+    if(!box) return;
+    if(!snap || !snap.exists()){
+      if(box.id !== "announcement-pop-body") box.innerHTML = '<div class="text-slate-500 text-sm py-6 text-center">No announcements</div>';
+      return;
+    }
+    var rows = [];
+    snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+    rows.sort(function(a,b){ return (b.ts||b.timestamp||b.createdAt||0)-(a.ts||a.timestamp||a.createdAt||0); });
+    box.innerHTML = rows.map(function(a){
+      var body = a.body||a.message||a.text||"";
+      return '<div class="glass-panel p-3 mb-2 rounded-xl">'+
+        '<div style="font-size:10px;font-weight:900;color:#fbbf24">'+(a.ts||a.timestamp||a.createdAt?new Date(a.ts||a.timestamp||a.createdAt).toLocaleString():"")+'</div>'+
+        '<div style="font-size:14px;font-weight:900;color:#fff;margin-top:4px">'+String(a.title||a.subject||"Announcement").replace(/</g,"&lt;")+'</div>'+
+        toListHtml(body)+
+        (a.imageUrl?'<img src="'+String(a.imageUrl).replace(/"/g,"")+'" style="max-width:100%;border-radius:12px;margin-top:10px">':"")+
+        '</div>';
+    }).join("");
+  }
+  // patch live popup if exists
+  var popBody = document.querySelector(".announcement-popup-body, #announce-body, #announcement-content");
+  if(popBody && popBody.getAttribute("data-listified") !== "1"){
+    popBody.setAttribute("data-listified","1");
+    var raw = popBody.innerText || popBody.textContent || "";
+    if(raw && raw.indexOf("\n") !== -1){
+      popBody.innerHTML = toListHtml(raw);
+    }
+  }
+  if(!box) return;
+  db.ref("announcements").limitToLast(30).once("value", function(snap){
+    if(snap.exists()) fill(box, snap);
+    else db.ref("admin_announcements").limitToLast(30).once("value", function(s2){ fill(box, s2); });
+  });
+};
+
+/* History PDF -> CSV download */
+function wireHistoryCsvInsteadOfPdf(){
+  // override export functions
+  window.exportHistoryPDF = function(){ exportHistoryCSV(); };
+  window.downloadHistoryPDF = function(){ exportHistoryCSV(); };
+  window.generateHistoryPDF = function(){ exportHistoryCSV(); };
+}
+window.exportHistoryCSV = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ try{triggerSystemToast("Login required","error");}catch(e){} return; }
+  db.ref("users/"+phone+"/logs").once("value", function(snap){
+    var rows = [];
+    if(snap.exists()) snap.forEach(function(c){
+      var v = c.val()||{};
+      rows.push({
+        id: c.key,
+        type: v.type||"",
+        title: v.title||"",
+        amount: v.amount||0,
+        status: v.status||"",
+        time: v.timestamp ? new Date(v.timestamp).toISOString() : ""
+      });
+    });
+    rows.sort(function(a,b){ return String(b.time).localeCompare(String(a.time)); });
+    var headers = ["id","type","title","amount","status","time"];
+    var nl = String.fromCharCode(10);
+    var lines = [headers.join(",")];
+    rows.forEach(function(r){
+      lines.push(headers.map(function(h){
+        var val = String(r[h]==null?"":r[h]).replace(/"/g,'""');
+        return '"'+val+'"';
+      }).join(","));
+    });
+    var blob = new Blob([lines.join(nl)], {type:"text/csv;charset=utf-8;"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "PrimeHorizon_History_"+Date.now()+".csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    try{ triggerSystemToast("CSV downloaded","success"); }catch(e){}
+  });
+};
+// capture clicks on PDF buttons
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if(!t) return;
+  var tx = (t.textContent||"").toLowerCase();
+  var oc = (t.getAttribute && t.getAttribute("onclick")) || "";
+  if(tx.indexOf("pdf") !== -1 || oc.toLowerCase().indexOf("pdf") !== -1){
+    if(tx.indexOf("history") !== -1 || oc.indexOf("History") !== -1 || oc.indexOf("history") !== -1 || document.getElementById("screen-history")?.classList.contains("active")){
+      e.preventDefault();
+      e.stopPropagation();
+      exportHistoryCSV();
+    }
+  }
+}, true);
+
+// boot
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){ updateDashMode(); updateBotSlotVisibility(); }, 400);
+});
+setInterval(function(){ updateBotSlotVisibility(); updateDashMode(); }, 4000);
 
 </script>
 </body>
