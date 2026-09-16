@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Prime Horizon · v6.1</title>
+<title>Prime Horizon · v6.2</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -510,6 +510,33 @@ body.bot-only-mode #msg-inbox-fab {
   line-height: 1.45;
 }
 
+
+/* v6.2 UI */
+.special-msg-overlay {
+  position:fixed; inset:0; z-index:240; background:rgba(0,0,0,.8);
+  display:flex; align-items:center; justify-content:center; padding:14px;
+}
+.special-msg-frame {
+  width:100%; max-width:380px; max-height:88vh; overflow:auto;
+  border-radius:22px; padding:3px;
+  background: linear-gradient(135deg,#fbbf24,#34d399,#38bdf8,#e879f9,#fbbf24);
+  background-size:300% 300%;
+  animation: frameShift 4s ease infinite;
+}
+@keyframes frameShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+.special-msg-inner {
+  background:#0b1220; border-radius:20px; padding:16px; color:#e2e8f0;
+}
+.plan-landscape-btn {
+  width:100%; margin-top:10px; padding:12px 14px; border-radius:14px;
+  background:linear-gradient(90deg,rgba(16,185,129,.2),rgba(6,78,59,.55));
+  border:1px solid rgba(52,211,153,.4); text-align:left;
+}
+.complaint-tour-overlay, .image-tour-overlay {
+  position:fixed; inset:0; z-index:250; background:rgba(0,0,0,.82);
+  display:flex; align-items:center; justify-content:center; padding:16px;
+}
+
 </style>
 </head>
 <body class="auth-mode" class="auth-mode" class="app-shell antialiased">
@@ -523,7 +550,7 @@ body.bot-only-mode #msg-inbox-fab {
 
 <header id="main-header" class="flex justify-between items-center text-xs text-gray-400 z-50 gap-2">
   <div class="font-black text-sm tracking-wide text-white">PRIME <span class="text-amber-400">HORIZON</span>
-    <span class="version-badge ml-1" id="app-version-badge">v6.1</span>
+    <span class="version-badge ml-1" id="app-version-badge">v6.2</span>
   </div>
   <div class="relative flex items-center gap-2">
     <div class="notif-bell-wrap" id="header-msg-btn" onclick="openMsgInboxFromNotif()" title="Messages" style="margin-right:2px">
@@ -563,7 +590,7 @@ body.bot-only-mode #msg-inbox-fab {
         <img src="https://i.ibb.co/gZvhB6MC/image-11.jpg" alt="Logo" class="w-full h-full object-cover">
       </div>
       <h1 class="text-xl font-black tracking-wider text-amber-300">PRIME HORIZON</h1>
-      <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mt-1">Ascend Your Capital · v6.1</p>
+      <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mt-1">Ascend Your Capital · v6.2</p>
     </div>
     <div class="flex bg-black/40 p-1 rounded-xl mb-4 border border-white/5">
       <button type="button" onclick="toggleAuthTabs('login')" id="tab-login-btn" class="w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl bg-white/10 text-white border border-amber-500/30">Sign In</button>
@@ -772,7 +799,7 @@ body.bot-only-mode #msg-inbox-fab {
       <div id="about-us-container">
         <p id="about-us-text" class="text-[12px] text-gray-300 leading-relaxed">Prime Horizon — secure investment ecosystem. Rules, transparency, and long-term growth. We operate with integrity, protect user capital discipline, and publish clear policy for deposits, withdrawals, and affiliate rewards.</p>
       </div>
-      <div class="text-[10px] text-gray-500 border-t border-white/10 pt-3">Version <b class="text-white">v6.1</b> · Developed for long-term platform trust.</div>
+      <div class="text-[10px] text-gray-500 border-t border-white/10 pt-3">Version <b class="text-white">v6.2</b> · Developed for long-term platform trust.</div>
     </div>
   </section>
 
@@ -1471,7 +1498,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dhib5t6me/image/upload";
 const CLOUDINARY_PRESET = "Naeeem";
-const APP_VERSION = "v6.1";
+const APP_VERSION = "v6.2";
 const NOTIF_TTL = 24 * 60 * 60 * 1000;
 
 let sessionUser = null;
@@ -1871,7 +1898,7 @@ document.getElementById("hist-apply")?.addEventListener("click",()=>{window._his
 document.getElementById("hist-pdf")?.addEventListener("click",()=>{
   const logs=Object.values((sessionUser&&sessionUser.logs)||{}).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
   const from=window._histFrom?new Date(window._histFrom).getTime():0; const to=window._histTo?new Date(window._histTo).getTime()+86400000:Infinity;
-  let html="<html><head><title>History v6.1</title><style>body{font-family:sans-serif;font-size:12px;padding:16px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}</style></head><body><h2>Prime Horizon History v6.1</h2><table><tr><th>Date</th><th>Title</th><th>Amount</th><th>Status</th></tr>";
+  let html="<html><head><title>History v6.2</title><style>body{font-family:sans-serif;font-size:12px;padding:16px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}</style></head><body><h2>Prime Horizon History v6.2</h2><table><tr><th>Date</th><th>Title</th><th>Amount</th><th>Status</th></tr>";
   logs.filter(l=>{const t=l.timestamp||0;return t>=from&&t<=to;}).forEach(l=>{html+=`<tr><td>${new Date(l.timestamp||0).toLocaleString()}</td><td>${escapeHtml(l.title)}</td><td>${l.amount||""}</td><td>${escapeHtml(l.status)}</td></tr>`;});
   html+="</table></body></html>"; const w=window.open("","_blank"); if(!w)return; w.document.write(html); w.document.close(); setTimeout(()=>{try{w.print();}catch(e){}},400);
 });
@@ -4882,7 +4909,7 @@ initUserEcosystemStream = function(){
   setTimeout(startSurveyFlow, 1200);
 };
 
-console.log("%c[Prime Horizon] v6.1 single HTML ready","color:#2dd4bf;font-weight:bold");
+console.log("%c[Prime Horizon] v6.2 single HTML ready","color:#2dd4bf;font-weight:bold");
 
 
 function updateAuthChrome(){
@@ -5195,7 +5222,7 @@ function specialWarnUserPrompt(){
 })();
 
 
-/* ===== USER FINAL UPDATES v6.1b ===== */
+/* ===== USER FINAL UPDATES v6.2b ===== */
 window._MSG_SEEN_KEY = "ph_msg_seen_ts";
 
 /* What's New once per version */
@@ -5208,7 +5235,7 @@ function maybeShowWhatsNew(){
   ov.id = "whats-new-overlay";
   ov.className = "whats-new-overlay";
   ov.innerHTML = `<div class="whats-new-card">
-    <h3 style="font-weight:900;color:#fbbf24;margin-bottom:8px">What's New · v6.1</h3>
+    <h3 style="font-weight:900;color:#fbbf24;margin-bottom:8px">What's New · v6.2</h3>
     <ul style="font-size:12px;line-height:1.6;color:#e2e8f0;padding-left:16px">
       <li><b>Clean UI</b> & faster history</li>
       <li><b>KYC</b> · Daily reward · Lucky Draw</li>
@@ -6727,6 +6754,416 @@ document.addEventListener("DOMContentLoaded", function(){
   setTimeout(function(){ updateDashMode(); updateBotSlotVisibility(); }, 400);
 });
 setInterval(function(){ updateBotSlotVisibility(); updateDashMode(); }, 4000);
+
+
+/* ===== USER APP v6.2 COMPLETE ===== */
+window.APP_VERSION = "6.2";
+(function(){
+  var b = document.getElementById("app-version-badge");
+  if(b) b.textContent = "v6.2";
+})();
+
+/* 3) Disable accidental CSV/PDF downloads on random clicks */
+document.addEventListener("click", function(e){
+  var t = e.target;
+  if(!t) return;
+  var tx = (t.textContent||"").toLowerCase();
+  var oc = (t.getAttribute && t.getAttribute("onclick")) || "";
+  // only allow CSV when explicit export history button with data-export="csv"
+  if((tx.indexOf("csv")!==-1 || tx.indexOf("pdf")!==-1 || oc.toLowerCase().indexOf("csv")!==-1 || oc.toLowerCase().indexOf("pdf")!==-1)){
+    if(!(t.closest && t.closest("[data-export='csv']"))){
+      // block old aggressive handlers from earlier patches by stopping only if not intentional
+      if(tx.indexOf("download history")===-1 && oc.indexOf("exportHistoryCSV")===-1 && oc.indexOf("downloadUser")===-1){
+        /* let normal buttons work; remove global prevent from old code by no-op */
+      }
+    }
+  }
+}, true);
+// neutralize old exportHistoryCSV auto on any pdf text
+window.exportHistoryPDF = function(){ try{triggerSystemToast("Use History → Download CSV button","info");}catch(e){} };
+window.downloadHistoryPDF = window.exportHistoryPDF;
+
+/* 1) Password recovery — phone → gmail hint → DOB → CNIC last4 → show password (1/month) */
+window.startForgotFlow = function(){
+  var panel = document.getElementById("forgot-panel");
+  if(!panel){
+    panel = document.createElement("div");
+    panel.id = "forgot-panel";
+    panel.className = "space-y-3 mt-3 p-3 rounded-2xl border border-amber-500/30 bg-black/40";
+    var form = document.getElementById("login-form");
+    if(form) form.parentNode.insertBefore(panel, form.nextSibling);
+    else document.getElementById("screen-auth").appendChild(panel);
+  }
+  panel.classList.remove("hidden");
+  panel.style.display = "block";
+  panel.innerHTML = '<div class="flex justify-between"><h3 class="text-xs font-black text-amber-300 uppercase">Password Recovery</h3>'+
+    '<button type="button" onclick="document.getElementById(\'forgot-panel\').style.display=\'none\'" class="text-[10px] text-slate-400">Close</button></div>'+
+    '<div id="fp-steps"></div>';
+  window._fp = { step:1, user:null, phone:null };
+  fpRenderStep();
+};
+function fpRenderStep(){
+  var box = document.getElementById("fp-steps");
+  if(!box) return;
+  var s = window._fp.step;
+  if(s===1){
+    box.innerHTML = '<p class="text-[11px] text-slate-300">Please enter your phone number</p>'+
+      '<input id="fp-phone" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="03XXXXXXXXX">'+
+      '<button type="button" onclick="fpGoPhone()" class="w-full mt-2 py-2.5 btn-primary rounded-xl text-[11px] font-bold">Continue</button>';
+    var lv = document.getElementById("login-phone"); if(lv) document.getElementById("fp-phone").value = lv.value||"";
+  } else if(s===2){
+    box.innerHTML = '<p class="text-[11px] text-slate-300">Please enter your Gmail</p>'+
+      '<p class="text-[10px] text-amber-400 font-mono" id="fp-hint"></p>'+
+      '<input id="fp-email" type="email" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="your@gmail.com">'+
+      '<button type="button" onclick="fpGoEmail()" class="w-full mt-2 py-2.5 btn-primary rounded-xl text-[11px] font-bold">Continue</button>';
+    document.getElementById("fp-hint").textContent = "Hint: " + (window._fp.emailHint||"—");
+  } else if(s===3){
+    box.innerHTML = '<p class="text-[11px] text-slate-300">Date of birth (KYC wali)</p>'+
+      '<input id="fp-dob" type="date" class="w-full px-3 py-3 rounded-xl premium-input text-sm">'+
+      '<button type="button" onclick="fpGoDob()" class="w-full mt-2 py-2.5 btn-primary rounded-xl text-[11px] font-bold">Continue</button>';
+  } else if(s===4){
+    box.innerHTML = '<p class="text-[11px] text-slate-300">CNIC last 4 digits</p>'+
+      '<input id="fp-cnic" maxlength="4" class="w-full px-3 py-3 rounded-xl premium-input text-sm" placeholder="1234">'+
+      '<button type="button" onclick="fpGoCnic()" class="w-full mt-2 py-2.5 btn-primary rounded-xl text-[11px] font-bold">Show Password</button>';
+  } else if(s===5){
+    box.innerHTML = '<div id="fp-pass-card" class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">'+
+      '<div class="text-[10px] text-slate-400 uppercase font-bold">Your Password</div>'+
+      '<div class="text-xl font-black text-emerald-300 mt-2 font-mono" id="fp-pass-val"></div>'+
+      '<p class="text-[10px] text-slate-400 mt-3">Screenshot le kar gallery me save kar sakte ho</p>'+
+      '<p class="text-[10px] text-amber-400 mt-1">Limit: 1 recovery / month</p></div>';
+    document.getElementById("fp-pass-val").textContent = window._fp.password || "—";
+  }
+}
+window.fpGoPhone = function(){
+  var phone = (document.getElementById("fp-phone").value||"").trim();
+  if(!phone){ triggerSystemToast("Phone likhein","error"); return; }
+  db.ref("users").once("value", function(snap){
+    var found=null, key=null;
+    snap.forEach(function(ch){
+      var d=ch.val()||{}; var p=phone.toLowerCase();
+      if(ch.key===phone||ch.key===p||(d.username&&d.username.toLowerCase()===p)||(d.email&&d.email.toLowerCase()===p)){ found=d; key=ch.key; }
+    });
+    if(!found){ triggerSystemToast("Number register nahi","error"); return; }
+    // monthly limit
+    var last = Number(found.lastPasswordRecoveryAt||0);
+    var monthMs = 30*24*60*60*1000;
+    if(last && (Date.now()-last) < monthMs){
+      triggerSystemToast("Is month recovery limit pure ho chuki","error"); return;
+    }
+    window._fp.user = found; window._fp.phone = key;
+    var email = String(found.email||found.gmail||"");
+    var hint="—";
+    if(email.indexOf("@")>=0){
+      var parts=email.split("@"); var local=parts[0], domain=parts[1];
+      hint = (local.length<=2?local[0]+"*":local.slice(0,2)+"***"+local.slice(-1))+"@"+domain;
+    }
+    window._fp.emailHint = hint;
+    window._fp.step = 2; fpRenderStep();
+  });
+};
+window.fpGoEmail = function(){
+  var email = (document.getElementById("fp-email").value||"").trim().toLowerCase();
+  var real = String(window._fp.user.email||window._fp.user.gmail||"").toLowerCase();
+  if(email !== real){ triggerSystemToast("Gmail match nahi","error"); return; }
+  window._fp.step = 3; fpRenderStep();
+};
+window.fpGoDob = function(){
+  var dob = (document.getElementById("fp-dob").value||"").trim();
+  var u = window._fp.user||{};
+  var real = String(u.dob||u.dateOfBirth||u.birthday||(u.kycDetails&&u.kycDetails.birthday)||"").replace(/\//g,"-").slice(0,10);
+  if(real && dob.slice(0,10) !== real){ triggerSystemToast("DOB KYC se match nahi","error"); return; }
+  window._fp.step = 4; fpRenderStep();
+};
+window.fpGoCnic = function(){
+  var cnic = (document.getElementById("fp-cnic").value||"").trim();
+  var u = window._fp.user||{};
+  var real = String((u.kycDetails&&u.kycDetails.cnicLast4)||u.cnicLast4||"").trim();
+  if(real && cnic !== real){ triggerSystemToast("CNIC last 4 galat","error"); return; }
+  if(!real && cnic.length!==4){ triggerSystemToast("4 digits likhein","error"); return; }
+  window._fp.password = u.password || "—";
+  window._fp.step = 5; fpRenderStep();
+  // notify admin + mark monthly
+  var phone = window._fp.phone;
+  var id = "PWR-"+Date.now();
+  db.ref("users/"+phone+"/lastPasswordRecoveryAt").set(Date.now());
+  db.ref("password_recovery_events/"+id).set({
+    id:id, phone:phone, username:u.username||"", email:u.email||u.gmail||"",
+    shownPassword: true, at: Date.now(), type:"self_reveal"
+  });
+  db.ref("admin_queues/password_resets/"+id).set({
+    id:id, phone:phone, username:u.username||"", at:Date.now(), status:"user_viewed_password"
+  });
+};
+
+/* 2) Warning Understand + Complaint */
+window.dismissDevWarningUnderstand = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  db.ref("users/"+phone+"/activeWarning").once("value", function(snap){
+    if(!snap.exists()) return;
+    var w = snap.val()||{};
+    if(w.active===false || w.disabled===true){ var b=document.getElementById("dev-warning-under-balance"); if(b)b.innerHTML=""; return; }
+    db.ref("users/"+phone+"/activeWarning").update({ dismissedUntil: Date.now()+24*60*60*1000, lastDismissedAt: Date.now() });
+    var box=document.getElementById("dev-warning-under-balance"); if(box) box.innerHTML="";
+  });
+};
+window.renderDevWarningUnderBalance = function(){
+  var host = document.getElementById("user-status-card");
+  if(!host) return;
+  var box = document.getElementById("dev-warning-under-balance");
+  if(!box){ box=document.createElement("div"); box.id="dev-warning-under-balance"; host.appendChild(box); }
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone){ box.innerHTML=""; return; }
+  db.ref("users/"+phone+"/activeWarning").off();
+  db.ref("users/"+phone+"/activeWarning").on("value", function(snap){
+    if(!snap.exists()){ box.innerHTML=""; return; }
+    var w = snap.val()||{};
+    if(w.active===false||w.disabled===true){ box.innerHTML=""; return; }
+    if(w.dismissedUntil && Date.now() < Number(w.dismissedUntil)){ box.innerHTML=""; return; }
+    var isAlert = String(w.type||"").toLowerCase()==="alert";
+    box.innerHTML = '<div class="dev-warning-card '+(isAlert?"alert-type":"")+'">'+
+      '<div style="font-size:13px;font-weight:900;color:'+(isAlert?"#fb7185":"#fbbf24")+'">'+String(w.type||"Warning")+'</div>'+
+      '<div style="font-size:12px;color:#e2e8f0;margin-top:6px;white-space:pre-wrap">'+String(w.note||"").replace(/</g,"&lt;")+'</div>'+
+      '<div style="font-size:10px;color:#94a3b8;margin-top:8px">Warning By Developer · '+String(w.byName||"Developer").replace(/</g,"&lt;")+'</div>'+
+      '<div style="display:flex;gap:8px;margin-top:10px">'+
+      '<button type="button" onclick="dismissDevWarningUnderstand()" style="flex:1;padding:10px;border-radius:10px;font-size:11px;font-weight:900;background:#334155;color:#fff;border:none">Understand</button>'+
+      '<button type="button" onclick="openComplaintOnly()" style="flex:1;padding:10px;border-radius:10px;font-size:11px;font-weight:900;background:#059669;color:#fff;border:none">Complaint</button>'+
+      '</div></div>';
+  });
+};
+
+/* 4) My Profile button rename + plan landscape + full profile */
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){
+    document.querySelectorAll("button, span, a").forEach(function(el){
+      if((el.textContent||"").trim()==="My Balance") el.textContent = "My Profile";
+    });
+    var bp = document.getElementById("btn-card-profile");
+    if(bp) bp.textContent = "My Profile";
+  }, 500);
+});
+
+function renderActivePlanStrip(){
+  var card = document.getElementById("user-status-card");
+  if(!card || !window.sessionUser) return;
+  var plan = sessionUser.activePlan || sessionUser.currentPlan;
+  var strip = document.getElementById("plan-landscape-strip");
+  if(!plan){ if(strip) strip.remove(); return; }
+  if(!strip){ strip=document.createElement("button"); strip.type="button"; strip.id="plan-landscape-strip"; strip.className="plan-landscape-btn"; card.appendChild(strip); }
+  var end = Number(plan.endAt||plan.expiresAt||0);
+  var start = Number(plan.startAt||plan.activatedAt||0);
+  var totalDays = Number(plan.days||plan.duration||30);
+  var remain = end ? Math.max(0, Math.ceil((end-Date.now())/86400000)) : totalDays;
+  strip.innerHTML = '<div style="font-size:10px;font-weight:900;color:#6ee7b7;text-transform:uppercase">Active Plan</div>'+
+    '<div style="font-size:14px;font-weight:900;color:#fff;margin-top:2px">'+(plan.name||"Plan")+'</div>'+
+    '<div style="font-size:11px;color:#cbd5e1;margin-top:4px">Days remaining: <b style="color:#fff">'+remain+'</b></div>'+
+    '<div style="margin-top:8px;display:inline-block;padding:6px 10px;border-radius:8px;background:#059669;color:#fff;font-size:10px;font-weight:900">Collect Profit</div>';
+  strip.onclick = function(){
+    if(typeof collectPlanProfit === "function") collectPlanProfit();
+    else if(typeof switchScreen === "function") switchScreen("screen-invest-plans");
+    else try{triggerSystemToast("Open plans to collect","info");}catch(e){}
+  };
+}
+setInterval(function(){ try{ renderActivePlanStrip(); }catch(e){} }, 3000);
+
+window.openEnhancedProfile = function(){
+  var u = window.sessionUser || {};
+  var phone = localStorage.getItem("ph_session_phone")||"";
+  var wrap = document.getElementById("profile-fs-wrap");
+  if(!wrap){ wrap=document.createElement("div"); wrap.id="profile-fs-wrap"; wrap.className="profile-fs-wrap"; document.body.appendChild(wrap); }
+  var cnic = String((u.kycDetails&&u.kycDetails.cnicLast4)||u.cnicLast4||"");
+  var verified = u.isVerifiedAccount || (u.specialTitle&&u.specialTitle.verified);
+  var title = u.accountTitle || (u.specialTitle&&u.specialTitle.title) || "";
+  wrap.innerHTML = '<div style="max-width:28rem;margin:0 auto;padding-bottom:40px">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'+
+    '<h2 style="margin:0;font-size:18px;font-weight:900;color:#fff">My Profile</h2>'+
+    '<button type="button" onclick="closeProfileFS()" style="background:#334155;border:none;color:#fff;padding:8px 12px;border-radius:10px;font-weight:800;font-size:11px">Close</button></div>'+
+    '<div class="glass-panel p-4 rounded-2xl">'+
+    '<div style="text-align:center">'+
+    '<div style="position:relative;display:inline-block">'+
+    '<img id="prof-dp" src="'+(u.photoURL||u.dp||"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200")+'" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid rgba(251,191,36,.45)">'+
+    '<button type="button" onclick="changeProfileDp()" style="position:absolute;right:0;bottom:0;background:#0ea5e9;border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:12px"><i class="fa-solid fa-camera"></i></button></div>'+
+    (verified?'<div class="verified-badge" style="justify-content:center;margin-top:8px"><i class="fa-solid fa-circle-check"></i> Verified account <i class="fa-solid fa-certificate blue-tick"></i></div>':'')+
+    (title?'<div class="account-title-chip" style="margin-top:6px">'+title.replace(/</g,"")+'</div>':'')+
+    '<div style="margin-top:10px;font-size:11px;color:#94a3b8">Username</div>'+
+    '<div style="display:flex;gap:6px;justify-content:center;margin-top:4px">'+
+    '<input id="prof-username" value="'+(u.username||"").replace(/"/g,"&quot;")+'" style="max-width:160px;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:8px;color:#fff;font-weight:800;text-align:center">'+
+    '<button type="button" onclick="saveProfileUsername()" style="background:#059669;border:none;color:#fff;border-radius:10px;padding:8px 10px;font-size:10px;font-weight:900">Save</button></div>'+
+    '<div style="margin-top:8px;font-size:12px;color:#67e8f9">'+(u.email||u.gmail||"")+'</div>'+
+    '<div style="font-size:10px;color:#64748b;margin-top:4px">Username / DP change: 1 time per month</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">TOTAL BALANCE</div><div style="font-weight:900;color:#34d399">Rs. '+Number(u.balance||0).toLocaleString()+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">TOTAL COINS</div><div style="font-weight:900;color:#fbbf24">'+Number(u.gamingBalance||u.coins||0).toLocaleString()+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">RANK / INVITES</div><div style="font-weight:900;color:#fff" id="prof-rank">'+Number(u.successfulInvites||u.referralCount||0)+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">PLAN PROFIT</div><div style="font-weight:900;color:#6ee7b7">Rs. '+Number(u.totalProfit||u.planProfit||0).toLocaleString()+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">GAME / GIFTING</div><div style="font-weight:900;color:#e9d5ff">Rs. '+Number(u.gameEarn||u.giftingTotal||0).toLocaleString()+'</div></div>'+
+    '<div class="glass-panel p-3 rounded-xl"><div style="font-size:9px;color:#94a3b8">TOTAL WITHDRAW</div><div style="font-weight:900;color:#fda4af">Rs. '+Number(u.totalWithdraw||0).toLocaleString()+'</div></div></div>'+
+    '<div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between" class="glass-panel p-3 rounded-xl">'+
+    '<div><div style="font-size:9px;color:#94a3b8">CNIC last 4</div><div id="prof-cnic" style="font-weight:900;letter-spacing:.2em">••••</div></div>'+
+    '<button type="button" onclick="toggleCnicShow()" style="background:#334155;border:none;color:#fff;border-radius:8px;padding:6px 10px;font-size:10px;font-weight:800">Show / Hide</button></div>'+
+    '<button type="button" data-export="csv" onclick="downloadMyProfileCSV()" style="margin-top:12px;width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#0ea5e9,#4f46e5);color:#fff;font-weight:900;font-size:12px">Download My Data (CSV)</button>'+
+    '<div style="margin-top:16px;font-size:11px;font-weight:900;color:#94a3b8;text-transform:uppercase">Your Login Device</div><div id="profile-device-list" style="margin-top:8px"></div>'+
+    '</div></div>';
+  wrap.classList.add("open");
+  window._profCnic = cnic;
+  window._profCnicShown = false;
+  if(typeof renderProfileDevices === "function") renderProfileDevices(phone);
+  // rank auto
+  var inv = Number(u.successfulInvites||u.referralCount||0);
+  var rankEl = document.getElementById("prof-rank");
+  if(rankEl && inv >= 10) rankEl.innerHTML = inv + ' · <span style="color:#fbbf24">TOP INVITER</span>';
+};
+window.toggleCnicShow = function(){
+  var el = document.getElementById("prof-cnic");
+  if(!el) return;
+  window._profCnicShown = !window._profCnicShown;
+  el.textContent = window._profCnicShown ? (window._profCnic||"————") : "••••";
+};
+window.saveProfileUsername = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  var name = (document.getElementById("prof-username").value||"").trim();
+  if(!phone||!name) return;
+  db.ref("users/"+phone).once("value", function(snap){
+    var u = snap.val()||{};
+    var last = Number(u.lastProfileEditAt||0);
+    if(last && (Date.now()-last) < 30*24*60*60*1000){
+      triggerSystemToast("Month me 1 bar change allowed","error"); return;
+    }
+    db.ref("users/"+phone).update({ username:name, lastProfileEditAt: Date.now() });
+    if(window.sessionUser) sessionUser.username = name;
+    triggerSystemToast("Username updated","success");
+  });
+};
+window.changeProfileDp = function(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone) return;
+  db.ref("users/"+phone+"/lastProfileEditAt").once("value", function(snap){
+    var last = Number(snap.val()||0);
+    if(last && (Date.now()-last) < 30*24*60*60*1000){
+      // allow DP if username not changed same month? user said month 1 bar for username and dp
+      triggerSystemToast("Month me 1 bar DP/username change","error"); return;
+    }
+    var url = prompt("Image URL for DP:");
+    if(!url) return;
+    db.ref("users/"+phone).update({ photoURL:url, dp:url, lastProfileEditAt: Date.now() });
+    if(window.sessionUser){ sessionUser.photoURL=url; sessionUser.dp=url; }
+    var img = document.getElementById("prof-dp"); if(img) img.src=url;
+    triggerSystemToast("DP updated","success");
+  });
+};
+window.downloadMyProfileCSV = function(){
+  var u = window.sessionUser||{};
+  var phone = localStorage.getItem("ph_session_phone")||"";
+  var headers = ["phone","username","email","balance","coins","invites","profit","withdraw"];
+  var row = [phone,u.username,u.email||u.gmail,u.balance,u.gamingBalance||u.coins,u.successfulInvites,u.totalProfit,u.totalWithdraw];
+  var csv = headers.join(",")+"\n"+row.map(function(v){ return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'; }).join(",");
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="my_profile.csv"; a.click();
+};
+
+/* 5) Help bot coming soon */
+window.openBotOnly = function(){
+  var ov = document.createElement("div");
+  ov.style.cssText = "position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px";
+  ov.innerHTML = '<div style="background:#0f172a;border:1px solid rgba(248,113,113,.4);border-radius:18px;padding:20px;max-width:320px;width:100%;text-align:center;position:relative">'+
+    '<button type="button" id="bot-soon-x" style="position:absolute;right:10px;top:10px;background:#334155;border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-weight:900">×</button>'+
+    '<div style="font-size:32px;margin-bottom:8px">🤖</div>'+
+    '<div style="font-size:18px;font-weight:900;color:#fca5a5">Coming Soon</div>'+
+    '<p style="font-size:12px;color:#94a3b8;margin-top:8px">Help Bot jald update hoga.</p></div>';
+  document.body.appendChild(ov);
+  document.getElementById("bot-soon-x").onclick = function(){ ov.remove(); };
+};
+
+/* Complaint first-time Urdu tour */
+function showComplaintTourOnce(){
+  if(localStorage.getItem("ph_complaint_tour_v62")==="1") return;
+  if(!localStorage.getItem("ph_session_phone")) return;
+  var ov=document.createElement("div"); ov.className="complaint-tour-overlay";
+  ov.innerHTML = '<div style="background:#0f172a;border:1px solid rgba(16,185,129,.4);border-radius:18px;padding:18px;max-width:360px;width:100%">'+
+    '<div style="font-size:11px;font-weight:900;color:#6ee7b7;text-transform:uppercase">Support Guide</div>'+
+    '<div style="font-size:17px;font-weight:900;color:#fff;margin:6px 0 10px">Complaint system</div>'+
+    '<p style="font-size:13px;color:#cbd5e1;line-height:1.55;margin:0 0 12px">Agar app me koi masla ho, payment, login ya account se related issue ho to <b style="color:#fff">Complaint</b> option use karein. Aapki request team tak turant pohonchti hai aur fori reply diya jata hai. Professional support ke liye clear details likhein.</p>'+
+    '<button type="button" id="ctour-ok" style="width:100%;padding:12px;border:none;border-radius:12px;background:#059669;color:#fff;font-weight:900">Samajh gaya</button></div>';
+  document.body.appendChild(ov);
+  document.getElementById("ctour-ok").onclick=function(){ localStorage.setItem("ph_complaint_tour_v62","1"); ov.remove(); };
+}
+
+/* 6) Special personal message popup */
+function listenSpecialMessages(){
+  var phone = localStorage.getItem("ph_session_phone");
+  if(!phone || window._specMsgOn) return;
+  window._specMsgOn = true;
+  db.ref("users/"+phone+"/specialMessages").limitToLast(5).on("value", function(snap){
+    if(!snap.exists()) return;
+    var lastSeen = Number(localStorage.getItem("ph_spec_msg_seen")||0);
+    var newest=null;
+    snap.forEach(function(c){
+      var v=Object.assign({id:c.key},c.val()||{});
+      if((v.ts||0) > lastSeen && v.active!==false) newest=v;
+    });
+    if(newest) showSpecialMessageCard(newest);
+  });
+}
+function showSpecialMessageCard(msg){
+  if(document.getElementById("special-msg-overlay")) return;
+  localStorage.setItem("ph_spec_msg_seen", String(msg.ts||Date.now()));
+  var ov=document.createElement("div"); ov.id="special-msg-overlay"; ov.className="special-msg-overlay";
+  var headingStyle = msg.headingStyle || "bold";
+  var hcss = "font-size:20px;margin:0 0 10px;color:#fff;";
+  if(headingStyle.indexOf("green")>=0) hcss += "color:#4ade80;";
+  if(headingStyle.indexOf("black")>=0) hcss += "color:#0f172a;background:#fff;padding:4px 8px;border-radius:8px;";
+  if(headingStyle.indexOf("underline")>=0) hcss += "text-decoration:underline;";
+  if(headingStyle.indexOf("bold")>=0) hcss += "font-weight:900;";
+  var listHtml = "";
+  if(msg.listText){
+    var lines = String(msg.listText).split(/\n|•/).map(function(s){return s.trim();}).filter(Boolean);
+    listHtml = '<ul style="margin:8px 0;padding-left:18px;line-height:1.5">'+lines.map(function(l){return '<li>'+l.replace(/</g,"&lt;")+'</li>';}).join("")+'</ul>';
+  }
+  var img = msg.imageUrl ? ('<img src="'+String(msg.imageUrl).replace(/"/g,"")+'" onclick="openImageTour(this.src)" style="width:100%;border-radius:14px;margin-top:10px;cursor:pointer">') : "";
+  ov.innerHTML = '<div class="special-msg-frame"><div class="special-msg-inner">'+
+    '<div style="font-size:10px;font-weight:900;color:#fbbf24;letter-spacing:.08em">SPECIAL MESSAGE</div>'+
+    '<h3 style="'+hcss+'">'+String(msg.heading||"Message").replace(/</g,"&lt;")+'</h3>'+
+    '<div style="font-size:13px;color:#cbd5e1;white-space:pre-wrap">'+String(msg.body||"").replace(/</g,"&lt;")+'</div>'+listHtml+img+
+    '<button type="button" onclick="document.getElementById(\'special-msg-overlay\').remove()" style="margin-top:14px;width:100%;padding:12px;border:none;border-radius:12px;background:#0ea5e9;color:#fff;font-weight:900">OK</button>'+
+    '</div></div>';
+  document.body.appendChild(ov);
+  if(msg.imageUrl && localStorage.getItem("ph_img_tour")!=="1"){
+    setTimeout(function(){ showImageTourTip(); }, 600);
+  }
+}
+function showImageTourTip(){
+  if(document.getElementById("img-tour")) return;
+  var t=document.createElement("div"); t.id="img-tour"; t.className="image-tour-overlay";
+  t.innerHTML='<div style="background:#0f172a;border-radius:16px;padding:16px;max-width:300px;color:#e2e8f0;font-size:13px">Image par tap karein — full view open hogi.<br><br><button type="button" id="img-tour-ok" style="width:100%;padding:10px;border:none;border-radius:10px;background:#6366f1;color:#fff;font-weight:900">OK</button></div>';
+  document.body.appendChild(t);
+  document.getElementById("img-tour-ok").onclick=function(){ localStorage.setItem("ph_img_tour","1"); t.remove(); };
+}
+window.openImageTour = function(src){
+  var ov=document.createElement("div"); ov.style.cssText="position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:12px";
+  ov.innerHTML='<img src="'+src+'" style="max-width:100%;max-height:90vh;border-radius:12px" onclick="this.parentNode.remove()">';
+  document.body.appendChild(ov);
+};
+
+/* Coins convert rate live from admin */
+window.getUserCoinsRate = function(cb){
+  db.ref("admin_settings/coins_rate").once("value", function(snap){
+    var n = (snap.val()&&Number(snap.val().coinsPerRs))||100;
+    cb(n>0?n:100);
+  });
+};
+
+document.addEventListener("DOMContentLoaded", function(){
+  setTimeout(function(){
+    if(localStorage.getItem("ph_session_phone")){
+      showComplaintTourOnce();
+      listenSpecialMessages();
+      renderDevWarningUnderBalance();
+      renderActivePlanStrip();
+    }
+  }, 1000);
+});
+setInterval(function(){
+  if(localStorage.getItem("ph_session_phone") && !window._specMsgOn) listenSpecialMessages();
+}, 4000);
 
 </script>
 </body>
