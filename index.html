@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Prime Horizon · v6.2</title>
+<!-- APP UPDATE VERSION: v6.6 | Change window.PH_APP_VERSION in script when shipping new build -->
+<title>Prime Horizon · v6.6</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -293,6 +294,7 @@ body.ent-mode #screen-entertainment.screen.active {
 
 /* Login/Signup: hide bell, bot, support footer */
 body.auth-mode #header-msg-btn,
+body.auth-mode #header-changelog-btn,
 body.auth-mode #notif-bell-btn,
 body.auth-mode #notif-dropdown,
 body.auth-mode #bot-fab,
@@ -367,7 +369,7 @@ body.auth-mode .msg-inbox-fab{ display:none !important; }
 .whats-new-card{max-width:360px;width:100%;background:#0f172a;border:1px solid rgba(212,160,23,.35);border-radius:20px;padding:20px;max-height:80vh;overflow:auto}
 
 
-/* v6.2 updates */
+/* v6.6 updates */
 .msg-fab-badge {
   position: fixed; right: 14px; bottom: calc(72px + env(safe-area-inset-bottom,0px));
   z-index: 45; width: 52px; height: 52px; border-radius: 16px;
@@ -511,7 +513,7 @@ body.bot-only-mode #msg-inbox-fab {
 }
 
 
-/* v6.2 UI */
+/* v6.6 UI */
 .special-msg-overlay {
   position:fixed; inset:0; z-index:240; background:rgba(0,0,0,.8);
   display:flex; align-items:center; justify-content:center; padding:14px;
@@ -550,12 +552,16 @@ body.bot-only-mode #msg-inbox-fab {
 
 <header id="main-header" class="flex justify-between items-center text-xs text-gray-400 z-50 gap-2">
   <div class="font-black text-sm tracking-wide text-white">PRIME <span class="text-amber-400">HORIZON</span>
-    <span class="version-badge ml-1" id="app-version-badge">v6.2</span>
+    <span class="version-badge ml-1" id="app-version-badge">v6.6</span>
   </div>
   <div class="relative flex items-center gap-2">
     <div class="notif-bell-wrap" id="header-msg-btn" onclick="openMsgInboxFromNotif()" title="Messages" style="margin-right:2px">
       <i class="fa-solid fa-comment-dots"></i>
       <span id="header-msg-badge" class="notif-badge hidden">0</span>
+    </div>
+    <div class="notif-bell-wrap" id="header-changelog-btn" onclick="openChangeLogsAgain()" title="Change Logs" style="margin-right:2px;background:rgba(251,191,36,.12);border-color:rgba(251,191,36,.35)">
+      <i class="fa-solid fa-scroll" style="color:#fbbf24"></i>
+      <span id="header-changelog-badge" class="notif-badge hidden">0</span>
     </div>
     <div class="notif-bell-wrap" id="notif-bell-btn" onclick="toggleNotifDropdown(event)">
       <i class="fa-solid fa-bell"></i>
@@ -590,7 +596,7 @@ body.bot-only-mode #msg-inbox-fab {
         <img src="https://i.ibb.co/gZvhB6MC/image-11.jpg" alt="Logo" class="w-full h-full object-cover">
       </div>
       <h1 class="text-xl font-black tracking-wider text-amber-300">PRIME HORIZON</h1>
-      <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mt-1">Ascend Your Capital · v6.2</p>
+      <p class="text-[10px] uppercase tracking-widest text-emerald-400 font-bold mt-1">Ascend Your Capital · v6.6</p>
     </div>
     <div class="flex bg-black/40 p-1 rounded-xl mb-4 border border-white/5">
       <button type="button" onclick="toggleAuthTabs('login')" id="tab-login-btn" class="w-1/2 py-2.5 text-[11px] font-bold uppercase rounded-xl bg-white/10 text-white border border-amber-500/30">Sign In</button>
@@ -712,10 +718,7 @@ body.bot-only-mode #msg-inbox-fab {
         <button type="button" id="btn-dash-history" onclick="switchScreen('screen-history')" class="glass-panel flupy-btn flex flex-col items-center justify-center">
           <i class="fa-solid fa-clock-rotate-left text-slate-300 text-lg mb-1"></i><span class="text-[9px] font-black text-white">History</span>
         </button>
-        <button type="button" id="btn-bot-help-slot" onclick="openBotOnly()" class="glass-panel flupy-btn bot-kyc-slot-btn border">
-          <i class="fa-solid fa-robot text-lg mb-1"></i>
-          <span class="text-[9px] font-black text-white">Help Bot</span>
-        </button>
+        <!-- Help Bot removed v6.6 -->
         <button type="button" id="kyc-action-btn" onclick="openKYCModal()" class="glass-panel flupy-btn flex flex-col items-center justify-center border border-amber-500/40">
           <i class="fa-solid fa-id-card text-amber-400 text-lg mb-1"></i><span class="text-[9px] font-black text-white">KYC</span>
         </button>
@@ -799,7 +802,7 @@ body.bot-only-mode #msg-inbox-fab {
       <div id="about-us-container">
         <p id="about-us-text" class="text-[12px] text-gray-300 leading-relaxed">Prime Horizon — secure investment ecosystem. Rules, transparency, and long-term growth. We operate with integrity, protect user capital discipline, and publish clear policy for deposits, withdrawals, and affiliate rewards.</p>
       </div>
-      <div class="text-[10px] text-gray-500 border-t border-white/10 pt-3">Version <b class="text-white">v6.2</b> · Developed for long-term platform trust.</div>
+      <div class="text-[10px] text-gray-500 border-t border-white/10 pt-3">Version <b class="text-white">v6.6</b> · Developed for long-term platform trust.</div>
     </div>
   </section>
 
@@ -1024,12 +1027,7 @@ body.bot-only-mode #msg-inbox-fab {
       <button type="button" onclick="switchScreen('screen-dashboard')" class="text-[11px] text-gray-400"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <h2 class="text-[12px] font-extrabold text-white">History</h2>
     </div>
-    <div id="hist-tools-v61" class="hist-tools glass-panel p-2.5">
-      <input type="date" id="hist-from" class="premium-input">
-      <input type="date" id="hist-to" class="premium-input">
-      <button type="button" class="flupy-btn btn-primary px-3" id="hist-apply">Filter</button>
-      <button type="button" class="flupy-btn px-3 bg-white/10 text-white" id="hist-pdf">PDF</button>
-    </div>
+    <div id="hist-tools-v61" class="hist-tools glass-panel p-2.5" style="display:none"></div>
     <div class="flex gap-1 overflow-x-auto no-scrollbar mb-2" id="history-filters">
       <button type="button" onclick="filterUnifiedHistory('all')" class="hist-filter-btn px-3 py-1 text-[9px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" data-type="all">All</button>
       <button type="button" onclick="filterUnifiedHistory('deposit')" class="hist-filter-btn px-3 py-1 text-[9px] font-bold rounded-full bg-white/5 text-gray-400 border border-white/5" data-type="deposit">Deposit</button>
@@ -1072,7 +1070,7 @@ body.bot-only-mode #msg-inbox-fab {
       </div>
       <div class="glass-panel p-3 text-center">
         <div class="text-[8px] text-emerald-400 uppercase font-bold">Coin Value</div>
-        <div class="text-xl font-black font-mono text-emerald-300">Rs. <span id="invite-coin-rate">50</span></div>
+        <div class="text-xl font-black font-mono text-emerald-300">Rs. <span id="invite-coin-rate">1</span></div>
       </div>
     </div>
 
@@ -1473,14 +1471,30 @@ body.bot-only-mode #msg-inbox-fab {
 </div>
 
 
-<div id="maintenance-overlay" class="fixed inset-0 z-[999] hidden items-center justify-center p-6" style="background:linear-gradient(160deg,#020617,#0f172a)">
-  <div class="w-full max-w-sm text-center space-y-4">
-    <div class="text-5xl">🛠️</div>
-    <h2 class="text-xl font-black text-white">Under Maintenance</h2>
-    <p id="maintenance-msg" class="text-sm text-slate-300 leading-relaxed">Platform is temporarily unavailable. Please check back soon.</p>
-    <div class="text-[10px] text-slate-500 uppercase tracking-widest">Prime Horizon</div>
+<div id="maintenance-overlay" class="fixed inset-0 z-[999] hidden items-center justify-center p-6" style="background:linear-gradient(165deg,#020617 0%,#0b1220 45%,#0f172a 100%)">
+  <div class="w-full max-w-sm text-center space-y-5">
+    <div class="mx-auto w-16 h-16 rounded-2xl border border-amber-500/40 bg-amber-500/10 flex items-center justify-center shadow-lg shadow-amber-900/30">
+      <i class="fa-solid fa-shield-halved text-amber-300 text-2xl"></i>
+    </div>
+    <div>
+      <div class="text-[11px] font-black tracking-[0.25em] uppercase text-amber-400/90 mb-2">Prime Horizon</div>
+      <h2 class="text-2xl font-black text-white tracking-wide">Loading</h2>
+      <div class="mt-4 flex justify-center gap-1.5" id="maint-loading-dots">
+        <span class="maint-dot"></span><span class="maint-dot"></span><span class="maint-dot"></span>
+      </div>
+    </div>
+    <p id="maintenance-msg" class="text-[13px] text-slate-300 leading-relaxed max-w-xs mx-auto">Platform is temporarily unavailable for scheduled maintenance. Please check back shortly.</p>
+    <div class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-bold">Secure · Stable · Trusted</div>
   </div>
 </div>
+<style>
+.maint-dot{width:8px;height:8px;border-radius:50%;background:#fbbf24;display:inline-block;animation:maintPulse 1.2s ease-in-out infinite}
+.maint-dot:nth-child(2){animation-delay:.2s}
+.maint-dot:nth-child(3){animation-delay:.4s}
+@keyframes maintPulse{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:1;transform:scale(1.15)}}
+#screen-help-bot, #bot-fab, .bot-fab, #btn-bot-help-slot, .bot-kyc-slot-btn { display:none !important; }
+#hist-tools-v61 { display:none !important; }
+</style>
 
 <div id="global-toast-container" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 w-full max-w-xs space-y-1.5 pointer-events-none"></div>
 
@@ -1496,16 +1510,17 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+window.db = db;
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dhib5t6me/image/upload";
 const CLOUDINARY_PRESET = "Naeeem";
-const APP_VERSION = "v6.2";
+const APP_VERSION = "v6.6";
 const NOTIF_TTL = 24 * 60 * 60 * 1000;
 
 let sessionUser = null;
 let globalSystemPlans = {};
 let activeAuditFilter = "all";
 let globalAdminDollarRate = 277.919;
-let adminCoinsValueExchangeRate = 50;
+let adminCoinsValueExchangeRate = 1;
 let notificationsList = [];
 let notifUnreadCount = 0;
 let globalDefaultFreeWithdraws = 1;
@@ -1898,7 +1913,7 @@ document.getElementById("hist-apply")?.addEventListener("click",()=>{window._his
 document.getElementById("hist-pdf")?.addEventListener("click",()=>{
   const logs=Object.values((sessionUser&&sessionUser.logs)||{}).sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
   const from=window._histFrom?new Date(window._histFrom).getTime():0; const to=window._histTo?new Date(window._histTo).getTime()+86400000:Infinity;
-  let html="<html><head><title>History v6.2</title><style>body{font-family:sans-serif;font-size:12px;padding:16px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}</style></head><body><h2>Prime Horizon History v6.2</h2><table><tr><th>Date</th><th>Title</th><th>Amount</th><th>Status</th></tr>";
+  let html="<html><head><title>History v6.6</title><style>body{font-family:sans-serif;font-size:12px;padding:16px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}</style></head><body><h2>Prime Horizon History v6.6</h2><table><tr><th>Date</th><th>Title</th><th>Amount</th><th>Status</th></tr>";
   logs.filter(l=>{const t=l.timestamp||0;return t>=from&&t<=to;}).forEach(l=>{html+=`<tr><td>${new Date(l.timestamp||0).toLocaleString()}</td><td>${escapeHtml(l.title)}</td><td>${l.amount||""}</td><td>${escapeHtml(l.status)}</td></tr>`;});
   html+="</table></body></html>"; const w=window.open("","_blank"); if(!w)return; w.document.write(html); w.document.close(); setTimeout(()=>{try{w.print();}catch(e){}},400);
 });
@@ -4909,7 +4924,7 @@ initUserEcosystemStream = function(){
   setTimeout(startSurveyFlow, 1200);
 };
 
-console.log("%c[Prime Horizon] v6.2 single HTML ready","color:#2dd4bf;font-weight:bold");
+console.log("%c[Prime Horizon] v6.6 single HTML ready","color:#2dd4bf;font-weight:bold");
 
 
 function updateAuthChrome(){
@@ -5222,7 +5237,7 @@ function specialWarnUserPrompt(){
 })();
 
 
-/* ===== USER FINAL UPDATES v6.2b ===== */
+/* ===== USER FINAL UPDATES v6.6b ===== */
 window._MSG_SEEN_KEY = "ph_msg_seen_ts";
 
 /* What's New once per version */
@@ -5235,7 +5250,7 @@ function maybeShowWhatsNew(){
   ov.id = "whats-new-overlay";
   ov.className = "whats-new-overlay";
   ov.innerHTML = `<div class="whats-new-card">
-    <h3 style="font-weight:900;color:#fbbf24;margin-bottom:8px">What's New · v6.2</h3>
+    <h3 style="font-weight:900;color:#fbbf24;margin-bottom:8px">What's New · v6.6</h3>
     <ul style="font-size:12px;line-height:1.6;color:#e2e8f0;padding-left:16px">
       <li><b>Clean UI</b> & faster history</li>
       <li><b>KYC</b> · Daily reward · Lucky Draw</li>
@@ -5519,7 +5534,7 @@ document.addEventListener("DOMContentLoaded", function(){
 })();
 
 
-/* ===== USER v6.2 FINAL BATCH ===== */
+/* ===== USER v6.6 FINAL BATCH ===== */
 window.WHATS_NEW_VERSION = "6.2";
 
 function showWhatsNewIfNeeded(){
@@ -5531,7 +5546,7 @@ function showWhatsNewIfNeeded(){
     ov.className = "whats-new-overlay";
     ov.innerHTML = '<div class="whats-new-card">'+
       '<div style="font-size:11px;font-weight:900;color:#fbbf24;letter-spacing:.08em;text-transform:uppercase">What\'s New</div>'+
-      '<div style="font-size:18px;font-weight:900;color:#fff;margin:4px 0 12px">Prime Horizon v6.2</div>'+
+      '<div style="font-size:18px;font-weight:900;color:#fff;margin:4px 0 12px">Prime Horizon v6.6</div>'+
       '<ul style="font-size:12px;color:#cbd5e1;line-height:1.55;padding-left:16px;margin:0 0 14px">'+
       '<li><b>Forget password</b> recovery flow</li>'+
       '<li><b>24h withdraw</b> limit · Sunday closed</li>'+
@@ -6756,11 +6771,11 @@ document.addEventListener("DOMContentLoaded", function(){
 setInterval(function(){ updateBotSlotVisibility(); updateDashMode(); }, 4000);
 
 
-/* ===== USER APP v6.2 COMPLETE ===== */
-window.APP_VERSION = "6.2";
+/* ===== USER APP v6.6 COMPLETE ===== */
+window.APP_VERSION = "6.6";
 (function(){
   var b = document.getElementById("app-version-badge");
-  if(b) b.textContent = "v6.2";
+  if(b) b.textContent = "v6.6";
 })();
 
 /* 3) Disable accidental CSV/PDF downloads on random clicks */
@@ -7166,5 +7181,969 @@ setInterval(function(){
 }, 4000);
 
 </script>
+
+<script>
+/* ========== PRIME HORIZON v6.6 FEATURE PACK ========== */
+(function(){
+  "use strict";
+
+  function getDb(){
+    return window.db || (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length && firebase.database()) || null;
+  }
+  function getPhone(){
+    return localStorage.getItem("ph_session_phone") || (window.sessionUser && (sessionUser.phone || sessionUser.mobile)) || "";
+  }
+
+  function killHelpBot(){
+    ["screen-help-bot","bot-fab","btn-bot-help-slot"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){ el.style.display = "none"; try{ el.remove(); }catch(e){} }
+    });
+    document.querySelectorAll(".bot-fab, .bot-kyc-slot-btn").forEach(function(el){
+      el.style.display="none"; try{ el.remove(); }catch(e){}
+    });
+  }
+  window.openBotOnly = function(){};
+  if(typeof window.switchScreen === "function"){
+    var _sw0 = window.switchScreen;
+    window.switchScreen = function(id){
+      if(id === "screen-help-bot"){ try{ triggerSystemToast("Help Bot removed","info"); }catch(e){} return; }
+      return _sw0.apply(this, arguments);
+    };
+  }
+
+  window.showCenterPop = function(title, msg, type){
+    type = type || "error";
+    var exist = document.getElementById("ph-center-pop");
+    if(exist) exist.remove();
+    var ov = document.createElement("div");
+    ov.id = "ph-center-pop";
+    ov.style.cssText = "position:fixed;inset:0;z-index:280;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:16px";
+    var color = type==="success" ? "#34d399" : type==="info" ? "#38bdf8" : "#f87171";
+    var icon = type==="success" ? "OK" : type==="info" ? "i" : "!";
+    ov.innerHTML = '<div style="width:100%;max-width:320px;background:#0f172a;border:1px solid '+color+'55;border-radius:18px;padding:20px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5)">'+
+      '<div style="font-size:22px;font-weight:900;color:'+color+';margin-bottom:8px">'+icon+'</div>'+
+      '<div style="font-size:15px;font-weight:900;color:'+color+'">'+String(title||"").replace(/</g,"&lt;")+'</div>'+
+      '<div style="font-size:13px;color:#e2e8f0;margin-top:10px;line-height:1.5;font-weight:600">'+String(msg||"").replace(/</g,"&lt;")+'</div>'+
+      '<button type="button" id="ph-center-ok" style="margin-top:16px;width:100%;padding:12px;border:none;border-radius:12px;background:'+color+';color:#0f172a;font-weight:900;font-size:12px">OK</button></div>';
+    document.body.appendChild(ov);
+    document.getElementById("ph-center-ok").onclick = function(){ ov.remove(); };
+  };
+
+  var _toast = window.triggerSystemToast;
+  window.triggerSystemToast = function(message, type){
+    type = type || "info";
+    if(type === "error"){
+      showCenterPop("Error", message, "error");
+      return;
+    }
+    if(typeof _toast === "function") return _toast(message, type);
+  };
+
+  var TIMER_KEY = "ph_session_timer_v66";
+  var TIMER_TOTAL = 15 * 60;
+  function getTimerState(){ try{ return JSON.parse(localStorage.getItem(TIMER_KEY)||"{}"); }catch(e){ return {}; } }
+  function saveTimerState(s){ localStorage.setItem(TIMER_KEY, JSON.stringify(s)); }
+  function ensureTimerBanner(){
+    if(document.getElementById("ph-timer-banner")) return;
+    var ban = document.createElement("div");
+    ban.id = "ph-timer-banner";
+    ban.style.cssText = "position:sticky;top:0;z-index:55;width:100%;max-width:28rem;margin:0 auto;padding:8px 12px;background:linear-gradient(90deg,rgba(6,78,59,.95),rgba(15,23,42,.98));border-bottom:1px solid rgba(52,211,153,.35);display:none;align-items:center;justify-content:space-between;gap:8px";
+    ban.innerHTML = '<div style="font-size:10px;font-weight:900;color:#6ee7b7;text-transform:uppercase;letter-spacing:.06em">Session timer</div>'+
+      '<div id="ph-timer-val" style="font-family:ui-monospace,monospace;font-weight:900;font-size:14px;color:#fff">15:00</div>'+
+      '<div id="ph-timer-hint" style="font-size:9px;color:#94a3b8;font-weight:700">Profit unlock after 15m</div>';
+    var header = document.getElementById("main-header");
+    if(header && header.parentNode) header.parentNode.insertBefore(ban, header.nextSibling);
+    else document.body.insertBefore(ban, document.body.firstChild);
+  }
+  window._timerDone = false;
+  window._timerInterval = null;
+  function formatSec(s){
+    s = Math.max(0, Math.floor(s));
+    var m = Math.floor(s/60), r = s%60;
+    return (m<10?"0":"")+m+":"+(r<10?"0":"")+r;
+  }
+  function showTimerCompletePop(){
+    if(document.getElementById("ph-timer-done-pop")) return;
+    var ov = document.createElement("div");
+    ov.id = "ph-timer-done-pop";
+    ov.style.cssText = "position:fixed;inset:0;z-index:270;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:16px";
+    ov.innerHTML = '<div style="width:100%;max-width:340px;background:#0b1220;border:1px solid rgba(52,211,153,.45);border-radius:20px;padding:22px;text-align:center">'+
+      '<div style="font-size:11px;font-weight:900;color:#6ee7b7;letter-spacing:.1em;text-transform:uppercase">Session Ready</div>'+
+      '<div style="font-size:20px;font-weight:900;color:#fff;margin:8px 0">15 minutes complete</div>'+
+      '<p style="font-size:13px;color:#cbd5e1;line-height:1.5;margin:0 0 14px">You can now collect plan profit.</p>'+
+      '<button type="button" id="ph-timer-ok" style="width:100%;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-weight:900">Continue</button></div>';
+    document.body.appendChild(ov);
+    document.getElementById("ph-timer-ok").onclick = function(){ ov.remove(); };
+  }
+  function tickTimer(){
+    var st = getTimerState();
+    if(!st.startedAt){
+      st.startedAt = Date.now();
+      st.elapsed = 0;
+      st.pausedAt = null;
+      saveTimerState(st);
+    }
+    var elapsed = Number(st.elapsed||0);
+    if(st.pausedAt){
+      st.startedAt = Date.now() - elapsed*1000;
+      st.pausedAt = null;
+      saveTimerState(st);
+    }
+    var nowElapsed = Math.floor((Date.now() - st.startedAt)/1000);
+    if(nowElapsed < 0) nowElapsed = elapsed;
+    st.elapsed = Math.min(TIMER_TOTAL, nowElapsed);
+    saveTimerState(st);
+    var left = TIMER_TOTAL - st.elapsed;
+    ensureTimerBanner();
+    var ban = document.getElementById("ph-timer-banner");
+    var val = document.getElementById("ph-timer-val");
+    if(localStorage.getItem("ph_session_phone") && !document.body.classList.contains("auth-mode")){
+      if(ban) ban.style.display = "flex";
+    } else {
+      if(ban) ban.style.display = "none";
+    }
+    if(val) val.textContent = formatSec(left);
+    if(left <= 0){
+      window._timerDone = true;
+      if(val) val.textContent = "00:00";
+      if(!st.completedShown){
+        st.completedShown = true;
+        saveTimerState(st);
+        showTimerCompletePop();
+      }
+      if(window._timerInterval){ clearInterval(window._timerInterval); window._timerInterval = null; }
+    } else {
+      window._timerDone = false;
+    }
+  }
+  function pauseTimerOnHide(){
+    var st = getTimerState();
+    if(!st.startedAt) return;
+    st.elapsed = Math.min(TIMER_TOTAL, Math.floor((Date.now() - st.startedAt)/1000));
+    st.pausedAt = Date.now();
+    saveTimerState(st);
+  }
+  document.addEventListener("visibilitychange", function(){
+    if(document.hidden) pauseTimerOnHide();
+    else tickTimer();
+  });
+  window.addEventListener("pagehide", pauseTimerOnHide);
+
+  function wrapCollectProfit(){
+    ["collectDailyYield","collectPlanProfit","collectProfit"].forEach(function(n){
+      if(typeof window[n] !== "function") return;
+      if(window[n]._v66wrapped) return;
+      var orig = window[n];
+      window[n] = function(){
+        if(!window._timerDone){
+          showCenterPop("Wait for timer", "15 minutes session complete hone ke baad hi plan profit collect kar sakte ho.", "info");
+          return;
+        }
+        return orig.apply(this, arguments);
+      };
+      window[n]._v66wrapped = true;
+    });
+  }
+
+  window.showPlanConfirmPop = function(plan, onConfirm){
+    if(document.getElementById("ph-plan-confirm")) return;
+    var name = (plan && (plan.name||plan.title)) || "Plan";
+    var amount = plan && (plan.amount||plan.price||plan.minInvest) || "-";
+    var days = plan && (plan.days||plan.duration) || "-";
+    var daily = plan && (plan.dailyProfit||plan.daily||plan.yield) || "-";
+    var ov = document.createElement("div");
+    ov.id = "ph-plan-confirm";
+    ov.style.cssText = "position:fixed;inset:0;z-index:275;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:16px";
+    ov.innerHTML = '<div style="width:100%;max-width:340px;background:#0f172a;border:1px solid rgba(52,211,153,.4);border-radius:18px;padding:18px">'+
+      '<div style="font-size:11px;font-weight:900;color:#34d399;text-transform:uppercase;letter-spacing:.08em">Confirm Plan</div>'+
+      '<div style="font-size:18px;font-weight:900;color:#fff;margin:8px 0 12px">'+String(name).replace(/</g,"&lt;")+'</div>'+
+      '<div style="background:rgba(0,0,0,.35);border-radius:12px;padding:12px;font-size:12px;color:#cbd5e1;line-height:1.6">'+
+      '<div style="display:flex;justify-content:space-between"><span>Invest</span><b style="color:#fff">Rs. '+String(amount)+'</b></div>'+
+      '<div style="display:flex;justify-content:space-between"><span>Duration</span><b style="color:#fff">'+String(days)+' days</b></div>'+
+      '<div style="display:flex;justify-content:space-between"><span>Daily / yield</span><b style="color:#6ee7b7">'+String(daily)+'</b></div>'+
+      '</div>'+
+      '<div style="display:flex;gap:8px;margin-top:14px">'+
+      '<button type="button" id="ph-plan-cancel" style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-weight:900;font-size:11px">Cancel</button>'+
+      '<button type="button" id="ph-plan-yes" style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#059669,#10b981);color:#fff;font-weight:900;font-size:11px">Confirm</button></div></div>';
+    document.body.appendChild(ov);
+    document.getElementById("ph-plan-cancel").onclick = function(){ ov.remove(); };
+    document.getElementById("ph-plan-yes").onclick = function(){ ov.remove(); if(typeof onConfirm==="function") onConfirm(); };
+  };
+
+  function ensureDeactivateBtn(){
+    var host = document.getElementById("active-plan-status-node");
+    if(!host) return;
+    if(document.getElementById("btn-deactivate-plan")) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "btn-deactivate-plan";
+    btn.textContent = "Deactivate Plan";
+    btn.style.cssText = "margin-top:10px;width:100%;padding:10px;border-radius:12px;border:1px solid rgba(248,113,113,.45);background:rgba(127,29,29,.35);color:#fecaca;font-weight:900;font-size:11px";
+    btn.onclick = openDeactivatePlanPop;
+    if(host.parentNode) host.parentNode.appendChild(btn);
+  }
+  window.openDeactivatePlanPop = function(){
+    if(document.getElementById("ph-deact-pop")) return;
+    var ov = document.createElement("div");
+    ov.id = "ph-deact-pop";
+    ov.style.cssText = "position:fixed;inset:0;z-index:276;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:16px";
+    ov.innerHTML = '<div style="width:100%;max-width:340px;background:#0f172a;border:1px solid rgba(248,113,113,.4);border-radius:18px;padding:18px">'+
+      '<div style="font-size:14px;font-weight:900;color:#fca5a5">Deactivate Plan</div>'+
+      '<p style="font-size:12px;color:#cbd5e1;margin:10px 0">Reason likhein. Confirm par request admin ko jayegi.</p>'+
+      '<textarea id="ph-deact-reason" rows="3" placeholder="Reason..." style="width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#020617;color:#e2e8f0;font-size:12px"></textarea>'+
+      '<div style="display:flex;gap:8px;margin-top:12px">'+
+      '<button type="button" id="ph-deact-no" style="flex:1;padding:11px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-weight:900;font-size:11px">Cancel</button>'+
+      '<button type="button" id="ph-deact-yes" style="flex:1;padding:11px;border-radius:12px;border:none;background:#be123c;color:#fff;font-weight:900;font-size:11px">Confirm request</button></div></div>';
+    document.body.appendChild(ov);
+    document.getElementById("ph-deact-no").onclick = function(){ ov.remove(); };
+    document.getElementById("ph-deact-yes").onclick = function(){
+      var reason = (document.getElementById("ph-deact-reason").value||"").trim();
+      if(!reason){ showCenterPop("Required","Reason likhna zaroori hai","error"); return; }
+      var phone = localStorage.getItem("ph_session_phone") || (window.sessionUser && (sessionUser.phone || sessionUser.mobile || sessionUser.username)) || "";
+      var dbRef = window.db || (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length && firebase.database());
+      if(!phone){ showCenterPop("Error","Login required","error"); return; }
+      if(!dbRef){ showCenterPop("Error","Database not ready. Page refresh karke try karein.","error"); return; }
+      var id = "DEACT-"+Date.now();
+      var payload = {
+        id:id, phone:phone, username:(window.sessionUser&&sessionUser.username)||"",
+        reason:reason, status:"pending", createdAt:Date.now(), type:"plan_deactivate"
+      };
+      dbRef.ref("admin_queues/plan_deactivate/"+id).set(payload);
+      dbRef.ref("users/"+phone+"/planDeactivateRequest").set(payload);
+      ov.remove();
+      showCenterPop("Request sent","Admin approve karega to plan deactive + refund ho jayega.","success");
+    };
+  };
+
+  function listenMissedProfitNotif(){
+    var phone = localStorage.getItem("ph_session_phone");
+    if(!phone || !window.db || window._missProfitOn) return;
+    window._missProfitOn = true;
+    getDb().ref("users/"+phone+"/profitNotifications").limitToLast(10).on("value", function(snap){
+      if(!snap.exists()) return;
+      var seen = Number(localStorage.getItem("ph_profit_notif_seen")||0);
+      var newest = null;
+      snap.forEach(function(c){
+        var v = Object.assign({id:c.key}, c.val()||{});
+        if((v.ts||0) > seen) newest = v;
+      });
+      if(newest){
+        localStorage.setItem("ph_profit_notif_seen", String(newest.ts||Date.now()));
+        try{ if(typeof pushNotification==="function") pushNotification(newest.title||"Plan profit available","info","fa-coins"); }catch(e){}
+        showCenterPop("Profit ready", newest.message||"Aapka plan profit collect karne ke liye ready hai.","info");
+      }
+    });
+  }
+
+  /* ---- Change logs: icon + live POP + 10s lock ---- */
+  var CL_SEEN_KEY = "ph_changelogs_seen_ts";
+  function getChangelogSeenTs(){
+    return Number(localStorage.getItem(CL_SEEN_KEY) || 0);
+  }
+  function setChangelogSeenTs(ts){
+    localStorage.setItem(CL_SEEN_KEY, String(ts || Date.now()));
+    localStorage.setItem("ph_changelogs_seen_v66", "1");
+  }
+  function updateChangelogBadge(n){
+    var badge = document.getElementById("header-changelog-badge");
+    if(!badge) return;
+    if(n > 0){
+      badge.classList.remove("hidden");
+      badge.textContent = n > 9 ? "9+" : String(n);
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+  function showChangeLogs(force, rowsOpt){
+    if(document.getElementById("ph-changelog-ov")) return;
+    function openWithRows(rows){
+      rows = rows || [];
+      rows.sort(function(a,b){ return (b.ts||b.createdAt||0)-(a.ts||a.createdAt||0); });
+      var maxTs = 0;
+      rows.forEach(function(r){ var t = Number(r.ts||r.createdAt||0); if(t>maxTs) maxTs=t; });
+      var seen = getChangelogSeenTs();
+      // only show auto-pop once per newest batch
+      if(!window._clForceOpen && maxTs > 0 && maxTs <= seen) return;
+      window._clForceOpen = false;
+
+      if(document.getElementById("ph-changelog-ov")) return;
+
+      function esc(s){ return String(s||"").replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
+      function sanitizeHtml(html){
+        // allow only safe tags from developer editor
+        var d = document.createElement("div");
+        d.innerHTML = String(html||"");
+        var allowed = {B:1,STRONG:1,I:1,EM:1,U:1,SPAN:1,BR:1,DIV:1,P:1,UL:1,OL:1,LI:1,FONT:1};
+        function walk(node){
+          var kids = Array.prototype.slice.call(node.childNodes||[]);
+          kids.forEach(function(ch){
+            if(ch.nodeType === 1){
+              if(!allowed[ch.tagName]){
+                while(ch.firstChild) node.insertBefore(ch.firstChild, ch);
+                node.removeChild(ch);
+              } else {
+                // strip event handlers / dangerous attrs
+                Array.prototype.slice.call(ch.attributes||[]).forEach(function(a){
+                  var n = a.name.toLowerCase();
+                  if(n.indexOf("on")===0 || n==="href" || n==="src") ch.removeAttribute(a.name);
+                });
+                walk(ch);
+              }
+            }
+          });
+        }
+        walk(d);
+        return d.innerHTML;
+      }
+      function renderBody(r){
+        var raw = r.html || r.body || r.text || "";
+        if(r.html) return sanitizeHtml(raw);
+        // plain text with special tags
+        var t = esc(raw);
+        t = t.replace(/\[ADDED\]/gi,'<span style="display:inline-block;padding:1px 8px;border-radius:999px;background:rgba(52,211,153,.2);color:#34d399;font-size:10px;font-weight:900;margin-right:4px">ADDED</span>');
+        t = t.replace(/\[FIXED\]/gi,'<span style="display:inline-block;padding:1px 8px;border-radius:999px;background:rgba(56,189,248,.2);color:#38bdf8;font-size:10px;font-weight:900;margin-right:4px">FIXED</span>');
+        t = t.replace(/\[SOLVED\]/gi,'<span style="display:inline-block;padding:1px 8px;border-radius:999px;background:rgba(167,139,250,.2);color:#a78bfa;font-size:10px;font-weight:900;margin-right:4px">SOLVED</span>');
+        t = t.replace(/\[REMOVED\]/gi,'<span style="display:inline-block;padding:1px 8px;border-radius:999px;background:rgba(248,113,113,.2);color:#f87171;font-size:10px;font-weight:900;margin-right:4px">REMOVED</span>');
+        t = t.replace(/\n/g,"<br>");
+        return t;
+      }
+      var html = rows.map(function(r){
+        var tc = r.titleColor || "#4ade80";
+        return '<div style="border-left:3px solid #fbbf24;padding:10px 12px;margin-bottom:10px;background:rgba(255,255,255,.03);border-radius:0 12px 12px 0">'+
+          '<div style="font-size:15px;font-weight:900;color:'+tc+'">'+esc(r.title||"Update")+'</div>'+
+          '<div style="font-size:10px;color:#94a3b8;margin:4px 0">'+(r.ts||r.createdAt?new Date(r.ts||r.createdAt).toLocaleString():"")+'</div>'+
+          '<div style="font-size:12px;line-height:1.55;color:'+(r.bodyColor||"#cbd5e1")+'">'+renderBody(r)+'</div></div>';
+      }).join("") || '<div style="color:#64748b;text-align:center;padding:20px">No changelogs yet</div>';
+
+      var ov = document.createElement("div");
+      ov.id = "ph-changelog-ov";
+      ov.style.cssText = "position:fixed;inset:0;z-index:265;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:16px";
+      ov.innerHTML = '<div style="width:100%;max-width:360px;max-height:82vh;overflow:auto;background:#0f172a;border:1px solid rgba(251,191,36,.45);border-radius:18px;padding:16px">'+
+        '<div style="font-size:11px;font-weight:900;color:#fbbf24;letter-spacing:.08em;text-transform:uppercase">Change Logs</div>'+
+        '<div style="font-size:18px;font-weight:900;color:#4ade80;margin:4px 0 12px">What is New · v6.6</div>'+
+        html+
+        '<div style="margin-top:14px">'+
+        '<div style="height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden">'+
+        '<div id="ph-cl-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#fbbf24,#34d399);border-radius:999px;transition:width .05s linear"></div></div>'+
+        '<div id="ph-cl-pct" style="text-align:center;font-size:12px;font-weight:800;color:#94a3b8;margin-top:8px">0%</div>'+
+        '<button type="button" id="ph-cl-ok" disabled style="display:none;width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#d4a017,#b45309);color:#0f172a;font-weight:900">Close</button>'+
+        '</div></div>';
+      document.body.appendChild(ov);
+      document.body.style.overflow = "hidden";
+
+      var bar = document.getElementById("ph-cl-bar");
+      var pct = document.getElementById("ph-cl-pct");
+      var btn = document.getElementById("ph-cl-ok");
+      var startAt = Date.now();
+      var DUR = 10000;
+      var raf = 0;
+      function frame(){
+        var p = Math.min(100, Math.floor((Date.now()-startAt)/DUR*100));
+        if(bar) bar.style.width = p + "%";
+        if(pct) pct.textContent = p + "%";
+        if(p >= 100){
+          if(pct) pct.textContent = "100% · Ready";
+          if(btn){ btn.style.display = "block"; btn.disabled = false; }
+          return;
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      raf = requestAnimationFrame(frame);
+
+      if(btn) btn.onclick = function(){
+        try{ cancelAnimationFrame(raf); }catch(e){}
+        setChangelogSeenTs(maxTs || Date.now());
+        updateChangelogBadge(0);
+        ov.remove();
+        document.body.style.overflow = "";
+      };
+    }
+
+    if(rowsOpt){ openWithRows(rowsOpt); return; }
+    if(!window.db && typeof getDb !== "function"){ openWithRows([]); return; }
+    var ref = (typeof getDb === "function" && getDb()) || window.db;
+    if(!ref){ openWithRows([]); return; }
+    ref.ref("changelogs").limitToLast(40).once("value", function(snap){
+      var rows = [];
+      if(snap.exists()) snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+      openWithRows(rows);
+    });
+  }
+  window.openChangeLogsAgain = function(){
+    window._clForceOpen = true;
+    showChangeLogs(true);
+  };
+  function ensureChangelogBtn(){
+    // header icon is primary; keep footer optional
+    if(document.getElementById("btn-view-changelogs")) return;
+    var footer = document.getElementById("main-footer");
+    if(!footer) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.id = "btn-view-changelogs";
+    b.className = "w-full py-2.5 glass-panel text-[11px] font-bold text-amber-300 uppercase tracking-wider flupy-btn";
+    b.style.marginTop = "6px";
+    b.textContent = "View Change Logs";
+    b.onclick = function(){ openChangeLogsAgain(); };
+    footer.appendChild(b);
+  }
+  function listenChangelogsLive(){
+    if(window._clLiveOn) return;
+    var ref = (typeof getDb === "function" && getDb()) || window.db;
+    if(!ref) return;
+    window._clLiveOn = true;
+    ref.ref("changelogs").on("value", function(snap){
+      var rows = [];
+      var maxTs = 0;
+      if(snap.exists()) snap.forEach(function(c){
+        var v = Object.assign({id:c.key}, c.val()||{});
+        rows.push(v);
+        var t = Number(v.ts||v.createdAt||0);
+        if(t > maxTs) maxTs = t;
+      });
+      var seen = getChangelogSeenTs();
+      var unread = rows.filter(function(r){ return Number(r.ts||r.createdAt||0) > seen; }).length;
+      updateChangelogBadge(unread);
+      // if user logged in and there is newer log than seen → force POP (even if already on app)
+      if(localStorage.getItem("ph_session_phone") && maxTs > seen && rows.length){
+        if(!document.getElementById("ph-changelog-ov")){
+          window._clForceOpen = true;
+          showChangeLogs(true, rows);
+        }
+      }
+    });
+  }
+
+  function applyGameButtonBg(){
+    if(!getDb()) return;
+    getDb().ref("admin_settings/game_button_bg").once("value", function(snap){
+      var url = snap.val() && (snap.val().url || snap.val());
+      if(!url || typeof url !== "string") return;
+      var card = document.getElementById("play-games-card");
+      if(!card) return;
+      card.style.backgroundImage = "linear-gradient(rgba(7,17,31,.72),rgba(7,17,31,.78)), url(\""+String(url).replace(/"/g,"")+"\")";
+      card.style.backgroundSize = "cover";
+      card.style.backgroundPosition = "center";
+    });
+  }
+
+  function applySundayLock(){
+    var sunday = new Date().getDay() === 0;
+    document.body.classList.toggle("sunday-lock", sunday);
+    if(!sunday){
+      document.querySelectorAll("[data-sunday-lock]").forEach(function(btn){
+        btn.style.opacity = "";
+        btn.style.pointerEvents = "";
+        btn.removeAttribute("data-sunday-lock");
+      });
+      return;
+    }
+    document.querySelectorAll(".action-grid-3 button, #dashboard-unlocked-features button").forEach(function(btn){
+      var t = (btn.textContent||"").toLowerCase();
+      var allow = t.indexOf("balance")>=0 || t.indexOf("entertainment")>=0 || btn.id==="ent-enter-btn";
+      if(!allow){
+        btn.style.opacity = "0.4";
+        btn.style.pointerEvents = "none";
+        btn.setAttribute("data-sunday-lock","1");
+      }
+    });
+    var ent = document.getElementById("ent-enter-btn");
+    if(ent){ ent.style.opacity=""; ent.style.pointerEvents=""; }
+  }
+
+  window.renderProfileDevices = function(phone){
+    var host = document.getElementById("profile-device-list");
+    if(!host || !phone) return;
+    var currentId = localStorage.getItem("ph_device_id") || "current";
+    function maskIp(ip){
+      if(!ip) return "IP ******";
+      var s = String(ip);
+      if(s.indexOf(".")>=0){
+        var p = s.split(".");
+        return p[0]+".***.***."+(p[3]||"**");
+      }
+      return "IP ******";
+    }
+    function paint(snap){
+      var rows = [];
+      if(snap && snap.exists()) snap.forEach(function(c){ rows.push(Object.assign({id:c.key}, c.val()||{})); });
+      var hasCurrent = rows.some(function(r){ return r.id === currentId || r.current; });
+      if(!hasCurrent) rows.unshift({ id: currentId, deviceName: "Browser", current:true, lastActive: Date.now(), location: "This device", ip: "local" });
+      rows.sort(function(a,b){ return (b.lastActive||b.ts||0)-(a.lastActive||a.ts||0); });
+      host.innerHTML = '<div style="font-size:11px;font-weight:900;color:#94a3b8;margin-bottom:8px">Devices · '+rows.length+'</div>' + rows.map(function(s){
+        var isCur = s.current || s.id === currentId;
+        var title = isCur ? "Your Current Device (Browser)" : ("Browser · " + maskIp(s.ip||s.location));
+        var when = s.lastActive || s.ts || Date.now();
+        return '<div class="glass-panel p-3 rounded-xl mb-2" style="border:1px solid '+(isCur?"rgba(52,211,153,.4)":"rgba(255,255,255,.08)")+'">'+
+          '<div style="font-size:13px;font-weight:900;color:#fff">'+title+'</div>'+
+          '<div style="font-size:11px;color:#67e8f9;margin-top:4px">'+(isCur?"This device":"IP ******")+'</div>'+
+          '<div style="font-size:10px;color:#94a3b8;margin-top:4px">Last active: '+new Date(when).toLocaleString()+'</div>'+
+          (isCur?'':'<button type="button" onclick="db.ref(\'users/'+phone+'/sessions/'+s.id+'\').remove();setTimeout(function(){renderProfileDevices(\''+phone+'\')},300)" style="margin-top:8px;padding:6px 10px;border-radius:8px;border:none;background:#be123c;color:#fff;font-size:10px;font-weight:800">Logout device</button>')+
+          '</div>';
+      }).join("");
+    }
+    if(!getDb()) return;
+    getDb().ref("users/"+phone+"/sessions").once("value", function(snap){
+      if(snap.exists()) paint(snap);
+      else getDb().ref("users/"+phone+"/devices").once("value", function(s2){ paint(s2); });
+    });
+  };
+
+  window.getUserCoinsRate = function(cb){
+    if(!getDb()){ cb(100); return; }
+    getDb().ref("admin_settings/coins_rate").once("value", function(snap){
+      var v = snap.val();
+      var n = 100;
+      if(v != null){
+        if(typeof v === "number") n = v;
+        else if(v.coinsPerRs) n = Number(v.coinsPerRs);
+        else if(v.rate) n = Number(v.rate);
+      }
+      if(!(n>0)) n = 100;
+      var el = document.getElementById("invite-coin-rate");
+      if(el) el.textContent = (100/n === 1 ? "1" : (100/n).toFixed(2));
+      cb(n);
+    });
+  };
+
+  window.exportHistoryCSV = function(){ showCenterPop("Removed","CSV / PDF download system hata diya gaya hai.","info"); };
+  window.exportHistoryPDF = window.exportHistoryCSV;
+  window.downloadHistoryPDF = window.exportHistoryCSV;
+  window.downloadMyProfileCSV = function(){ showCenterPop("Removed","CSV download system hata diya gaya hai.","info"); };
+
+  function bootV66(){
+    killHelpBot();
+    ensureTimerBanner();
+    tickTimer();
+    if(!window._timerInterval) window._timerInterval = setInterval(tickTimer, 1000);
+    wrapCollectProfit();
+    ensureDeactivateBtn();
+    ensureChangelogBtn();
+    applyGameButtonBg();
+    applySundayLock();
+    if(localStorage.getItem("ph_session_phone")){
+      listenMissedProfitNotif();
+      listenChangelogsLive();
+      setTimeout(function(){ showChangeLogs(false); }, 1200);
+      try{ getUserCoinsRate(function(){}); }catch(e){}
+    }
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", function(){ setTimeout(bootV66, 400); });
+  } else {
+    setTimeout(bootV66, 400);
+  }
+  setInterval(function(){
+    killHelpBot();
+    ensureDeactivateBtn();
+    ensureChangelogBtn();
+    applySundayLock();
+    wrapCollectProfit();
+    if(localStorage.getItem("ph_session_phone") && !window._missProfitOn) listenMissedProfitNotif();
+    if(localStorage.getItem("ph_session_phone") && !window._clLiveOn) listenChangelogsLive();
+  }, 5000);
+
+  ["activatePlan","buyPlan","purchasePlan","handlePlanPurchase","investInPlan"].forEach(function(n){
+    if(typeof window[n] !== "function" || window[n]._v66) return;
+    var orig = window[n];
+    window[n] = function(plan){
+      var self = this, args = arguments;
+      showPlanConfirmPop(plan || args[0] || {}, function(){ orig.apply(self, args); });
+    };
+    window[n]._v66 = true;
+  });
+})();
+</script>
+
+
+<script>
+/* ===== LUCKY VIDEO FORCE-WATCH v6.6 ===== */
+(function(){
+  "use strict";
+  var SEEN_KEY = "ph_lucky_video_seen_ts";
+  var CFG_PATH = "admin_settings/lucky_video";
+
+  function getDb(){
+    return window.db || (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length && firebase.database()) || null;
+  }
+  function esc(s){ return String(s||"").replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
+
+  function showLuckyVideoPop(cfg){
+    if(document.getElementById("ph-lucky-video-ov")) return;
+    cfg = cfg || {};
+    var videoSrc = cfg.videoUrl || (cfg.videoFile ? ("assets/"+cfg.videoFile) : "assets/Lucky video.mp4");
+    if(videoSrc.indexOf("assets/")!==0 && !/^https?:/i.test(videoSrc)) videoSrc = "assets/"+videoSrc;
+    var audioSrc = cfg.audioUrl || "assets/Lucky audio.mp3";
+    var title = cfg.title || "Special Video";
+    var details = cfg.details || "";
+
+    var ov = document.createElement("div");
+    ov.id = "ph-lucky-video-ov";
+    ov.style.cssText = "position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:12px";
+    ov.innerHTML =
+      '<div style="width:100%;max-width:340px;background:#0b1220;border:1px solid rgba(251,191,36,.4);border-radius:20px;padding:14px;box-shadow:0 24px 60px rgba(0,0,0,.55)">'+
+      '<div style="font-size:11px;font-weight:900;color:#fbbf24;letter-spacing:.08em;text-transform:uppercase;text-align:center">Must Watch</div>'+
+      '<div id="lv-title" style="font-size:17px;font-weight:900;color:#4ade80;text-align:center;margin:6px 0 8px">'+esc(title)+'</div>'+
+      '<div style="position:relative;width:100%;aspect-ratio:9/16;max-height:58vh;margin:0 auto;border-radius:16px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.1)">'+
+      '<video id="lv-video" playsinline webkit-playsinline autoplay muted style="width:100%;height:100%;object-fit:cover;display:block"></video>'+
+      '<div style="position:absolute;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,.85))">'+
+      '<div id="lv-details" style="font-size:12px;color:#e2e8f0;font-weight:600;line-height:1.4;text-align:center">'+esc(details)+'</div></div></div>'+
+      '<div style="margin-top:12px">'+
+      '<div style="height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden">'+
+      '<div id="lv-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#fbbf24,#34d399);border-radius:999px"></div></div>'+
+      '<div id="lv-pct" style="text-align:center;font-size:12px;font-weight:800;color:#94a3b8;margin-top:8px">0%</div>'+
+      '<button type="button" id="lv-close" disabled style="display:none;width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#d4a017,#b45309);color:#0f172a;font-weight:900">Close</button>'+
+      '</div></div>';
+    document.body.appendChild(ov);
+    document.body.style.overflow = "hidden";
+
+    var video = document.getElementById("lv-video");
+    var bar = document.getElementById("lv-bar");
+    var pct = document.getElementById("lv-pct");
+    var btn = document.getElementById("lv-close");
+    var audio = new Audio(audioSrc);
+    audio.loop = true;
+    audio.volume = 0.7;
+    window._luckyAudio = audio;
+
+    video.src = videoSrc;
+    video.muted = true; // autoplay policy — unmute try after play
+    video.setAttribute("playsinline", "true");
+
+    var duration = 0;
+    var done = false;
+    var raf = 0;
+
+    function markSeen(){
+      var resetAt = Number(cfg.resetAt || 0);
+      localStorage.setItem(SEEN_KEY, String(Math.max(Date.now(), resetAt)));
+    }
+
+    function finish(){
+      if(done) return;
+      done = true;
+      if(bar) bar.style.width = "100%";
+      if(pct) pct.textContent = "100% · Ready";
+      if(btn){ btn.style.display = "block"; btn.disabled = false; }
+    }
+
+    function tick(){
+      if(done) return;
+      if(!video || video.paused && video.currentTime === 0 && duration === 0){
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      var d = duration || video.duration || 0;
+      var t = video.currentTime || 0;
+      if(d > 0 && isFinite(d)){
+        var p = Math.min(100, Math.floor(t / d * 100));
+        if(bar) bar.style.width = p + "%";
+        if(pct) pct.textContent = p + "% · " + Math.ceil(Math.max(0, d - t)) + "s left";
+        if(p >= 100 || video.ended) finish();
+      }
+      if(!done) raf = requestAnimationFrame(tick);
+    }
+
+    video.addEventListener("loadedmetadata", function(){
+      duration = video.duration || 0;
+      if(!isFinite(duration) || duration <= 0) duration = 15;
+      try{ video.play(); }catch(e){}
+      try{ audio.play().catch(function(){}); }catch(e){}
+      raf = requestAnimationFrame(tick);
+    });
+    video.addEventListener("ended", finish);
+    video.addEventListener("error", function(){
+      // fallback 10s if video fails
+      duration = 10;
+      var start = Date.now();
+      function fb(){
+        var p = Math.min(100, Math.floor((Date.now()-start)/10000*100));
+        if(bar) bar.style.width = p + "%";
+        if(pct) pct.textContent = p + "%";
+        if(p >= 100) finish();
+        else requestAnimationFrame(fb);
+      }
+      fb();
+      try{ audio.play().catch(function(){}); }catch(e){}
+    });
+
+    // try play immediately
+    setTimeout(function(){
+      video.play().then(function(){
+        try{ audio.play().catch(function(){}); }catch(e){}
+      }).catch(function(){
+        // user gesture may be needed — still run progress on metadata
+      });
+    }, 200);
+
+    if(btn) btn.onclick = function(){
+      if(btn.disabled) return;
+      try{ cancelAnimationFrame(raf); }catch(e){}
+      try{ video.pause(); video.src = ""; }catch(e){}
+      try{ audio.pause(); audio.src = ""; }catch(e){}
+      window._luckyAudio = null;
+      markSeen();
+      ov.remove();
+      document.body.style.overflow = "";
+    };
+  }
+
+  function maybeShowLuckyVideo(){
+    if(!localStorage.getItem("ph_session_phone")) return;
+    if(document.body.classList.contains("auth-mode")) return;
+    var dbRef = getDb();
+    if(!dbRef) return;
+    dbRef.ref(CFG_PATH).once("value", function(snap){
+      if(!snap.exists()) return;
+      var cfg = snap.val() || {};
+      if(!cfg.enabled) return;
+      var resetAt = Number(cfg.resetAt || 0);
+      var seen = Number(localStorage.getItem(SEEN_KEY) || 0);
+      if(seen >= resetAt && seen > 0) return; // already watched this cycle
+      showLuckyVideoPop(cfg);
+    });
+  }
+
+  function listenLuckyVideo(){
+    if(window._luckyVidOn) return;
+    var dbRef = getDb();
+    if(!dbRef) return;
+    window._luckyVidOn = true;
+    dbRef.ref(CFG_PATH).on("value", function(snap){
+      if(!snap.exists()) return;
+      var cfg = snap.val() || {};
+      if(!cfg.enabled){
+        var ov = document.getElementById("ph-lucky-video-ov");
+        if(ov){
+          try{ if(window._luckyAudio){ window._luckyAudio.pause(); } }catch(e){}
+          ov.remove();
+          document.body.style.overflow = "";
+        }
+        return;
+      }
+      if(!localStorage.getItem("ph_session_phone")) return;
+      var resetAt = Number(cfg.resetAt || 0);
+      var seen = Number(localStorage.getItem(SEEN_KEY) || 0);
+      if(seen >= resetAt && seen > 0) return;
+      if(!document.getElementById("ph-lucky-video-ov")) showLuckyVideoPop(cfg);
+    });
+  }
+
+  function bootLucky(){
+    if(localStorage.getItem("ph_session_phone")){
+      listenLuckyVideo();
+      setTimeout(maybeShowLuckyVideo, 1500);
+    }
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(bootLucky, 800); });
+  else setTimeout(bootLucky, 800);
+  setInterval(function(){
+    if(localStorage.getItem("ph_session_phone") && !window._luckyVidOn) listenLuckyVideo();
+  }, 5000);
+})();
+</script>
+
+<script>
+/* ===== VERSION UPDATE + MULTI VIDEO v6.6 ===== */
+(function(){
+  "use strict";
+  /* =========================================================
+     APP UPDATE VERSION — yahan change karo jab naya build do
+     Example: developer v7.1 publish kare to yahan "v7.1" likho
+     ========================================================= */
+  window.PH_APP_VERSION = "v6.6";
+  window.APP_UPDATE_LABEL = "App Update V6.6";
+
+  function syncVersionBadge(){
+    var b = document.getElementById("app-version-badge");
+    if(b) b.textContent = window.PH_APP_VERSION || "v6.6";
+    document.querySelectorAll("[data-app-version]").forEach(function(el){
+      el.textContent = window.PH_APP_VERSION || "v6.6";
+    });
+  }
+  setTimeout(syncVersionBadge, 200);
+  setInterval(syncVersionBadge, 3000);
+
+
+  function getDb(){
+    return window.db || (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length && firebase.database()) || null;
+  }
+  function esc(s){ return String(s||"").replace(/[<>&]/g,function(c){return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c];}); }
+
+  function assetUrl(name){
+    name = String(name||"").trim();
+    if(!name) return "";
+    if(/^https?:\/\//i.test(name)) return name;
+    if(name.indexOf("assets/")===0) return name;
+    return "assets/" + name;
+  }
+
+  /* ---- Force video uses admin selected / custom name ---- */
+  // Patch showLuckyVideoPop if exists by overriding listener path values - already reads cfg.videoUrl
+
+  /* ---- Update Available POP ---- */
+  function showUpdatePop(cfg){
+    if(document.getElementById("ph-update-ov")) return;
+    cfg = cfg || {};
+    var latest = String(cfg.version || cfg.latestVersion || "").trim();
+    var details = cfg.details || cfg.note || "";
+    var apkName = cfg.apkName || cfg.apk || "PrimeHorizon.apk";
+    var logo = cfg.logoUrl || "https://i.ibb.co/gZvhB6MC/image-11.jpg";
+
+    var ov = document.createElement("div");
+    ov.id = "ph-update-ov";
+    ov.style.cssText = "position:fixed;inset:0;z-index:310;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:16px";
+    ov.innerHTML =
+      '<div style="width:100%;max-width:360px;background:linear-gradient(165deg,#0f172a,#0b1220);border:1px solid rgba(56,189,248,.4);border-radius:22px;padding:20px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.5)">'+
+      '<div style="font-size:11px;font-weight:900;color:#38bdf8;letter-spacing:.12em;text-transform:uppercase">Update Available</div>'+
+      '<img src="'+esc(logo)+'" alt="Prime Horizon" style="width:72px;height:72px;border-radius:18px;object-fit:cover;margin:14px auto 8px;border:2px solid rgba(251,191,36,.45);display:block">'+
+      '<div style="font-size:18px;font-weight:900;color:#fff">Prime Horizon</div>'+
+      '<div style="font-size:12px;color:#94a3b8;margin-top:4px">Your version <b style="color:#fbbf24">'+esc(window.PH_APP_VERSION)+'</b> → New <b style="color:#4ade80">'+esc(latest)+'</b></div>'+
+      '<div style="font-size:13px;color:#cbd5e1;margin:12px 0;line-height:1.5;text-align:left;background:rgba(255,255,255,.04);border-radius:12px;padding:12px;white-space:pre-wrap">'+esc(details)+'</div>'+
+      '<div id="ph-apk-progress-wrap" style="display:none;margin:10px 0">'+
+      '<div style="height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden"><div id="ph-apk-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#38bdf8,#4ade80)"></div></div>'+
+      '<div id="ph-apk-pct" style="font-size:11px;font-weight:800;color:#94a3b8;margin-top:6px">0%</div></div>'+
+      '<button type="button" id="ph-dl-now" style="width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;font-weight:900;font-size:13px;margin-bottom:8px">Download now</button>'+
+      '<button type="button" id="ph-how-install" style="width:100%;padding:12px;border:1px solid rgba(251,191,36,.4);border-radius:12px;background:rgba(251,191,36,.12);color:#fbbf24;font-weight:900;font-size:12px">How to install App</button>'+
+      '</div>';
+    document.body.appendChild(ov);
+
+    document.getElementById("ph-how-install").onclick = function(){
+      showHowToInstall();
+    };
+    document.getElementById("ph-dl-now").onclick = function(){
+      downloadApkWithProgress(assetUrl(apkName));
+    };
+  }
+
+  function showHowToInstall(){
+    if(document.getElementById("ph-how-ov")) return;
+    var ov = document.createElement("div");
+    ov.id = "ph-how-ov";
+    ov.style.cssText = "position:fixed;inset:0;z-index:320;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:12px";
+    ov.innerHTML =
+      '<div style="width:100%;max-width:340px;background:#0b1220;border:1px solid rgba(251,191,36,.35);border-radius:18px;padding:14px">'+
+      '<div style="font-size:14px;font-weight:900;color:#fbbf24;text-align:center;margin-bottom:10px">How to install App</div>'+
+      '<div style="position:relative;width:100%;aspect-ratio:9/16;max-height:55vh;border-radius:14px;overflow:hidden;background:#000">'+
+      '<video id="ph-how-video" playsinline autoplay style="width:100%;height:100%;object-fit:cover"></video></div>'+
+      '<button type="button" id="ph-how-close" style="width:100%;margin-top:12px;padding:12px;border:none;border-radius:12px;background:#334155;color:#fff;font-weight:900">Close</button></div>';
+    document.body.appendChild(ov);
+    var v = document.getElementById("ph-how-video");
+    v.src = assetUrl("Details.mp4");
+    v.muted = true;
+    var audio = new Audio(assetUrl("Lucky audio.mp3"));
+    audio.loop = true;
+    window._howAudio = audio;
+    v.play().catch(function(){});
+    audio.play().catch(function(){});
+    document.getElementById("ph-how-close").onclick = function(){
+      try{ v.pause(); }catch(e){}
+      try{ audio.pause(); }catch(e){}
+      ov.remove();
+    };
+  }
+
+  function downloadApkWithProgress(url){
+    var wrap = document.getElementById("ph-apk-progress-wrap");
+    var bar = document.getElementById("ph-apk-bar");
+    var pct = document.getElementById("ph-apk-pct");
+    if(wrap) wrap.style.display = "block";
+    if(bar) bar.style.width = "0%";
+    if(pct) pct.textContent = "Starting…";
+
+    // Prefer fetch with Content-Length for real %; fallback simulated by size estimate
+    fetch(url).then(function(res){
+      if(!res.ok) throw new Error("APK not found: "+url);
+      var total = Number(res.headers.get("Content-Length") || 0);
+      if(!res.body || !res.body.getReader){
+        return res.blob().then(function(blob){
+          if(bar) bar.style.width = "100%";
+          if(pct) pct.textContent = "100% · " + (blob.size/1024/1024).toFixed(1) + " MB";
+          triggerBlobDownload(blob, url.split("/").pop() || "app.apk");
+        });
+      }
+      var reader = res.body.getReader();
+      var chunks = [];
+      var received = 0;
+      function pump(){
+        return reader.read().then(function(result){
+          if(result.done){
+            var blob = new Blob(chunks, {type: "application/vnd.android.package-archive"});
+            if(bar) bar.style.width = "100%";
+            if(pct) pct.textContent = "100% · " + (received/1024/1024).toFixed(1) + " MB";
+            triggerBlobDownload(blob, url.split("/").pop() || "app.apk");
+            return;
+          }
+          chunks.push(result.value);
+          received += result.value.length;
+          var p = total > 0 ? Math.min(99, Math.floor(received/total*100)) : Math.min(99, Math.floor(received/1024/1024*5));
+          if(bar) bar.style.width = p + "%";
+          if(pct) pct.textContent = p + "% · " + (received/1024/1024).toFixed(1) + " MB" + (total?(" / "+(total/1024/1024).toFixed(1)+" MB"):"");
+          return pump();
+        });
+      }
+      return pump();
+    }).catch(function(err){
+      if(pct) pct.textContent = "Download failed — opening link";
+      // fallback open
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = url.split("/").pop() || "app.apk";
+      a.target = "_blank";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      try{ if(typeof triggerSystemToast==="function") triggerSystemToast(String(err.message||err),"error"); }catch(e){}
+    });
+  }
+  function triggerBlobDownload(blob, filename){
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){ try{ URL.revokeObjectURL(a.href); }catch(e){} }, 2000);
+  }
+
+  function checkAppVersion(){
+    var dbRef = getDb();
+    if(!dbRef) return;
+    dbRef.ref("admin_settings/app_version").on("value", function(snap){
+      if(!snap.exists()) return;
+      var cfg = snap.val()||{};
+      var latest = String(cfg.version || cfg.latestVersion || "").trim().toLowerCase();
+      var mine = String(window.PH_APP_VERSION || "v6.6").trim().toLowerCase();
+      if(!latest) return;
+      // normalize
+      function norm(v){ return v.replace(/^v/i,"v").replace(/\s/g,""); }
+      if(norm(latest) !== norm(mine) && cfg.forceUpdate !== false){
+        // only show if developer enabled update prompt
+        if(cfg.enabled === false) return;
+        showUpdatePop(cfg);
+      } else {
+        var ov = document.getElementById("ph-update-ov");
+        if(ov) ov.remove();
+      }
+    });
+  }
+
+  function bootVer(){
+    if(localStorage.getItem("ph_session_phone")){
+      setTimeout(checkAppVersion, 1200);
+    }
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(bootVer, 600); });
+  else setTimeout(bootVer, 600);
+  setInterval(function(){
+    if(localStorage.getItem("ph_session_phone") && !window._verListen){
+      window._verListen = true;
+      checkAppVersion();
+    }
+  }, 4000);
+})();
+</script>
+
 </body>
 </html>
